@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slay the Spire 2 — Reference</title>
+<style>
+ :root{
+  --bg:#13151a; --panel:#1c1f27; --panel2:#232733; --line:#2c313c; --line2:#3a4150;
+  --text:#e7e9ee; --muted:#9aa3b2; --accent:#f0c674; --accent2:#e8b84b;
+  --attack:#e06c75; --block:#61afef; --buff:#98c379; --debuff:#c678dd;
+  --summon:#56b6c2; --status:#b6bcc7; --neutral:#8b93a3;
+  --monster:#7fb3d5; --elite:#d98c5f; --boss:#e06c75; --ancient:#b48ead; --event:#98c379;
+ }
+ *{box-sizing:border-box}
+ html,body{margin:0}
+ body{background:var(--bg);color:var(--text);font:15px/1.55 "Segoe UI",Roboto,system-ui,sans-serif}
+ a{color:var(--accent)}
+ /* header */
+ header{position:sticky;top:0;z-index:20;background:#171a20f5;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+ .hrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 18px}
+ .srcrow{padding:0 18px 9px}
+ .src{font-size:12px;color:var(--muted)}
+ .src.ok{color:var(--buff)}
+ .brand{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:.3px;white-space:nowrap}
+ .tabs{display:flex;gap:4px;flex-wrap:wrap}
+ .tab{background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 13px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600}
+ .tab:hover{color:var(--text);background:var(--panel2)}
+ .tab.on{color:#1a1a1a;background:var(--accent);border-color:var(--accent)}
+ .spacer{flex:1 1 20px}
+ input[type=search]{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:8px;font-size:14px;outline:none;min-width:210px;flex:0 1 280px}
+ input[type=search]:focus{border-color:var(--accent)}
+ .btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13.5px}
+ .btn:hover{border-color:var(--accent);color:var(--accent)}
+ .btn.primary{background:var(--accent);color:#1a1a1a;border-color:var(--accent);font-weight:700}
+ .btn.primary:hover{background:var(--accent2)}
+ .btn.mini{padding:4px 9px;font-size:12px}
+ .toggle{display:inline-flex;gap:7px;align-items:center;user-select:none;cursor:pointer;color:var(--muted);font-size:13.5px;background:var(--panel2);border:1px solid var(--line);padding:7px 11px;border-radius:8px}
+ .toggle input{accent-color:var(--accent)}
+ /* layout */
+ main{padding:16px 18px 70px;max-width:1500px;margin:0 auto}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;align-items:start}
+ .group-h{font-size:15px;color:var(--accent);margin:22px 2px 8px;border-bottom:1px solid var(--line);padding-bottom:5px;letter-spacing:.4px}
+ .empty{color:var(--muted);text-align:center;padding:60px 20px;font-size:15px}
+ .note-bar{color:var(--muted);font-size:13px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);padding:9px 13px;border-radius:8px;margin-bottom:14px}
+ /* cards */
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+ .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+ .ename{margin:0;font-size:17px;color:var(--accent);font-weight:700}
+ .ename .sub{color:var(--muted);font-size:12.5px;font-style:italic;font-weight:400}
+ .typebadge{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap;border:1px solid var(--line2);color:var(--muted)}
+ .t-monster{color:var(--monster);border-color:#33485e}
+ .t-elite{color:var(--elite);border-color:#5e4433}
+ .t-boss{color:var(--boss);border-color:#5e3338}
+ .t-ancient{color:var(--ancient);border-color:#4e3f55}
+ .t-event{color:var(--event);border-color:#3d5230}
+ .grouprow{color:var(--muted);font-size:12px;margin-top:3px}
+ .grouprow b{color:#cdd3dd}
+ .hp{display:inline-block;margin-top:8px;background:#23311f;color:#bfe39a;border:1px solid #34492c;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:600}
+ .appears{margin-top:9px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+ .sec{margin-top:12px}
+ .sec-label{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+ .move{padding:7px 0;border-top:1px dashed var(--line)}
+ .move:first-of-type{border-top:none;padding-top:2px}
+ .mname{font-weight:600;color:#eef1f6;margin-bottom:5px}
+ .chips{display:flex;flex-wrap:wrap;gap:5px}
+ .chip{font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--panel2);border-left:3px solid var(--neutral);color:#d7dbe2}
+ .chip.attack{border-left-color:var(--attack)} .chip.block{border-left-color:var(--block)}
+ .chip.buff{border-left-color:var(--buff)} .chip.debuff{border-left-color:var(--debuff)}
+ .chip.summon{border-left-color:var(--summon)} .chip.status{border-left-color:var(--status)}
+ ul.notes,ul.pattern{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+ ul.notes li,ul.pattern li{font-size:13px;color:#c9ced8;padding-left:15px;position:relative}
+ ul.notes li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+ ul.pattern li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--block)}
+ .kw-term{color:var(--accent);font-weight:600}
+ .arrow{color:var(--accent);font-weight:700;padding:0 1px}
+ .kw{font-weight:600}
+ .kw-attack{color:var(--attack)} .kw-block{color:var(--block)} .kw-buff{color:var(--buff)}
+ .kw-debuff{color:var(--debuff)} .kw-summon{color:var(--summon)} .kw-status{color:var(--status)}
+ .asc{color:var(--muted);opacity:.7;font-size:.95em}
+ body.asc-on .asc{color:var(--accent);opacity:1;font-weight:600}
+ body.asc-on .base{opacity:.45}
+ /* acts */
+ .actbar,.typebar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+ .actbtn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600}
+ .actbtn:hover{border-color:var(--accent)}
+ .actbtn.on{background:var(--accent);color:#1a1a1a;border-color:var(--accent)}
+ .actbtn b{color:var(--accent)}
+ .actbtn.on b{color:#1a1a1a}
+ .act-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+ .act-top h2{margin:0;font-size:22px;color:var(--accent)}
+ .ancient-pool{margin:8px 0 18px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+ .apchip{font-size:12px;background:var(--panel2);border:1px solid var(--line2);color:#cdd3dd;padding:2px 9px;border-radius:999px;cursor:pointer}
+ .apchip:hover{border-color:var(--accent);color:var(--accent)}
+ .act-sec{margin:18px 0}
+ .act-sec-title{font-size:15px;color:#dfe3ea;margin:0 0 10px;border-bottom:1px solid var(--line);padding-bottom:5px;letter-spacing:.4px}
+ .enc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;align-items:start}
+ .encounter{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+ .enc-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+ .enc-name{font-weight:700;color:var(--accent);font-size:15px}
+ .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:1px 7px;border-radius:999px}
+ .enc-note{color:var(--muted);font-size:12.5px;margin:-2px 0 7px}
+ .enc-extra{color:var(--muted);font-size:12.5px;margin-top:6px;padding-left:2px}
+ details.estat{border:1px solid var(--line);border-radius:9px;margin-top:7px;background:var(--panel2);overflow:hidden}
+ details.estat>summary{list-style:none;cursor:pointer;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+ details.estat>summary::-webkit-details-marker{display:none}
+ details.estat>summary:hover{background:#262b38}
+ details.estat[open]>summary{border-bottom:1px solid var(--line);background:#262b38}
+ .sum-name{font-weight:700;color:#eef1f6}
+ .sum-name::before{content:"\25B8 ";color:var(--accent)}
+ details.estat[open] .sum-name::before{content:"\25BE ";color:var(--accent)}
+ .sum-hp{color:#bfe39a;font-size:12px}
+ .sum-moves{color:var(--muted);font-size:12px}
+ .estat-body{padding:4px 11px 11px}
+ .estat-body .sec:first-child{margin-top:8px}
+ /* events */
+ table.opts{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+ table.opts td{border-top:1px solid var(--line);padding:7px 6px;vertical-align:top}
+ .opt-name{font-weight:600;color:#dfe3ea;width:38%}
+ .opt-effect{color:#c9ced8}
+ .opt-notes{color:var(--muted);font-size:12px;margin-top:3px;font-style:italic}
+ .opt-head td{color:var(--accent);font-weight:700;background:var(--panel2);border-top:1px solid var(--line2)}
+ .cond{color:var(--debuff);font-size:12.5px;margin-top:4px}
+ /* ancients */
+ .anc-group{margin-top:12px}
+ .anc-item{padding:7px 0;border-top:1px dashed var(--line)}
+ .anc-name{font-weight:600;color:var(--accent2)}
+ .anc-desc{color:#c9ced8;font-size:13px;margin-top:2px}
+ /* mechanics */
+ .mech .mech-item{padding:7px 0;border-top:1px dashed var(--line)}
+ .mech .mech-item:first-of-type{border-top:none}
+ .mech-label{font-weight:600;color:#dfe3ea}
+ .mech-line{color:#c9ced8;font-size:13px;margin-top:2px}
+ /* misc */
+ .flash{animation:fl 1.6s ease}
+ @keyframes fl{0%{box-shadow:0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+ #status{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#222732;border:1px solid var(--accent);color:var(--accent);padding:9px 16px;border-radius:9px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+ #status.show{opacity:1}
+ .drop{position:fixed;inset:0;background:rgba(19,21,26,.86);border:3px dashed var(--accent);display:none;align-items:center;justify-content:center;color:var(--accent);font-size:22px;z-index:100}
+ .drop.show{display:flex}
+ footer{color:var(--muted);font-size:12px;text-align:center;padding:8px 18px 26px;max-width:1500px;margin:0 auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <span class="brand">Slay the Spire 2</span>
+    <div class="tabs">
+      <button class="tab on" data-view="acts">Acts &amp; Encounters</button>
+      <button class="tab" data-view="bestiary">Bestiary</button>
+      <button class="tab" data-view="events">Events</button>
+      <button class="tab" data-view="ancients">Ancients</button>
+      <button class="tab" data-view="mechanics">Mechanics</button>
+    </div>
+    <span class="spacer"></span>
+    <input type="search" id="search" placeholder="Search enemies, moves, events, keywords...">
+    <label class="toggle"><input type="checkbox" id="asc"> Ascension</label>
+    <button class="btn primary" id="folderBtn" title="Pick your CSV folder; loads every reference CSV at once">&#128193; Load folder</button>
+    <button class="btn" id="loadBtn" title="Load one or more individual CSV files">&#8595; Files</button>
+    <button class="btn" id="resetBtn" title="Forget loaded CSVs; use built-in data">Reset</button>
+    <input type="file" id="file" accept=".csv,text/csv" multiple style="display:none">
+    <input type="file" id="folder" webkitdirectory directory multiple style="display:none">
+  </div>
+  <div class="hrow srcrow"><span id="src" class="src"></span></div>
+</header>
+<main><div id="content"></div></main>
+<footer>Drag &amp; drop any of the reference CSVs onto the page to update them (matched by filename). Loaded CSVs are remembered in this browser; Reset restores the built-in copy.</footer>
+<div id="status"></div>
+<div class="drop" id="drop">Drop CSV files to update</div>
+
+<script type="text/plain" id="csv-monsters">__CSV_MONSTERS__</script>
+<script type="text/plain" id="csv-elites">__CSV_ELITES__</script>
+<script type="text/plain" id="csv-bosses">__CSV_BOSSES__</script>
+<script type="text/plain" id="csv-ancients">__CSV_ANCIENTS__</script>
+<script type="text/plain" id="csv-events">__CSV_EVENTS__</script>
+<script type="text/plain" id="csv-mechanics">__CSV_MECHANICS__</script>
+<script type="text/plain" id="csv-act-overgrowth">__CSV_OVERGROWTH__</script>
+<script type="text/plain" id="csv-act-underdocks">__CSV_UNDERDOCKS__</script>
+<script type="text/plain" id="csv-act-hive">__CSV_HIVE__</script>
+<script type="text/plain" id="csv-act-glory">__CSV_GLORY__</script>
+
+<script>__LIB_JS__</script>
+<script>__APP_JS__</script>
+</body>
+</html>

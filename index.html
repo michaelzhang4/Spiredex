@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Slay the Spire 2 — Reference</title>
+<style>
+ :root{
+  --bg:#13151a; --panel:#1c1f27; --panel2:#232733; --line:#2c313c; --line2:#3a4150;
+  --text:#e7e9ee; --muted:#9aa3b2; --accent:#f0c674; --accent2:#e8b84b;
+  --attack:#e06c75; --block:#61afef; --buff:#98c379; --debuff:#c678dd;
+  --summon:#56b6c2; --status:#b6bcc7; --neutral:#8b93a3;
+  --monster:#7fb3d5; --elite:#d98c5f; --boss:#e06c75; --ancient:#b48ead; --event:#98c379;
+ }
+ *{box-sizing:border-box}
+ html,body{margin:0}
+ body{background:var(--bg);color:var(--text);font:15px/1.55 "Segoe UI",Roboto,system-ui,sans-serif}
+ a{color:var(--accent)}
+ /* header */
+ header{position:sticky;top:0;z-index:20;background:#171a20f5;backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+ .hrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:11px 18px}
+ .srcrow{padding:0 18px 9px}
+ .src{font-size:12px;color:var(--muted)}
+ .src.ok{color:var(--buff)}
+ .brand{font-size:18px;font-weight:800;color:var(--accent);letter-spacing:.3px;white-space:nowrap}
+ .tabs{display:flex;gap:4px;flex-wrap:wrap}
+ .tab{background:transparent;border:1px solid transparent;color:var(--muted);padding:7px 13px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600}
+ .tab:hover{color:var(--text);background:var(--panel2)}
+ .tab.on{color:#1a1a1a;background:var(--accent);border-color:var(--accent)}
+ .spacer{flex:1 1 20px}
+ input[type=search]{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:8px;font-size:14px;outline:none;min-width:210px;flex:0 1 280px}
+ input[type=search]:focus{border-color:var(--accent)}
+ .btn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13.5px}
+ .btn:hover{border-color:var(--accent);color:var(--accent)}
+ .btn.primary{background:var(--accent);color:#1a1a1a;border-color:var(--accent);font-weight:700}
+ .btn.primary:hover{background:var(--accent2)}
+ .btn.mini{padding:4px 9px;font-size:12px}
+ .toggle{display:inline-flex;gap:7px;align-items:center;user-select:none;cursor:pointer;color:var(--muted);font-size:13.5px;background:var(--panel2);border:1px solid var(--line);padding:7px 11px;border-radius:8px}
+ .toggle input{accent-color:var(--accent)}
+ /* layout */
+ main{padding:16px 18px 70px;max-width:1500px;margin:0 auto}
+ .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;align-items:start}
+ .group-h{font-size:15px;color:var(--accent);margin:22px 2px 8px;border-bottom:1px solid var(--line);padding-bottom:5px;letter-spacing:.4px}
+ .empty{color:var(--muted);text-align:center;padding:60px 20px;font-size:15px}
+ .note-bar{color:var(--muted);font-size:13px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);padding:9px 13px;border-radius:8px;margin-bottom:14px}
+ /* cards */
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+ .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+ .ename{margin:0;font-size:17px;color:var(--accent);font-weight:700}
+ .ename .sub{color:var(--muted);font-size:12.5px;font-style:italic;font-weight:400}
+ .typebadge{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap;border:1px solid var(--line2);color:var(--muted)}
+ .t-monster{color:var(--monster);border-color:#33485e}
+ .t-elite{color:var(--elite);border-color:#5e4433}
+ .t-boss{color:var(--boss);border-color:#5e3338}
+ .t-ancient{color:var(--ancient);border-color:#4e3f55}
+ .t-event{color:var(--event);border-color:#3d5230}
+ .grouprow{color:var(--muted);font-size:12px;margin-top:3px}
+ .grouprow b{color:#cdd3dd}
+ .hp{display:inline-block;margin-top:8px;background:#23311f;color:#bfe39a;border:1px solid #34492c;padding:2px 9px;border-radius:999px;font-size:12.5px;font-weight:600}
+ .appears{margin-top:9px;display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+ .sec{margin-top:12px}
+ .sec-label{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px}
+ .move{padding:7px 0;border-top:1px dashed var(--line)}
+ .move:first-of-type{border-top:none;padding-top:2px}
+ .mname{font-weight:600;color:#eef1f6;margin-bottom:5px}
+ .chips{display:flex;flex-wrap:wrap;gap:5px}
+ .chip{font-size:12.5px;padding:2px 8px;border-radius:6px;background:var(--panel2);border-left:3px solid var(--neutral);color:#d7dbe2}
+ .chip.attack{border-left-color:var(--attack)} .chip.block{border-left-color:var(--block)}
+ .chip.buff{border-left-color:var(--buff)} .chip.debuff{border-left-color:var(--debuff)}
+ .chip.summon{border-left-color:var(--summon)} .chip.status{border-left-color:var(--status)}
+ ul.notes,ul.pattern{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+ ul.notes li,ul.pattern li{font-size:13px;color:#c9ced8;padding-left:15px;position:relative}
+ ul.notes li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+ ul.pattern li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--block)}
+ .kw-term{color:var(--accent);font-weight:600}
+ .arrow{color:var(--accent);font-weight:700;padding:0 1px}
+ .kw{font-weight:600}
+ .kw-attack{color:var(--attack)} .kw-block{color:var(--block)} .kw-buff{color:var(--buff)}
+ .kw-debuff{color:var(--debuff)} .kw-summon{color:var(--summon)} .kw-status{color:var(--status)}
+ .asc{color:var(--muted);opacity:.7;font-size:.95em}
+ body.asc-on .asc{color:var(--accent);opacity:1;font-weight:600}
+ body.asc-on .base{opacity:.45}
+ /* acts */
+ .actbar,.typebar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+ .actbtn{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600}
+ .actbtn:hover{border-color:var(--accent)}
+ .actbtn.on{background:var(--accent);color:#1a1a1a;border-color:var(--accent)}
+ .actbtn b{color:var(--accent)}
+ .actbtn.on b{color:#1a1a1a}
+ .act-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+ .act-top h2{margin:0;font-size:22px;color:var(--accent)}
+ .ancient-pool{margin:8px 0 18px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+ .apchip{font-size:12px;background:var(--panel2);border:1px solid var(--line2);color:#cdd3dd;padding:2px 9px;border-radius:999px;cursor:pointer}
+ .apchip:hover{border-color:var(--accent);color:var(--accent)}
+ .act-sec{margin:18px 0}
+ .act-sec-title{font-size:15px;color:#dfe3ea;margin:0 0 10px;border-bottom:1px solid var(--line);padding-bottom:5px;letter-spacing:.4px}
+ .enc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;align-items:start}
+ .encounter{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:11px 12px}
+ .enc-head{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-bottom:7px}
+ .enc-name{font-weight:700;color:var(--accent);font-size:15px}
+ .tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:1px 7px;border-radius:999px}
+ .enc-note{color:var(--muted);font-size:12.5px;margin:-2px 0 7px}
+ .enc-extra{color:var(--muted);font-size:12.5px;margin-top:6px;padding-left:2px}
+ details.estat{border:1px solid var(--line);border-radius:9px;margin-top:7px;background:var(--panel2);overflow:hidden}
+ details.estat>summary{list-style:none;cursor:pointer;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+ details.estat>summary::-webkit-details-marker{display:none}
+ details.estat>summary:hover{background:#262b38}
+ details.estat[open]>summary{border-bottom:1px solid var(--line);background:#262b38}
+ .sum-name{font-weight:700;color:#eef1f6}
+ .sum-name::before{content:"\25B8 ";color:var(--accent)}
+ details.estat[open] .sum-name::before{content:"\25BE ";color:var(--accent)}
+ .sum-hp{color:#bfe39a;font-size:12px}
+ .sum-moves{color:var(--muted);font-size:12px}
+ .estat-body{padding:4px 11px 11px}
+ .estat-body .sec:first-child{margin-top:8px}
+ /* events */
+ table.opts{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+ table.opts td{border-top:1px solid var(--line);padding:7px 6px;vertical-align:top}
+ .opt-name{font-weight:600;color:#dfe3ea;width:38%}
+ .opt-effect{color:#c9ced8}
+ .opt-notes{color:var(--muted);font-size:12px;margin-top:3px;font-style:italic}
+ .opt-head td{color:var(--accent);font-weight:700;background:var(--panel2);border-top:1px solid var(--line2)}
+ .cond{color:var(--debuff);font-size:12.5px;margin-top:4px}
+ /* ancients */
+ .anc-group{margin-top:12px}
+ .anc-item{padding:7px 0;border-top:1px dashed var(--line)}
+ .anc-name{font-weight:600;color:var(--accent2)}
+ .anc-desc{color:#c9ced8;font-size:13px;margin-top:2px}
+ /* mechanics */
+ .mech .mech-item{padding:7px 0;border-top:1px dashed var(--line)}
+ .mech .mech-item:first-of-type{border-top:none}
+ .mech-label{font-weight:600;color:#dfe3ea}
+ .mech-line{color:#c9ced8;font-size:13px;margin-top:2px}
+ /* misc */
+ .flash{animation:fl 1.6s ease}
+ @keyframes fl{0%{box-shadow:0 0 0 2px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+ #status{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#222732;border:1px solid var(--accent);color:var(--accent);padding:9px 16px;border-radius:9px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:50}
+ #status.show{opacity:1}
+ .drop{position:fixed;inset:0;background:rgba(19,21,26,.86);border:3px dashed var(--accent);display:none;align-items:center;justify-content:center;color:var(--accent);font-size:22px;z-index:100}
+ .drop.show{display:flex}
+ footer{color:var(--muted);font-size:12px;text-align:center;padding:8px 18px 26px;max-width:1500px;margin:0 auto}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <span class="brand">Slay the Spire 2</span>
+    <div class="tabs">
+      <button class="tab on" data-view="acts">Acts &amp; Encounters</button>
+      <button class="tab" data-view="bestiary">Bestiary</button>
+      <button class="tab" data-view="events">Events</button>
+      <button class="tab" data-view="ancients">Ancients</button>
+      <button class="tab" data-view="mechanics">Mechanics</button>
+    </div>
+    <span class="spacer"></span>
+    <input type="search" id="search" placeholder="Search enemies, moves, events, keywords...">
+    <label class="toggle"><input type="checkbox" id="asc"> Ascension</label>
+    <button class="btn primary" id="folderBtn" title="Pick your CSV folder; loads every reference CSV at once">&#128193; Load folder</button>
+    <button class="btn" id="loadBtn" title="Load one or more individual CSV files">&#8595; Files</button>
+    <button class="btn" id="resetBtn" title="Forget loaded CSVs; use built-in data">Reset</button>
+    <input type="file" id="file" accept=".csv,text/csv" multiple style="display:none">
+    <input type="file" id="folder" webkitdirectory directory multiple style="display:none">
+  </div>
+  <div class="hrow srcrow"><span id="src" class="src"></span></div>
+</header>
+<main><div id="content"></div></main>
+<footer>Drag &amp; drop any of the reference CSVs onto the page to update them (matched by filename). Loaded CSVs are remembered in this browser; Reset restores the built-in copy.</footer>
+<div id="status"></div>
+<div class="drop" id="drop">Drop CSV files to update</div>
+
+<script type="text/plain" id="csv-monsters">Monster Name,HP,Move 1,Move 2,Move 3,Move 4,Move 5,Move 6,Notes,Attack Pattern
+Axebot,70 - 78 (76 - 86),Boot Up,Hammer Uppercut,One-Two,,,,Starts with Stock 2.,Alternates between Hammer Uppercut and One-Two.
+,,Block 15,Damage 12 (14),Damage 9x2 (10x2),,,,"Stock X: When killed, a new Axebot is summoned in its place (with Stock X - 1).",
+,,Gain 3*N (4*N) Strength,Apply 2 Weak,,,,,,"Summoned Axebots (from Stock) immediately start with Boot Up, then resume alternating between Hammer Uppercut and One-Two."
+,,N = # of times this restocked,Apply 2 Frail,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Bowlbug (Egg),21 - 22 (23 - 24),Bite,,,,,,,Always uses Bite.
+,,Damage 7 (8),,,,,,,
+,,Block 7 (8),,,,,,,
+,,,,,,,,,
+Bowlbug (Nectar),35 - 38 (36 - 39),Thrash,Buff,,,,,,Starts with Thrash -> Buff. Then uses Thrash every turn.
+,,Damage 3,Gain 15 (16) Strength,,,,,,
+,,,,,,,,,
+Bowlbug (Rock),45 - 48 (46 - 49),Headbutt,Stunned,,,,,Starts with Imbalanced,"Uses Headbutt every turn. If fully blocked, becomes stunned for a turn before resuming Headbutt."
+,,Damage 15 (16),Passes turn,,,,,Imbalanced: Becomes stunned if its attack is fully blocked.,
+,,,,,,,,,
+,,,,,,,,,
+Bowlbug (Silk),40 - 43 (41 - 44),Toxic Spit,Thrash,,,,,,Alternates between Toxic Spit and Thrash.
+,,Apply 1 Weak,Damage 4x2 (5x2),,,,,,
+,,,,,,,,,
+Calcified Cultist,38 - 41 (39 - 42),Incantation,Dark Strike,,,,,,Starts with Incantation. Then uses Dark Strike every turn after.
+,,Gain Ritual 2,Damage 9 (11),,,,,,
+,,,,,,,,,
+Chomper,60 - 64 (63 - 67),Clamp,Screech,,,,,Starts with Artifact 2,"First Chomper starts with Clamp, second with Screech. Then continue cycling through Clamp -> Screech."
+,,Damage 8x2 (9x2),Add 3 Dazed to Discard,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Corpse Slug,25 - 27 (27 - 29),Whip Slap,Glomp,Gloop,,,,Starts with Ravenous 4 (5),First Corpse Slug picks its first move randomly. Each subsequent Corpse Slug starts with the next move in the cycle. Cycle through Whip Slap  -> Glomp -> Gloop
+,,Damage 3x2,Damage 8 (9),Apply 2 Frail,,,,"Ravenous X: When an enemy dies, become stunned and gain X Strength.",
+,,,,,,,,,
+,,,,,,,,,
+Cubex Construct,65 (70),Charge Up,Repeater Blast,Expel Blast,,,,Starts with Artifact 1.,"Starts with Charge Up. Then, cycles through Repeater Blast - > Repeater Blast -> Expel."
+,,Gain 2 Strength,Damage 7 (8),Damage 5x2 (6x2),,,,,
+,,,Gain 2 Strength,,,,,,
+,,,,,,,,,
+Damp Cultist,51 - 53 (52 - 54),Incantation,Dark Strike,,,,,,Starts with Incantation. Then uses Dark Strike every turn after.
+,,Ritual 5 (6),Damage 1 (3),,,,,,
+,,,,,,,,,
+Devoted Sculptor,162 (172),Forbidden Incantation,Savage,,,,,,"Starts with Forbidden Incantation, then uses Savage every turn."
+,,Gain 9 Ritual.,Damage 12 (15),,,,,,
+,,,,,,,,,
+Exoskeleton,24 - 28 (25 - 29),Skitter,Mandible,Enrage,,,,Starts with Hard to Kill 9,"First Exoskeleton starts with Skitter, second starts with Mandible, third starts with Enrage (and fourth starts randomly with Skitter or Mandible, if present). "
+,,Damage 1x3 (1x4),Damage 8 (9),Gain 2 Strength,,,,Hard to Kill X: Reduce all damage taken and HP loss to X.,
+,,,,,,,,,
+,,,,,,,,,After Skitter always uses Mandible. After Mandible always uses Enrage. After Enrage chooses randomly between Skitter and Mandible.
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Fabricator,150 (155),Fabricate,Fabricating Strike,Disintegrate,,,,,"When # allies (not counting self) is 2 or fewer, picks randomly between Fabricate and Fabricating Strike (equally likely)."
+,,Summons 1 Defensive Bot,Damage 18 (21),Damage 11 (13),,,,,
+,,Summons 1 Aggro Bot,Summon 1 Aggro Bot,,,,,,
+,,,,,,,,,"When # allies (not counting self) is 3 or more, always uses Disintegrate."
+,,,,,,,,,
+,,,,,,,,,Cannot summon the same minion consecutively.
+Guardbot,16 - 20 (17 - 21),Guard,,,,,,,Always uses Guard
+"(minion, defensive bot)",,Block 15 on Fabricator,,,,,,,
+,,,,,,,,,
+Noisebot,18 - 23 (19 - 24),Noise,,,,,,,Always uses Noise
+"(minion, defensive bot)",,Add 1 Dazed to Discard,,,,,,,
+,,Add 1 Dazed to Draw,,,,,,,
+,,,,,,,,,
+Stabbot,18 - 23 (19 - 24),Stab,,,,,,,Always uses Stab
+"(minion, aggro bot)",,Damage 11 (12),,,,,,,
+,,Apply 1 Frail,,,,,,,
+,,,,,,,,,
+Zapbot,18 - 23 (19 - 24),Zap,,,,,,Starts with High Voltage 2.,Always uses Zap
+"(minion, aggro bot)",,Damage 14 (15),,,,,,"High Voltage X: At the end of Zapbot's turn, it gains X strength.",
+,,,,,,,,,
+Fake Merchant,165 (175),Swipe,Spew Coins,Throw Relic,Enrage,,,,"Starts with Swipe.
+After Swipe, Spew Coins, or Enrage will pick from any of its allowed moves randomly.
+After Throw Relic will randomly use Swipe or Spew Coins.
+Cannot use the same move twice in a row, and Enrage has a 3 turn cooldown after use."
+,,Damage 13 (15),Damage 2x8,Damage 9 (10),Gain 2 Strength.,,,,
+,,,,Apply 1 Frail.,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Flyconid,47 - 49 (51 - 53),Frail Spores,Smash,Vulnerable Spores,,,,,"Starts randomly with Frail Spores or Smash (equal probability). Then picks move randomly (equal probability for allowed moves). Cannot use any move twice in a row. Vulnerable Spores has a 3 turn cooldown after use, and Frail Spores has a 2 turn cooldown after use."
+,,Damage 8 (9),Damage 11 (12),Apply 2 Vulnerable,,,,,
+,,Apply 2 Frail,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,"Exception: If at any point it uses Vuln Spores -> Frail Spores -> Smash, then it will have no allowed moves and default to Vulnerable Spores."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Fogmog,74 (78),Illusion,Swipe,Headbutt,,,,,Starts with Illusion -> Swipe.
+,,Summon 1 Eye with Teeth,Damage 8 (9),Damage 14 (16),,,,,"When using Swipe after a non-Swipe move, follows up with 40% chance to Swipe and 60% chance to Headbutt."
+,,,Gain 1 Strength,,,,,,
+,,,,,,,,,
+,,,,,,,,,"After using Swipe for second time in a row, always follows with Headbutt."
+,,,,,,,,,
+,,,,,,,,,"After Headbutt, always uses Swipe."
+Eye with Teeth,6,Distract,,,,,,Starts with Illusion,Always uses Distract.
+(minion),,3 Dazed to Discard,,,,,,"Illusion: When this dies, revives next turn at full HP",
+,,,,,,,,,
+,,,,,,,,,
+Fossil Stalker,51 - 53 (54 - 56),Latch,Tackle,Lash,,,,Starts with Suck 3,"Starts with Latch. Then chooses randomly between allowed options of Tackle, Latch, and Lash (allowed options equally likely). Moves cannot be used more than twice in a row."
+,,Damage 12 (14),Damage 9 (11),Damage 3x2 (4x2),,,,"Suck X: Whenever Fossil Stalker deals unblocked attack damage, it gains X strength.",
+,,,Apply 1 Frail,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Frog Knight,191 (199),Tongue Lash,Strike Down Evil,For the Queen,Beetle Charge,,,Starts with Plating 15 (19),Cycles through Tongue Lash -> Strike Down Evil -> For the Queen.
+,,Damage 13 (14),Damage 21 (23),Gain 5 Strength,Damage 35 (40),,,,
+,,Apply 2 Frail,,,,,,,"After For the Queen, if below half HP and Beetle Charge has not been used, then uses Beetle Charge before starting the cycle over."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Fuzzy Wurm Crawler,55 - 57 (58 - 59),Acid Goop,Inhale,,,,,,Starts with Acid Goop. Then cycles through Inhale -> Acid Goop -> Acid Goop.
+,,Damage 4 (6),Gain 7 Strength,,,,,,
+,,,,,,,,,
+Globe Head,148 (158),Shocking Slap,Thunder Strike,Galvanic Burst,,,,Starts with Galvanic 6.,Cycles through Shocking Slap -> Thunder Strike -> Galvanic Burst.
+,,Damage 13 (14),Damage 6x3 (7x3),Damage 16 (17),,,,Galvanic X: You take X damage when a Power is played.,
+,,Apply 2 Frail,,Gain 2 Strength,,,,,
+,,,,,,,,,
+Gremlin Merc,47 - 49 (51 - 53),Gimme,Double Smash,Hehe,,,,Starts with Surprise and Thievery 20,Cycles through Gimme -> Double Smash -> Hehe.
+,,Damage 7x2 (8x2),Damage 6x2 (7x2),Damage 8 (9),,,,"Surprise: When killed, summons 1 Sneaky Gremlin and 1 Fat Gremlin (they start stunned)",
+,,,Apply 2 Weak,Gain 2 Strength,,,,,
+,,,,,,,,,
+,,,,,,,,Thievery X: Steals X gold when attacking (stolen gold is held by Fat Gremlin once summoned),
+,,,,,,,,,
+,,,,,,,,,
+Fat Gremlin,13 - 17 (14 - 18),Flee,,,,,,Starts stunned when summoned after killing Gremlin Merc.,Always uses Flee.
+,,Escape from combat,,,,,,,
+,,,,,,,,Keeps stolen gold if successfully Flees.,
+Sneaky Gremlin,10 - 14 (11 - 15),Tackle,,,,,,Starts stunned when summoned after killing Gremlin Merc.,Always uses Tackle.
+,,Damage 9 (10),,,,,,,
+,,,,,,,,,
+Haunted Ship,63 (67),Haunt,Swipe,Stomp,,,,,Starts with Haunt. Then alternates between Swipe and Stomp.
+,,Apply 3 Weak,Damage 13 (14),Damage 4x3 (5x3),,,,,
+,,Add 5 Dazed to Discard,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Hunter Killer,121 (126),Tenderizing Goop,Bite,Puncture,,,,"Tender: Whenever you play a card, lose 1 strength and 1 dexterity this turn.",Starts with Tenderizing Goop. Then chooses randomly between Bite and Puncture each turn. Bite cannot be used twice in a row. Puncture cannot be used more than twice in a row.
+,,Apply Tender,Damage 17 (19),Damage 7x3 (8x3),,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Inklet,11 - 17 (12 - 18),Jab,Whirlwind,Piercing Gaze,,,,Starts with Slippery 1,Front and back Inklet start with Jab. Middle Inklet starts with Whirlwind.
+,,Damage 3 (4),Damage 2x3 (3x3),Damage 10 (11),,,,"Slippery X: The next time this enemy loses HP, it loses 1 HP instead.",
+,,,,,,,,,"Alternates between Jab -> Whirlwind or Piercing Gaze (chosen randomly, equally likely)."
+,,,,,,,,,
+Leaf Slime (Small),11 - 15 (12 - 16),Tackle,Goop,,,,,,Starts randomly with Tackle or Goop. Then alternates between them.
+,,Damage 3 (4),Add 1 Slimed to Discard,,,,,,
+,,,,,,,,,
+Leaf Slime (Medium),32 - 35 (33 - 36),Sticky Shot,Clump Shot,,,,,,Starts with Sticky Shot then alternates Clump Shot -> Sticky Shot.
+,,Add 2 Slimed to Discard,Damage 8 (9),,,,,,
+,,,,,,,,,
+Living Fog,80 (82),Advanced Gas,Bloat,Super Gas Blast,,,,Smoggy: You can only play 1 skill per turn.,Starts with Advanced Gas. Then alternates between Bloat -> Super Gas Blast.
+,,Damage 8 (9),Damage 5 (6),Damage 8 (9),,,,,
+,,Apply Smoggy,Summon 1 Gas Bomb,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Gas Bomb,7 (8),Explode,,,,,,Gas Bomb is a minion.,Uses Explode and dies.
+(minion),,Damage 8 (9),,,,,,,
+,,Dies,,,,,,,
+,,,,,,,,,
+Living Shield,55 (65),Shield Slam,Smash,,,,,Starts with Rampart 25,Uses Shield Slam every turn if Turret Operator is alive. Then uses Smash every turn once Turret Operator is dead.
+,,Damage 6,Damage 16 (18),,,,,Rampart X: Gives Turret Operator X block at the start of the player's turn.,
+,,,Gain 3 Strength,,,,,,
+,,,,,,,,,
+Louse Progenitor,134 - 136 (138 - 141),Web Cannon,Curl and Grow,Pounce,,,,Starts with Curl Up,Cycles through Web Cannon -> Curl and Grow -> Pounce.
+,,Damage 9 (10),Block 14 (18),Damage 14 (16),,,,Curl Up: Gain 14 (18) block upon first being hit.,
+,,Apply 2 Frail,Gain 5 Strength,,,,,,
+,,,,,,,,,
+Mawler,72 (76),Claw,Roar,Rip & Tear,,,,,"Starts with Claw. Then chooses randomly between Rip & Tear, Roar, and Claw (all allowed options equally likely). Roar can only be used once. Claw and Rip & Tear cannot be used twice in a row."
+,,Damage 4x2 (5x2),Apply 3 Vulnerable,Damage 14 (16),,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Myte,61 - 67 (64 - 69),Toxic,Bite,Suck,,,,"Toxic (status): At the end of your turn, take 5 damage if this is in your hand. 1 cost, exhausts.","First Myte starts with Toxic, second Myte starts with Suck."
+,,Add 2 Toxic to Hand,Damage 13 (15),Damage 4 (6),,,,,
+,,,,Gain 2 (3) Strength,,,,,Then continue cycling through Toxic -> Bite -> Suck.
+,,,,,,,,,
+,,,,,,,,,
+Nibbit,42 - 46 (44 - 48),Butt,Slice,Hiss,,,,,"In the single Nibbit encounter, it cycles through Butt -> Slice -> Hiss."
+,,Damage 12 (13),Damage 6 (7),Strength 2 (3),,,,,
+,,,Block 5 (6),,,,,,"In the two Nibbits encounter, the front starts with Slice and the back starts with Hiss. They then continue the cycle Butt -> Slice -> Hiss."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Ovicopter,124 - 130 (126 - 132),Lay Eggs,Smash,Tenderizer,Nutritional Paste,,,,Starts with Lay Eggs -> Smash -> Tenderizer.
+,,Summon 3 Tough Eggs,Damage 16 (17),Damage 7 (8),Gain 3 (4) Strength,,,,"If at least 3 allies are alive after Tenderizer, uses Nutritional Paste -> Smash -> Tenderizer."
+,,,,Apply 2 Vulnerable,,,,,
+,,,,,,,,,"If less than 3 allies are alive after Tenderizer, uses Lay Eggs -> Smash -> Tenderizer."
+,,,,,,,,,
+Tough Egg,14 - 18 (15 - 19),Hatch,,,,,,Starts with Hatch 1.,Always uses Hatch.
+(minion),,Hatches into Hatchling.,,,,,,Hatch X: Hatches after X turns.,
+Hatchling,19 - 22 (20 - 23),Nibble,,,,,,,Always uses Nibble.
+(minion),,Damage 4 (5),,,,,,,
+,,,,,,,,,
+Owl Magistrate,231 (247),Magistrate Scrutiny,Peck Assault,Judicial Flight,Verdict,,,Soar: Receives 50% less attack damage until it lands.,Cycles through Magistrate Scrutiny -> Peck Assault -> Judicial Flight -> Verdict.
+,,Damage 16 (17),Damage 4x6,Gain Soar,Damage 33 (36),,,,
+,,,,,Apply 4 Vulnerable,,,,
+,,,,,Lose Soar,,,,
+,,,,,,,,,
+Punch Construct,55 (60),Ready,Fast Punch,Strong Punch,,,,Starts with Artifact 1.,Regular encounter: Cycles through Ready -> Fast Punch -> Strong Punch.
+,(reduced by 2-10 in Punch-Off event),Block 10,Damage 5x2 (6x2),Damage 14 (16),,,,,
+,,,Apply 1 Frail,,,,,,Punch-Off event: First Punch Construct starts the cycle with Fast Punch (second starts with Ready like usual).
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Ruby Raider (Assassin),18 - 23 (19 - 24),Killshot,,,,,,,Always uses Killshot.
+,,Damage 10 (11),,,,,,,
+,,,,,,,,,
+Ruby Raider (Axe),20 - 22 (21 - 23),Swing,Big Swing,,,,,,Cycles through Swing -> Swing -> Big Swing.
+,,Damage 5 (6),Damage 12 (13),,,,,,
+,,Block 5 (6),,,,,,,
+,,,,,,,,,
+Ruby Raider (Brute),30 - 33 (31 - 34),Beat,Roar,,,,,,Alternates between Beat -> Roar.
+,,Damage 7 (8),Gain 3 Strength,,,,,,
+,,,,,,,,,
+Ruby Raider (Crossbow),18 - 21 (19 - 22),Fire,Reload,,,,,,Alternates between Reload -> Fire.
+,,Damage 14 (16),Block 3,,,,,,
+,,,,,,,,,
+Ruby Raider (Tracker),21 - 25 (22 - 26),Track,Hounds,,,,,,"Starts with Track, then uses Hounds every turn."
+,,Apply 2 Frail,Damage 1x8 (1x9),,,,,,
+,,,,,,,,,
+Scroll of Biting,30 - 37 (33 - 39),Chomp,Chew,More Teeth,,,,Starts with Paper Cuts 2,First scroll picks its first move randomly. Scrolls 2 and 3 starts with the next moves in the cycle Chomp -> Chew -> More Teeth. Scroll 4 (if present) starts with More Teeth.
+,,Damage 14 (16),Damage 5x2 (6x2),Gain 2 Strength,,,,"Paper Cuts X: Whenever you take unblocked attack damage from this enemy, lose X Max HP.",
+,,,,,,,,,
+,,,,,,,,,"Then follows pattern Chomp -> More Teeth -> Chew, but after Chew picks randomly between Chomp and More Teeth and resumes pattern."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Seapunk,44 - 46 (47 - 49),Sea Kick,Spinning Kick,Bubble Burp,,,,,Cycles through Sea Kick -> Spinning Kick -> Bubble Burp.
+,,Damage 11 (13),Damage 2x4,Block 7 (8),,,,,
+,,,,Gain 1 (2) Strength,,,,,
+,,,,,,,,,
+Sewer Clam,56 (58),Pressurize,Jet,,,,,Starts with Plating 8 (9).,Alternates between Pressurize -> Jet.
+,,Strength 4,Damage 10 (11),,,,,,
+,,,,,,,,,
+Shrinker Beetle,38 - 40 (40 - 42),Shrinker,Chomp,Stomp,,,,Shrink: Deal 30% reduced damage.,Starts with Shrinker. Then alternates Chomp -> Stomp.
+,,Apply Shrink,Damage 7 (8),Damage 13 (14),,,,,
+,,,,,,,,,
+Slimed Berserker,261 (281),Vomit Ichor,Leeching Hug,Smother,Furious Pummeling,,,,Cycles through Vomit Ichor -> Furious Pummeling -> Leeching Hug -> Smother.
+,,Add 10 Slimed to discard,Apply 3 Weak,Damage 30 (33),Damage 4x4 (5x4),,,,
+,,,Gain 3 Strength,,,,,,
+,,,,,,,,,
+Slithering Strangler,53 - 55 (54 - 56),Constrict,Thwack,Lash,,,,"Constrict X: While the Slithering Strangler is alive, take X damage at the end of your turn.","Alternates between Constrict -> Thwack/Lash (chooses between Thwack and Lash at random, equally likely)"
+,,Apply 3 Constrict,Damage 7 (8),Damage 12 (13),,,,,
+,,,Block 5,,,,,,
+,,,,,,,,,
+Sludge Spinner,37 - 39 (41 - 42),Oil Spray,Slam,Rage,,,,,Starts with Oil Spray. Then chooses randomly between all allowed moves each turn. Cannot use any move twice in a row.
+,,Damage 8 (9),Damage 11 (12),Damage 6 (7),,,,,
+,,Weak 1,,Strength 3,,,,,
+,,,,,,,,,
+Slumbering Beetle,86 (89),Sleep,Roll Out,,,,,Starts with Plating 15 (18) and Slumber 3,Sleeps until it awakens. Then uses Roll Out every turn.
+,,Passes Turn,Damage 16 (18),,,,,Slumber X: Counter decreases after taking a turn or losing HP. Awakens at the end of its turn if counter has reached 0.,
+,,,Gain 2 Strength,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Snapping Jaxfruit,31 - 33 (34 - 36),Energy Orb,,,,,,,Always uses Energy Orb.
+,,Damage 3 (4),,,,,,,
+,,Gain 2 Strength,,,,,,,
+,,,,,,,,,
+Spiny Toad,116 - 119 (121 - 124),Protruding Spikes,Spike Explosion,Tongue Lash,,,,,Cycles through Protruding Spikes -> Spike Explosion -> Tongue Lash.
+,,Gain 5 Thorns,Damage 23 (25),Damage 17 (19),,,,,
+,,,Lose 5 Thorns,,,,,,
+,,,,,,,,,
+The Lost,93 (99),Debilitating Smog,Eye Lasers,,,,,Starts with Possess Strength,Alternates between Debilitating Smog -> Eye Lasers
+,,Apply -2 Strength,Damage 4x2 (5x2),,,,,"Possess Strength: On death, return all stolen Strength to the player",
+,,Gain 2 Strength,,,,,,,
+,,,,,,,,,
+The Forgotten,106 (111),Miasma,Dread,,,,,Starts with Possess Speed,Alternates between Miasma -> Dread.
+,,Apply -2 Dexterity,Damage 13 (15) + the amount of Dexterity this has ,,,,,"Possess Speed: On death, return all stolen Dexterity to the player",
+,,Block 8,,,,,,,
+,,Gain 2 Dexterity,,,,,,,
+,,,,,,,,,
+The Obscura,123 (129),Illusion,Piercing Gaze,Wail,Hardening Strike,,,,Starts with Illusion.
+,,Summon 1 Parafright,Damage 10 (11),Allies gain 3 Strength,Damage 6 (7),,,,"Then chooses randomly between Piercing Gaze, Wail, and Hardening Strike (allowed options equally likely). Cannot use any move twice in a row."
+,,,,,Block 6 (7),,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Parafright,21,Slam,,,,,,Starts with Illusion.,Always uses Slam.
+(minion),,Damage 16 (17),,,,,,"Illusion: When this dies, revives next turn at full HP",
+,,,,,,,,(retains Strength after reviving),
+,,,,,,,,,
+Thieving Hopper,79 (84),Thievery,Nab,Hat Trick,Flutter,Escape,,Starts with Escape Artist,Always uses Thievery -> Flutter -> Hat Trick -> Nab -> Escape.
+,,Damage 17 (19),Damage 14 (16),Damage 21 (23),Gain Flutter 5,Escape from the combat,,Escape Artist: Tries to escape the combat after 5 turns.,"If stunned before turn 5, resumes with the next intent in the pattern."
+,,Steal 1 card and gain Swipe,,,,,,,
+,,"(Stolen card is taken from draw or discard pile. Chooses a random card with priorities: 1. non-imbued uncommon card, 2. non-imbued common, rare, or event card, 3. non-imbued basic or quest card, 4. imbued or ancient card, 5. curse or anything else)",,,,,,"Swipe: Upon killing this enemy, the stolen card is returned.","If stunned on turn 5, tries to Escape again."
+,,,,,,,,,
+,,,,,,,,Flutter X: Receives 50% less attack damage. Deal attack damage X times to remove Flutter and stun it.,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,(Warning: Game softlocks if Thieving Hopper cannot find a valid target to steal),,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Toadpole,21 - 25 (22 - 26),Spike Spit,Whirl,Spiken,,,,,Front Toadpole starts with Spiken. Non-front Toadpole(s) start with Whirl. Then continue following cycle Spike Spit -> Whirl -> Spiken (then repeat).
+,,Lose 2 Thorns,Damage 7 (8),Gain 2 Thorns,,,,,
+,,Damage 3x3 (4x3),,,,,,,
+,,,,,,,,,
+Tunneler,87 (92),Bite,Burrow,Below,,,,Burrowed: Block is not removed at the start of Tunneler's turn. Becomes stunned if all block is removed.,Starts with Bite -> Burrow.
+,,Damage 13 (15),Gain Burrowed,Damage 23 (26),,,,,"While Burrowed, always uses Below."
+,,,Block 32 (37),,,,,,"After being stunned, loses Burrowed and uses Bite -> Burrow."
+,,,,,,,,,
+,,,,,,,,,
+Turret Operator,41 (51),Unload,Reload,,,,,,Cycles through Unload -> Unload -> Reload.
+,,Damage 3x5 (4x5),Gain 1 Strength,,,,,,
+,,,,,,,,,
+Twig Slime (S),7 - 11 (8 - 12),Tackle,,,,,,,Uses Tackle every turn.
+,,Damage 4 (5),,,,,,,
+,,,,,,,,,
+Twig Slime (M),26 - 28 (27 - 29),Clump Shot,Sticky Shot,,,,,,"Starts with Sticky Shot -> Clump Shot. Then chooses randomly each turn between Sticky Shot and Clump Shot (allowed options equally likely). Cannot use Sticky Shot twice in a row, and cannot use Clump shot more than twice in a row."
+,,Damage 11 (12),Add 1 Slimed to Discard,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Two-Tailed Rat,17 - 21 (18 - 22),Scratch,Disease Bite,Screech,Call for Backup,,,,"First Rat starts randomly with Scratch, Disesase Bite, or Screech. 2nd Rat has next move after it in the cycle Scratch -> Disease Bite -> Screech, and 3rd Rat has the next after that."
+,,Damage 8 (9),Damage 6 (7),Apply 1 Frail,Summon Two-Tailed Rat,,,,
+,,,,,(with random intent),,,,
+,,,,,,,,,A rat cannot Call for Backup until it has taken 2 turns. Each rat can only Call for Backup once. Only 1 rat can Call for Backup in any particular turn. Call for Backup can only be used 3 times total across all rats.
+,,,,,,,,,"If Call for Backup is not allowed for a rat, it picks randomly between Scratch, Disease Bite, and Screech (equal weight among allowed options). "
+,,,,,,,,,"If Call for Backup is allowed for a rat, then it has a 75% chance to Call for Backup, and remaining 25% to pick randomly between Scratch, Disease Bite, and Screech (equal weight among allowed options)."
+,,,,,,,,,Screech has a 3 turn cooldown. Scratch and Disease Bite cannot be used twice in a row.
+,,,,,,,,,
+Vine Shambler,61 (64),Grasping Vines,Swipe,Chomp,,,,Tangled X: Attacks cost 1 additional energy for X turns.,Cycles through Swipe -> Grasping Vines -> Chomp.
+,,Damage 8 (9),Damage 6x2 (7x2),Damage 16 (18),,,,,
+,,Apply 1 Tangled,,,,,,,
+,,,,,,,,,
+Wriggler,17 - 21 (18 - 22),Nasty Bite,Wriggle,,,,,,"If spawned from Phrog Parasite's death, starts stunned."
+,,Damage 6 (7),Add 1 Infection to Discard,,,,,,
+,,,Gain 2 Strength,,,,,,"Otherwise (or after stun), Wrigglers in positions 1 & 3 start with Nasty Bite and Wrigglers in positions 2 & 4 start with Wriggle. They then alternate between Nasty Bite -> Wriggle."</script>
+<script type="text/plain" id="csv-elites">Elite Name,HP,Move 1,Move 2,Move 3,Move 4,Move 5,Move 6,Notes,Attack Pattern
+Bygone Effigy,127 (132),Sleep,Wake,Slash,,,,Starts with Slow,Starts with Sleep -> Wake -> Slash. Then uses Slash every turn after.
+,,Pass Turn,Gain 10 Strength,Damage 13 (15),,,,Slow: Attacks deal 10% extra damage for every card played this turn.,
+,,,,,,,,,
+,,,,,,,,,
+Byrdonis,81 - 84 (90),Peck,Swoop,,,,,Starts with Territorial 1,Alternates between Swoop -> Peck.
+,,Damage 3x3 (4x3),Damage 17 (19),,,,,"Territorial X: At the end of its turn, gains X strength.",
+,,,,,,,,,
+,,,,,,,,,
+Decimillipede,40 - 46 (46 - 52),Writhe,Bulk,Constrict,,,,Starts with Reattach.,"First segment starts with a random move, second segment starts with the next move in the cycle Writhe -> Bulk -> Constrict, and third segment starts with the next move after that."
+(3 segments),"(always even #, segments have different max HP)",Damage 5x2 (6x2),Damage 6 (7),Damage 8 (9),,,,"Reattach: If other segments are still alive, revives after 2 turns with 25 HP.",
+,,,Gain 2 Strength,Apply 1 Weak,,,,,
+,,,,,,,,,
+,,,,,,,,,Cycles through Writhe -> Constrict -> Bulk.
+,,,,,,,,,"When killed, spends one turn dead and then one turn reviving with 25 HP. After reviving, continues the regular attack cycle from a random starting move."
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Entomancer,145 (155),Pheromone Spit,Bees,Spear,,,,Starts with Personal Hive 1,"Cycles through Bees -> Spear -> Pheromone Spit. After reaching 3 stacks of Personal Hive, switches to gaining 2 strength when using Pheromone Spit."
+,,"If less than 3 Personal Hive: Gain 1 Personal Hive and 1 Strength
+",Damage 3x7 (3x8),Damage 18 (20),,,,Personal Hive X: Add X Dazed to the draw pile whenever hit by an attack.,
+,,,,,,,,,
+,,If at 3 Personal Hive: Gain 2 Strength,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Infested Prism,161 (171),Jab,Radiate,Whirlwind,Pulsate,,,Starts with Vital Spark 2 (3),Cycles through Jab -> Radiate -> Whirlwind -> Pulsate
+,,Damage 15 (17),Damage 11 (13),Damage 5x3 (6x3),Damage 8 (10),,,Vital Spark X: All skills gain Tainted X.,
+,,,Block 11 (13),,Block 20 (22),,,"Tainted X: When played, take X more damage from attacks this turn.",
+,,,,,Gain 2 (3) Vital Spark,,,,
+,,,,,,,,,
+Knights,,,,,,,,,
+Flail Knight,101 (108),War Chant,Flail,Ram,,,,,"Starts with Ram. Then chooses randomly between War Chant, Flail, and Ram (allowed options equally likely). Flail and Ram cannot be used more than twice in a row. War Chant cannot be used twice in a row."
+,,Gain 3 Strength,Damage 9x2 (10x2),Damage 15 (17),,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Spectral Knight,93 (97),Hex,Soul Slash,Soul Flame,,,,"Hex: While Spectral Knight is alive, all your cards are ethereal.",Starts with Hex and then Soul Slash. Then chooses randomly between Soul Slash and Soul Flame (allowed options equally likely). Soul Slash cannot be used more than twice in a row. Soul Flame cannot be used twice in a row.
+,,Apply Hex,Damage 15 (17),Damage 3x3 (4x3),,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Magi Knight,82 (89),Power Shield,Dampen,Spear,Prep,Magic Bomb,,"Dampen: While Magi Knight is alive, all your upgraded cards are downgraded.",Cycles through Power Shield -> Dampen -> Spear -> Prep -> Magic Bomb.
+,,Damage 6 (7),Apply Dampen,Damage 10 (11),Block 5 (9),Damage 35 (40),,,
+,,Block 5 (9),,,,,,,
+,,,,,,,,,
+Mecha Knight,300 (320),Charge,Flamethrower,Windup,Heavy Cleave,,,Starts with Artifact 3,Starts with Charge. Then cycles through Flamethrower -> Windup -> Heavy Cleave.
+,,Damage 25 (30),Add 4 Burns to Hand,Block 15,Damage 35 (40),,,,
+,,,,Strength 5,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Phantasmal Gardener,26 - 31 (27 - 32),Bite,Lash,Flail,Enlarge,,,Starts with Skittish 6 (7),"1st one starts with Flail, 2nd with Bite, 3rd with Lash, and 4th with Enlarge. Then cycle through Bite -> Lash -> Flail -> Enlarge. "
+,,Damage 5,Damage 7,Damage 1x3,Strength 2 (3),,,Skittish X: First time hit each turn gain X block.,
+,,,,,,,,,
+,,,,,,,,,
+Phrog Parasite,61 - 64 (66 - 68),Infect,Lash,,,,,Starts with Infested 4,Alternates between Infect -> Lash.
+,,Add 3 Infection to Discard,Damage 4x4 (5x4),,,,,Infested X: Summons X Wrigglers after dying (they start stunned).,
+,,,,,,,,,
+,,,,,,,,,
+Skulking Colony,75 (80),Zoom,Inertia,Piercing Stabs,,,,Starts with Hardened Shell 20,Cycles through Zoom -> Zoom -> Inertia -> Piercing Stabs.
+,,Damage 14 (16),Damage 9 (11),Damage 7x2 (8x2),,,,Hardened Shell X: Cannot lose more than X HP per turn.,
+,,,Gain 2 (4) Strength,,,,,,
+,,,,,,,,,
+Soul Nexus,234 (254),Soul Burn,Maelstrom,Drain Life,,,,,"Starts with Soul Burn. Then picks randomly between Soul Burn, Maelstrom, and Drain Life (all allowed options equally likely). Cannot use the same move twice in a row."
+,,Damage 29 (31),Damage 6x4 (7x4),Damage 18 (19),,,,,
+,,,,Apply 2 Vulnerable,,,,,
+,,,,Apply 2 Weak,,,,,
+,,,,,,,,,
+Terror Eel,140 (150),Crash,Thrash,Terror,,,,Starts with Shriek 75,Cycles between Crash -> Thrash until it gets stunned by reaching 75 HP. Then uses Terror before cycling Crash -> Thrash again.
+,,Damage 16 (18),Damage 3x3 (4x3),Apply 99 Vulnerable,,,,Shriek X: Becomes Stunned after reaching X HP or below.,
+,,,Gain 6 Vigor,,,,,,</script>
+<script type="text/plain" id="csv-bosses">Boss Name,HP,Move 1,Move 2,Move 3,Move 4,Move 5,Move 6,Notes,Attack Pattern
+Aeonglass,512 (535),Ebb,Eye Lasers,Increasing Intensity,,,,Starts with 3 Artifact and Withering Presence,Cycles through Ebb -> Eye Lasers -> Increasing Intensity.
+,,Damage 26 (32),Damage 11x2 (12x2),Gain 3+N (4+N) Strength,,,,,
+,,Block 33,,Upgrade all Withers in the deck and all future Withers,,,,"Withering Presence: Every 6 non-Status cards you play, add a Wither to your hand.",
+,,,,,,,,,
+,,,,Shuffle 1 (2) Withers into discard,,,,"Wither: Unplayable Status. At the end of your turn, if this is in your hand, take 3 (+3 for every upgrade) damage.",
+,,,,N = # of times this move was used,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Ceremonial Beast,252 (262),Stamp,Plow,Beast Cry,Stomp,Crush,,"Plow X: The first time Ceremonial Beast's HP reaches X or below, it becomes stunned and loses all strength.",Starts with Stamp. Then uses Plow every turn until it is stunned.
+,,Gains Plow 150 (160),Damage 18 (20),Apply Ringing,Damage 15 (17),Damage 17 (19),,,
+,,,Gains 2 Strength,,,Gains 3 (4) Strength,,Ringing: You can only play 1 card this turn.,"After being stunned, cycles through Beast Cry -> Stomp -> Crush."
+,,,,,,,,,
+,,,,,,,,,
+Kaiser Crab,,,,,,,,,
+Crusher,209 (219),Thrash,Enlarging Strike,Bug Sting,Adapt,Guarded Strike,,Starts with Back Attack and Crab Rage.,Cycles through Thrash -> Enlarging Strike -> Bug Sting -> Adapt -> Guarded Strike.
+,,Damage 12 (14),Damage 4,Damage 6x2 (7x2),Gain 2 (3) Strength,Damage 12 (14),,Back Attack: Deals 50% more damage if attacking you from behind.,
+,,,,Apply 2 Weak,,Block 18,,"Crab Rage: When an ally dies, gains 6 strength and 99 block.",
+,,,,Apply 2 Frail,,,,,
+,,,,,,,,,
+Rocket,199 (209),Targeting Reticle,Precision Beam,Charge Up,Laser,Recharge,,Starts with Back Attack and Crab Rage.,Cycles through Targeting Reticle -> Precision Beam -> Charge Up -> Laser -> Recharge.
+,,Damage 3 (4),Damage 18 (20),Gain 2 (3) Strength,Damage 31 (35),Pass turn,,,
+,,,,,,,,,
+Knowledge Demon,379 (399),Curse of Knowledge,Slap,Knowledge Overwhelming,Ponder,,,Disintegration X: Take X damage at the end of your turn.,Cycles through Curse of Knowledge -> Slap -> Knowledge Overwhelming -> Ponder until Curse of Knowledge has been used 3 times. Then cycles through Slap -> Knowledge Overwhelming -> Ponder.
+,,Player must choose one of two debuffs:,Damage 17 (18),Damage 8x3 (9x3),Damage 11 (13),,,(Stacks additively if selected multiple times),
+,,1st choice: Disentegration 6 or Mind Rot,,,Heal 30*,,,,
+,,2nd choice: Disentegration 7 or Sloth,,,Gain 2 (3) Strength,,,Mind Rot: Draw 1 fewer card at the start of your turn,
+,,3rd Choice: Disentegration 8 or Waste Away,,,,,,Sloth: You cannot play more than 3 cards per turn,
+,,,,,,,,Waste Away: Gain 1 less energy at the start of your turn,
+,,,,,,,,,
+,,,,,,,,* Heal is multiplied by player count,
+,,,,,,,,,
+Lagavulin Matriarch,222 (233),Slash,Disembowel,Slash 2,Soul Siphon,,,"Starts with 12 Plating, and sleeps for 3 turns or until losing HP.",Cycles through Slash -> Disembowel -> Slash 2 -> Soul Siphon.
+,,Damage 19 (21),Damage 9x2 (10x2),Damage 12 (14),Apply -2 Strength,,,"On wakeup, all Plating is removed.",
+,,,,Block 12 (14),Apply -2 Dexterity,,,,
+,,,,,Gain 2 Strength,,,,
+,,,,,,,,,
+Queen,400 (419),Puppet Strings,You Are Mine!,Burn Bright For Me,Off With Your Head,Execution,Enrage,Starts with a Torch Head Amalgam in play.,"Begins with Puppet Strings -> You Are Mine!
+
+Afterwards, while Amalgam is alive, always does Burn Bright For Me. If Amalgam dies and intent is Burn Bright For Me, intent is immediately replaced with Enrage.
+
+After Amalgam dies, cycles Off With Your Head -> Execution -> Enrage."
+,,Apply Chains of Binding 3,Apply 99 Frail,Give allies 1 Strength,Damage 3x5 (4x5),Damage 15 (18),Gain 2 Strength,"If Amalgam dies, and intent is Burn Bright For Me, Enrage instead.",
+,,,Apply 99 Weak,Block 20,,,,,
+,,,Apply 99 Vulnerable,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+Torch Head Amalgam,199 (211),Tackle,Soul Beam,Weak Tackle,,,,,"Begins with Tackle -> Tackle.
+
+Afterwards, cycles Soul Beam -> Weak Tackle -> Weak Tackle."
+,,Damage 18 (19),Damage 8x3,Damage 14 (15),,,,,
+,,,,,,,,,
+,,,,,,,,,
+Soul Fysh,211 (221),Beckon,De-Gas,Gaze,Fade,Scream,,"Beckon: 1 cost status, lose 6 HP if it is in hand at the end of turn.",Cycles through Beckon -> De-Gas -> Gaze -> Fade -> Scream.
+,,Shuffle 1 Beckon into draw,Damage 16 (17) ,Damage 7 (8),Gain 2* Intangible,Damage 13 (15),,,
+,,Shuffle 1 Beckon into discard,,Shuffle 1 Beckon into discard,,Apply 3 Vulnerable,,* One of the 2 Intangible from Fade ticks down immediately.,
+,,,,,,,,,
+Test Subject #C14,,,,,,,,,
+Stage 1,100 (111),Bite,Skull Bash,,,,,Starts with Enrage 3.,"Cycles through Bite -> Skull Bash.
+
+When killed, revive next turn in stage 2."
+,,Damage 20 (22),Damage 14 (16),,,,,"Enrage X: Whenever you play a skill, gain X Strength.",
+,,,Apply 1 Vulnerable,,,,,,
+,,,,,,,,,
+Stage 2,200 (212),Multi-Claw,,,,,,Starts with Painful Stabs 1.,Uses Multi-Claw every turn.
+,,Damage 10xN (11xN),,,,,,Painful Stabs X: Shuffle X Wounds into discard when inflicting unblocked damage.,
+,,(N = 3 + # times Multi-Claw has been used),,,,,,,
+,,,,,,,,,
+Stage 3,300 (313),Lacerate,Big Pounce,Burning Growl,,,,"Starts with Nemesis, which will immediately give 1 Intangible.",Cycles through Lacerate -> Big Pounce -> Burning Growl.
+,,Damage 10x3 (11x3),Damage 45,Shuffle 3 (5) Burns into discard,,,,"Nemesis: At the end of every other turn, gain 1 Intangible.",
+,,,,Gain 2 (3) Strength,,,,,
+,,,,,,,,,
+The Insatiable,321 (341),Liquify Ground,Thrash,Lunging Bite,Salivate,,,"Sandpit X: In X turns, instantly die.","Starts with Liquify Ground.
+
+Afterwards, cycles through Thrash -> Lunging Bite -> Salivate -> Thrash (note: this means that Thrash is used twice in a row)."
+,,Gain Sandpit 4,Damage 8x2 (9x2),Damage 28 (31),Gain 2 (3) Strength,,,,
+,,Shuffle 3 Frantic Escapes into draw,,,,,,"Frantic Escape: 1 cost status, increase card cost and Sandpit by 1.",
+,,Shuffle 3 Frantic Escapes into discard,,,,,,,
+,,,,,,,,,
+The Kin,,,,,,,,,
+Kin Priest,190 (199),Orb of Frailty,Orb of Weakness,Beam,Ritual,,,,Cycles through Orb of Frailty -> Orb of Weakness -> Beam -> Ritual.
+,,Damage 8 (9),Damage 8 (9),Damage 3x3,Gain 2 (3) Strength,,,,
+,,Apply 1 Frail,Apply 1 Weak,,,,,,
+,,,,,,,,,
+Kin Follower,58 - 59 (62 - 63),Quick Slash,Boomerang,Power Dance,,,,Kin Follower is a minion.,Cycles through Quick Slash -> Boomerang -> Power Dance.
+(Minion),,Damage 5,Damage 2x2,Gain 2 (3) Strength,,,,,
+,,,,,,,,,
+Vantom,173 (183),Ink Blot,Inky Lance,Dismember,Prepare,,,Starts with Slippery 8 (9),Cycles through Ink Blot -> Inky Lance -> Dismember -> Prepare.
+,,Damage 7 (8),Damage 6x2 (7x2),Damage 26 (30),Gain 2 Strength,,,,
+,,,,Add 3 Wounds into discard,,,,"Slippery X: The next X times this loses HP, only lose 1. ",
+,,,,,,,,,
+Waterfall Giant,240 (250),Pressurize,Stomp,Ram,Siphon,Pressure Gun,Pressure Up,"Steam Eruption X: After dying, wait 1 turn, then attack for X damage.","Begins with Pressurize.
+
+Afterwards, cycles through Stomp -> Ram -> Siphon -> Pressure Gun -> Pressure Up."
+,,Gain 15 (20) Steam Eruption,Damage 15 (16),Damage 10 (11),Heal 10 (15)*,Damage 20 (23) + 5*N,Damage 13 (14),,
+,,,Apply 1 Weak,Gain 3 Steam Eruption,Gain 3 Steam Eruption,N = # of times this move was used,Gain 3 Steam Eruption,,
+,,,Gain 3 Steam Eruption,,,Gain 3 Steam Eruption,,* Heal is multiplied by player count,</script>
+<script type="text/plain" id="csv-ancients">Darv,,,,,,,,,,,,
+Options,Dusty Tome,Astrolabe,Black Star,Calling Bell,Empty Cage,Pandora's Box,Runic Pyramid,Snecko Eye,Ectoplasm,Sozu,Philosopher's Stone,Velvet Choker
+,"Get an upgraded Ancient card.
+
+For Ironclad: Corruption+
+For Silent: Wraith Form+
+For Regent: The Sealed Throne+
+For Necrobinder: Forbidden Grimoire+
+For Defect: Biased Cognition+
+
+This option has a 50% chance of showing up.",Transform 3 cards and upgrade them.,Elites drop an additional relic.,"Add a Curse of the Bell to the deck. Get a common relic, an uncommon relic, and a rare relic.
+
+Curse of the Bell: Curse. Unplayable. Eternal.",Remove 2 cards.,Transform all Strikes and Defends.,Don't discard your hand at the end of your turn.,"Draw 2 additional cards at the start of each turn. Start each combat Confused.
+
+Confused: Card costs are randomized on draw between 0-3. This doesn't affect star costs.","Gain 1 energy every turn. You can no longer gain gold.
+
+This option can only show up in act 2, shows up 50% less than other options, and cannot show up alongsize Sozu.","Gain 1 energy every turn. You can no longer get potions.
+
+This option can only show up in act 2, shows up 50% less than other options, and cannot show up alongside Ectoplasm.","Gain 1 energy every turn. All enemies start combat with 1 extra Strength.
+
+This option can only show up in act 3, shows up 50% less than other options, and cannot show up alongside Velvet Choker.","Gain 1 energy every turn. You can play at most 6 cards per turn.
+
+This option can only show up in act 3, shows up 50% less than other options, and cannot show up alongside Philosopher's Stone."
+Neow,,,,,,,,,,,,
+Options 1 & 2,Arcane Scroll,Booming Conch,Pomander,Neow's Talisman,Golden Pearl,Lead Paperweight,New Leaf,Neow's Torment,Precise Scissors,Lost Coffer,,
+,"Obtain a random rare card.
+
+Cannot show up if Hefty Tablet is option 3.",Draw 2 cards and gain 1 energy at the start of elite fights.,"Upgrade a card.
+
+This option shows up 50% less than other options, and cannot show up alongside Neow's Talisman.","Upgrades the first Strike and first Defend in the deck.
+
+This option shows up 50% less than other options, and cannot show up alongside Pomander.","Gain 150 gold.
+
+Cannot show up if Cursed Pearl is option 3.",Choose 1 of 2 colorless cards. Rare chance is equivalent to a normal combat.,"Transform 1 card.
+
+Cannot show up if Leafy Poultice is option 3.","Add a Neow's Fury to the deck.
+
+Neow's Fury: 1 cost attack. Deal 10 (14) damage. Put up to 2 (3) cards from discard into hand. Exhaust.","Remove 1 card.
+
+Cannot show up if Precarious Shears is option 3.",Gain a card reward and a potion.,,
+(continued),Nutritious Oyster,Stone Humidifier,Massive Scroll,Lava Rock,Small Capsule,Phial Holster,Winged Boots,Kaleidoscope,Fishing Rod,Scroll Boxes,,
+,"Gain 11 max HP.
+
+This option shows up 50% less than other options, and cannot show up alognside Stone Humidifier.","Whenever you rest at a rest site, gain 5 max HP.
+
+This option shows up 50% less than other options, and cannot show up alongside Nutritious Oyster.","Choose 1 of 3 multiplayer colorless cards.
+
+Can only show up in multiplayer.","The act 1 boss drops 2 relics.
+
+This option shows up 50% less than other options, and cannot show up if Large Capsule is option 3 or alongside Small Capsule.","Get a random relic.
+
+This option shows up 50% less than other options, and cannot show up if Large Capsule is option 3, or alongside Lava Rock.",Gain 1 potion slot and procure 2 random potions.,"You may ignore paths when choosing the next room to travel to 3 times.
+
+Can only show up in singleplayer.","Upon pickup, obtain 2 card rewards from other characters.
+
+Each card reward will have 3 cards, each from a different character.","Every 3 normal combats, upgrade a random card in your deck.","Choose 1 of 2 packs of 3 cards.
+
+The packs will have 2 commons and 1 uncommon each, and every card will be unique.
+
+If you are the Defect, there is a 1% chance of a pack having 3 Claws instead.",,
+Option 3,Cursed Pearl,Hefty Tablet,Large Capsule,Leafy Poultice,Precarious Shears,Silken Tress,Silver Crucible,Neow's Bones,,,,
+,"Add Greed to the deck. Get 333 gold.
+
+Greed: Curse. Unplayable. Eternal.",Choose 1 of 3 rare cards to add to the deck. Add an Injury to the deck.,Get 2 random relics. Add a strike and a defend to the deck.,Lose 12 max HP. Transform a strike and a defend.,Take 16 damage. Remove 2 cards.,"Lose all gold. Enchant all cards in the first card reward with Glam.
+
+Glam: The first time this card is played, replay it.","The first 3 card rewards you see are upgraded. The first chest is empty.
+
+Can only show up in singleplayer.","Gain 2 random Neow relics. Add a random curse to the deck.
+
+The relics cannot be skipped.",,,,
+Nonupeipe,,,,,,,,,,,,
+Options,Beautiful Bracelet,Blessed Antler,Brilliant Scarf,Delicate Frond,Diamond Diadem,Fur Coat,Glitter,Jewelry Box,Looming Fruit,Signet Ring,,
+,"Enchant 3 cards with Swift 3.
+
+Can only show up if there are at least 4 enchantable cards.
+
+Swift X: The first time this card is played, draw X cards.",Gain 1 energy every turn. Shuffle 3 Dazed into draw pile at the start of combat.,"The 5th card you play each turn is free to play. Does not count autoplayed cards.
+
+This affects star cost as well.","At the start of combat, fill all empty potion slots with random potions.","If you play at most 2 cards in a turn, enemies attack for half damage.",Randomly marks 7 combats on the map (can be elites). Enemies in those rooms have their HP set to 1.,"Card rewards are enchanted with Glam.
+
+Glam: The first time this card is played, replay it.","Add an Apotheosis to the deck.
+
+Apotheosis: 2 (1) cost skill. Innate. Upgrade all your cards. Exhaust.",Gain 31 max HP.,Gain 999 gold.,,
+Orobas,,,,,,,,,,,,
+Option 1,Electric Shrimp,Glass Eye,Prismatic Gem,Sand Castle,Sea Glass,,,,,,,
+,"Enchant a skill with Imbued.
+
+Imbued: Is automatically played at the start of combat. Starts at the bottom of the draw pile.","Get 2 common card rewards, 2 uncommon card rewards, and a rare card reward. The rewards are skippable.","Gain 1 energy every turn. Card rewards can have cards from other characters.
+
+This option shows up 1/3 as much as other options.",Upgrade 6 random cards.,"See 5 common cards, 5 uncommon cards, and 5 rare cards from another character (you are told which character it is before choosing). Choose any of them to add to the deck.
+
+This option shows up 2/3 as much as other options.",,,,,,,
+Option 2,Alchemical Coffer,Driftwood,Radiant Pearl,,,,,,,,,
+,"Get 4 potion slots, and fill them with random potions.",Card rewards can be rerolled once.,"At the start of combat, add a Luminesce to your hand.
+
+Luminesce: 0 cost skill. Retain. Gain 2 energy. Exhaust.",,,,,,,,,
+Option 3,Archaic Tooth,Touch of Orobas,,,,,,,,,,
+,"Replace a starter card with an Ancient version. Any upgrades/enchantments on the original card will be preserved. Can only appear if the starter card is still in the deck.
+
+For Ironclad: Bash -> Break
+For Silent: Neutralize -> Suppress
+For Regent: Falling Star -> Meteor Shower
+For Necrobinder: Unleash -> Protector
+For Defect: Dualcast -> Quadcast","Replace the starter relic with an Ancient version. Can only appear if the starter relic is still present.
+
+For Ironclad: Black Blood (heal 12 instead of 6)
+For Silent: Ring of the Drake (draw 2 first 3 turns instead of only first turn)
+For Regent: Divine Destiny (gain 6 stars instead of 3)
+For Necrobinder: Phylactery Unbound (summon 5 at the start of combat and 2 every turn instead of 1 every turn)
+For Defect: Infused Core (channel 3 lightning instead of 1)",,,,,,,,,,
+Pael,,,,,,,,,,,,
+Option 1,Pael's Flesh,Pael's Horn,Pael's Tears,,,,,,,,,
+,Gain 1 energy every turn starting from the 3rd.,"Add 2 Relax to the deck.
+
+Relax: 3 cost skill. Gain 15 (17) block. Next turn, draw 2 (3) cards and get 2 (3) energy. Exhaust.","If you end your turn with unspent energy, gain 2 energy next turn.",,,,,,,,,
+Option 2,Pael's Claw,Pael's Growth,Pael's Tooth,Pael's Wing,,,,,,,,
+,"Enchant all Defends with Goopy.
+
+This option can only show up if there are at least 3 cards to enchant.
+
+Goopy: This card gains Exhaust, and permanently gains 1 block when you play it.","Enchant a card with Clone.
+
+This option shows up half as much as other options.
+
+Clone: You can duplicate all Clone cards at a rest site.","Choose 5 cards to remove. After each combat, randomly get 1 back upgraded.
+
+This option can only show up if there are at least 5 removable cards.",You can sacrifice card rewards to Pael. Every 2 sacrifices will grant a random relic.,,,,,,,,
+Option 3,Pael's Blood,Pael's Eye,Pael's Legion,,,,,,,,,
+,Draw 1 extra card at the start of your turn.,"The first time each combat you end turn without playing cards, exhaust your entire hand and take an extra turn.","When gaining block from a card, double the block gain. Can only affect 1 card every 2 turns.",,,,,,,,,
+Tanx,,,,,,,,,,,,
+Options,Claws,Crossbow,Iron Club,Meat Cleaver,Sai,Spiked Gauntlets,Tanx's Whistle,Throwing Axe,Tri-Boomerang,War Hammer,,
+,"Transform up to 6 cards into Maul. Any upgrades/enchantments on the original card will be preserved (if possible).
+
+Maul: 1 cost attack. Deal 5 (6) damage twice. Increase the damage of all Mauls by 1 (2) this combat.","At the start of your turn, add a random Attack to your hand. It's free to play this turn.
+
+The attack will be from your character, and cannot be Ancient.","Every 4 cards you play, draw 1.","You can Cook at rest sites.
+
+Cook: Remove 2 cards and get 9 max HP.",Gain 7 block every turn.,Gain 1 energy every turn. Powers cost 1 energy more.,"Add a Whistle to the deck.
+
+Whistle: 3 cost attack. Deal 33 (44) damage. Stun the enemy. Exhaust.
+
+Stun: The enemy skips their turn.",The first card you play each combat is played another time.,"Enchant 3 attacks with Instinct.
+
+This option can only show up if there are at least 3 enchantable cards.
+
+Instinct: This card's attack damage is doubled.","When you kill an elite, randomly upgrade 4 cards.",,
+Tezcatara,,,,,,,,,,,,
+Option 1,Nutritious Soup,Very Hot Cocoa,Yummy Cookie,,,,,,,,,
+,"Enchant all basic Strikes with Tezcatara's Ember.
+
+Can only appear if you have at least 1 basic Strike in your deck.
+
+Tezcatara's Ember: Costs 0 and gains +3 damage but cannot be removed.",Gain 4 energy on turn 1.,Upgrade 4 cards.,,,,,,,,,
+Option 2,Biiig Hug,Storybook,Toasty Mittens,,,,,,,,,
+,"Remove 4 cards. When you shuffle your draw pile, add a Soot into your draw pile.
+
+The Soot is added before any cards are drawn.
+
+Soot: Status. Unplayable.","Add a Brightest Flame to the deck.
+
+Brightest Flame: 0 cost skill. Gain 2 (3) energy. Draw 2 (3) cards. Lose 1 max HP.","At the start of your turn, exhaust the top card of your draw pile and gain 1 Strength.
+
+This happens before drawing any cards, and on turn 1, it won't exhaust innate cards if there are non-innate cards in the draw pile. If the draw pile is empty, the draw pile will be reshuffled before exhausting. The strength will be gained even if no card was exhausted.",,,,,,,,,
+Option 3,Golden Compass,Pumpkin Candle,Toy Box,Seal of Gold,,,,,,,,
+,"Replace the map with: fight -> ? -> fight -> fire -> fight -> fire -> ? -> chest -> ? -> chest -> ? -> shop -> elite -> fire -> elite -> fire -> boss.
+
+The ? rooms will always be events as opposed to combats/shops/chests.","Gain 1 energy every turn. This relic is disabled after 5 combats, but the counter can be increased by 5 at rest sites.","Obtain 4 relics as wax relics. Every 3 combats, the left-most wax relic is removed.
+
+You can control the order that you pick up the wax relics.","Lose 5 gold and gain 1 energy every turn. If there isn't enough gold, then gold isn't lost and energy isn't gained.",,,,,,,,
+Vakuu,,,,,,,,,,,,
+Option 1,Blood-Soaked Rose,Fiddle,Whispering Earring,,,,,,,,,
+,"Gain 1 energy every turn. Add an Enthralled to the deck.
+
+Enthralled: 2 cost curse. If this card is in hand, it must be played first. Eternal.","At the start of each turn, draw 2 additional cards. You can no longer draw cards during your turn.","Gain 1 energy every turn.
+
+Vakuu will play your first turn: for up to 13 cards, Vakuu will play the leftmost playable card. If the card targets an enemy, it will be targeted on the leftmost targetable enemy. If the card needs to select other cards, it will select as many cards as possible, starting from the leftmost selectable card.",,,,,,,,,
+Option 2,Distinguished Cape,Preserved Fog,Sere Talon,,,,,,,,,
+,"Lose 9 max HP. Add 3 Apparitions to the deck.
+
+Apparition: 1 cost skill. Ethereal (upgrades to non-ethereal). Gain 1 Intangible. Exhaust.","Remove 3 cards. Add Folly to the deck.
+
+Folly: Curse. Unplayable. Innate. Ethereal. Eternal.","Add 2 random curses and 3 Wishes to the deck.
+
+Wish: 0 cost skill. Choose a card from the draw pile to add to your hand. Exhaust. (Retain.)",,,,,,,,,
+Option 3,Choices Paradox,Jeweled Mask,Lord's Parasol,Music Box,,,,,,,,
+,"At the start of combat, pick 1 of 5 random cards to add to hand. Retain is added to the card.","At the start of combat, put a random power from the draw pile into your hand. It's free to play this turn.","When entering a shop, purchase everything for free.
+
+All 7 cards are added to the deck with the colorless cards added last, then the 3 relics, then the 3 potions (or until all potion slots are filled).
+
+Then, the card removal is purchased, and cannot be cancelled.",Creates an Ethereal copy of the first attack you play each turn.,,,,,,,,</script>
+<script type="text/plain" id="csv-events">Event,Options (initial options bolded),,Notes
+Act 1: Overgrowth,,,
+,,,
+Aroma of Chaos,Let Go,"Transform a card in your Deck.
+",
+,Maintain Control,Upgrade a card in your Deck.,
+,,,
+"Byrdonis Nest
+Can only occur if you do not have an event pet
+",Eat the Egg,Gain 7 Max HP.,
+,Take the Egg,"Add Byrdonis Egg to your Deck.
+","While Byrdonis Egg is in your deck you can select Hatch as a Rest Site action, which removes Byrdonis Egg and adds a Byrd Swoop to your deck. "
+,,,
+Dense Vegetation,Trudge On,Lose 8 HP. Gain 61 - 99 Gold.,
+,Rest,Heal 30% Max HP. Fight 4 Wrigglers.,Receive regular combat rewards after the fight.
+,,,
+Jungle Maze Adventure,Solo Quest,Gain 135 - 165 Gold. Lose 18 HP.,
+,Join Forces,Gain 35 - 65 Gold.,
+,,,
+"Luminous Choir
+Can only occur if you have 150 gold or more",Reach into the Flesh,Remove 2 cards from your Deck. Add Spore Mind to your Deck.,
+,Offer Tribute,Pay 100 - 150 Gold. Obtain a random Relic.,
+,,,
+"Morphic Grove
+Can only occur if you have at least 2 transformable cards.",Group,Lose ALL Gold. Transform 2 cards.,
+,Loner,Gain 5 Max HP.,
+,,,
+Sapphire Seed,Consume,Heal 9 HP. Upgrade a card in your Deck.,
+,Plant and Nourish,Enchant a card with Sown.,"Sown: The first time you play this card each combat, gain 1 energy."
+,,,
+Tablet of Truth,Decipher,Lose 3 Max HP. Upgrade a random card.,Followed by a choice between Continue Deciphering and Give Up.
+,Smash,Heal 20 HP.,
+,Continue Deciphering,Lose 6 Max HP. Upgrade a random card.,Followed by a choice between Keep Deciphering and Give Up.
+,Keep Deciphering,Lose 12 Max HP. Upgrade a random card.,Followed by a choice between KEEP DECIPHERING and Give Up.
+,KEEP DECIPHERING,Lose 24 Max HP. Upgrade a random card.,Followed by a choice between Lose Everything and Give Up.
+,Lose Everything,Set your Max HP to 1. Upgrade ALL of your cards.,
+,Give Up,Leave.,
+,,,
+"Unrest Site
+Can only occur if you are missing 30% of your max HP or more",Rest Anyways,Heal to full HP. Receive Poor Sleep.,
+,Kill the Trees,Lose 8 Max HP. Obtain a random Relic.,
+,,,
+Wellspring,Bottle,Procure 1 random Potion.,Random potion is generated uniformly (all potions equally likely regardless of rarity).
+,Bathe,Remove 1 card from your Deck. Add 1 Guilty to your Deck.,
+,,,
+"Whispering Hollow
+Can only occur if you have 50 gold or more",Exchange Gold,Lose 26 - 44 Gold. Procure 2 random Potions.,Random potions are generated following rarity chances.
+,Hug the Tree,Lose 9 HP. Choose a card to Transform.,
+,,,
+"Wood Carvings
+Can only occur if you have a starter card in your deck",Bird,Choose 1 starter card to Transform into Peck.,
+,Snake,Enchant 1 card with Slither.,"Slither: When you draw this card, randomize its cost from 0 to 3."
+,Torus,Choose 1 starter card to Transform into Toric Toughness.,
+,,,
+Act 1: Underdocks,,,
+,,,
+Abyssal Baths,Immerse,Gain 2 Max HP. Take N damage.,"N = 3 + # times Immerse has been selected previously.
+Followed by a choice between Immerse and Exit Baths."
+,Abstain,Heal 10 HP.,
+,Exit Baths,Leave.,
+,,,
+Doors of Light and Dark,Light Door,Upgrade 2 random cards.,
+,Dark Door,Remove 1 card from your Deck.,
+,,,
+Drowning Beacon,Bottle,Procure Glowwater Potion.,
+,Climb,Obtain Fresnel Lens. Lose 13 Max HP.,
+,,,
+"Endless Conveyor
+Can only occur if you have 120 gold or more",Grab [Dish] off the Belt,Pay 40 Gold. Receive a boon based on the [Dish]. Continue Feasting!,"Followed by a choice between Grab [Dish] off the Belt and Leave.
+Dish is generated randomly from allowed options according to their weights. To find the chance for each dish in a particular roll, take its weight divided by the total weight of all allowed options.
+Cannot select the same dish twice in a row."
+,Caviar,Gain 4 Max HP.,Weight = 6.
+,Clam Roll,Heal 10 HP.,Weight = 6. Only allowed if you are missing HP.
+,Fried Eel,Add a random Colorless Card to your Deck.,Weight = 3. Colorless card uses base rare chance with no offset (so almost always will be uncommon).
+,Golden Fysh,Gain 75 Gold.,Weight = 1. Only allowed after the 1st dish.
+,Jelly Liver,Transform 1 card in your Deck.,Weight = 3.
+,Seapunk Salad,Add Feeding Frenzy to your Deck.,Guaranteed to be offered every 5th dish. Otherwise is not allowed.
+,Spicy Snappy,Upgrade a random card in your Deck.,Weight = 3.
+,Suspicious Condiment,Procure a random potion.,Weight = 3. Only allowed if you have an empty potion slot. Random potion is generated uniformly (all potions equally likely regardless of rarity).
+,Observe the Chef,Upgrade a random card in your Deck.,
+,Leave,Leave.,
+,,,
+"Punch Off
+Can only occur on floor 6 or higher",Nab,Add Injury to your Deck. Obtain a random Relic.,
+,I Can Take Them,Fight 2 Punch Constructs.,"Receive regular combat rewards after the fight, plus an extra potion and a relic.
+Extra potion is generated following potion rarity chances and does not affect potion chance. If the regular potion roll drops a potion then you will receive two potions."
+,,,
+"Spiraling Whirlpool
+Can only occur if you have an enchantable basic Strike or Defend in your deck",Observe,Enchant a Strike or Defend with Spiral.,Spiral: This card gains Replay 1.
+,Drink,Heal 33% Max HP.,
+,,,
+Sunken Treasury,First Chest,Gain 52 - 67 Gold.,
+,Second Chest,Gain 303 - 363 Gold. Receive Greed.,
+,,,
+"Trash Heap
+Can only occur if you have 6 HP or more",Dive In,Lose 8 HP. Obtain a random forgotten Relic from the past.,"Forgotten relics: Darkstone Periapt, Dream Catcher, Hand Drill, Maw Bank, The Boot"
+,Grab Random Junk,Gain 100 Gold. Obtain a random forgotten card from the past.,"Forgotten cards: Caltrops, Clash, Distraction, Dual Wield, Entrench, Hello World, Outmaneuver, Rebound, Rip and Tear, Stack"
+,,,
+"Waterlogged Scriptorium
+Can only occur if you have 65 gold or more",Bloody Ink,Gain 6 Max HP.,
+,Tentacle Quill,Pay 55 Gold. Enchant a card with Steady.,Steady: This card gains Retain.
+,Prickly Sponge,Pay 99 Gold. Enchant 2 cards with Steady.,
+,,,
+Act 2: Hive,,,
+,,,
+"Amalgamator
+Can only occur if you have at least 2 basic Strikes and 2 basic Defends",Combine Strikes,Remove 2 Strikes. Add Ultimate Strike to your Deck.,
+,Combine Defends,Remove 2 Defends. Add Ultimate Defend to your Deck.,
+,,,
+Bugslayer,Learn Extermination Technique,Add Exterminate to your Deck.,
+,Learn Squash Technique,Add Squash to your Deck.,
+,,,
+Colorful Philosophers,[Character Color] x 3,"Receive 1 Common card pack, 1 Uncommon card pack, and 1 Rare card pack from the selected character's card pool.",3 random (unlocked) characters are selected for the card pool options.
+,,,
+"Colossal Flower
+Can only occur if you have 19 HP or more",Extract Nectar,Gain 35 Gold.,
+,Extract Nectar (2),Gain 75 Gold.,
+,Extract Nectar (3),Gain 135 Gold.,
+,Reach Deeper,Enter deeper. Lose 5 HP.,Followed by a choice between Extract Nectar (2) and Reach Deeper (2).
+,Reach Deeper (2),Enter deeper. Lose 6 HP.,Followed by a choice between Extract Nectar (3) and Reach Deeper (3).
+,Reach Deeper (3),Obtain Pollinous Core. Lose 7 HP.,
+,,,
+"Field of Man-Sized Holes
+Can only occur if you have an enchantable card (cards can only have 1 enchantment)",Resist,Remove 2 cards from your Deck. Add Normality to your Deck.,
+,Enter Your Hole,Enchant a card with Perfect Fit.,"Perfect Fit: Whenever this would be shuffled into your Draw Pile, place it on the top instead."
+,,,
+Infested Automaton,Study,Obtain a random Power.,Generated using regular rare and uncommon chance with no offset (so will almost always be uncommon).
+,Touch the Core,Obtain a random 0 cost card.,Generated using regular rare and uncommon chance with no offset (so will almost always be common or uncommon).
+,,,
+The Lost Wisp,Capture the Wisp,Add Decay to your Deck. Obtain the Lost Wisp.,
+,Search the Nearby Area,Gain 45 - 75 Gold.,
+,,,
+Spirit Grafter,Let It In,Heal 25 HP. Add Metamorphosis to your Deck.,
+,Rejection,Lose 10 HP. Upgrade a card.,
+,,,
+The Lantern Key,Return the Key,Gain 100 Gold.,
+,Keep the Key,Fight the Mysterious Knight to obtain the Lantern Key.,"Mysterious Knight is the same as a Flail Knight (from the Knights elite in Act 3: The Glory), but starts with 6 Strength and 6 Plating.
+If you have the Lantern Key in your deck, the first ? room you enter in Act 3 will be the War Historian, Repy event."
+,,,
+"Zen Weaver
+Can only occur if you have 125 gold or more",Breathing Techniques,Pay 50 Gold. Add 2 Enlightenment to your Deck.,
+,Emotional Awareness,Pay 125 Gold. Remove 1 card from your Deck.,
+,Arachnid Acupuncture,Pay 250 Gold. Remove 2 cards from your Deck.,
+,,,
+Act 3: Glory,,,
+,,,
+Battleworn Dummy,Setting 1,Fight a 75 HP dummy. Procure 1 random Potion.,"Whichever setting you pick, you must defeat the dummy within 3 turns to earn the reward.
+Random potion is generated uniformly (all potions equally likely regardless of rarity).
+"
+,Setting 2,Fight a 150 HP dummy. Upgrade 2 random cards.,
+,Setting 3,Fight a 300 HP dummy. Obtain a random Relic.,
+,,,
+"Grave of the Forgotten
+Can only occur if you have a card with Exhaust.",Accept the Forgotten Soul,Obtain Forgotten Soul.,"Forgotten Soul (relic): Whenever you Exhaust a card, deal 1 damage to a random enemy."
+,Confront with Truth,Add Decay to your Deck. Enchant a card that Exhausts with Soul's Power.,Soul's Power: This card loses Exhaust.
+,,,
+Hungry for Mushrooms,Big Mushroom,Obtain Big Mushroom.,"Big Mushroom (relic): Upon pickup, raise your Max HP by 20. At the start of each combat, draw 2 fewer cards."
+,Fragrant Mushroom,Obtain Fragrant Mushroom.,"Fragrant Mushroom (relic): Upon pickup, lose 15 HP and Upgrade 2 random cards."
+,,,
+Reflections snoitcelfeR,Touch a Mirror,Downgrade 2 random cards. Upgrade 4 random cards.,Can upgrade a card that was just downgraded.
+,Shatter,Duplicate your Deck. Receive Bad Luck.,
+,,,
+"The Round Tea Party
+Can only occur if you have at least 12 HP.",Enjoy Your Tea,Obtain Royal Poison. Heal to full HP.,
+,Pick a Fight,Lose 11 HP. Obtain a random Relic.,
+,,,
+Tinker Time,Accept,Create a custom card to add to your Deck.,"Followed by choosing the card type from two of the three options Protector, Weapon, and Power."
+,Protector,"Make a Skill. Base effect: 1 energy, gain 8 block.","Followed by choosing the secondary effect from two of the three options Chaos, Energized, and Wisdom."
+,Chaos,Add a random card into your Hand. It is free to play this turn.,Upgrade adds Innate.
+,Energized,Gain 2 energy.,
+,Wisdom,Draw 3 cards.,
+,Weapon,"Make an Attack. Base effect: 1 energy, deal 12 damage.","Followed by choosing the secondary effect from two of the three options Choking, Sapping, and Violence."
+,Choking,"Whenever you play a card this turn, the enemy loses 6 HP.",Upgrade adds Innate.
+,Sapping,Apply 2 Weak. Apply 2 Vulnerable.,
+,Violence,Hits 2 additional times.,
+,Gadget,Make a Power. Base effect: 1 energy.,"Followed by choosing the secondary effect from two of the three options Curious, Expertise, and Improvement."
+,Curious,Powers cost 1 less energy.,Upgrade adds Innate.
+,Expertise,Gain 2 Strength. Gain 2 Dexterity.,
+,Improvement,"At the end of combat, upgrade a random card.",
+,,,
+The Trial,Accept,Serve as today's Decider.,"Followed by a choice between DECIDE: Guilty and DECIDE: Innocent, with three variations depending on the defendant (Merchant, Noble, or Nondescript Woman)."
+,Merchant,,
+,DECIDE: Guilty,Add Regret to your Deck. Gain 2 random relics.,
+,DECIDE: Innocent,Add Shame to your Deck. Upgrade 2 cards in your Deck.,
+,Noble,,
+,DECIDE: Guilty,Heal 10 HP.,
+,DECIDE: Innocent,Add Regret to your Deck. Gain 300 Gold.,
+,Nondescript Woman,,
+,DECIDE: Guilty,Add Doubt to your Deck. Gain 2 card rewards.,
+,DECIDE: Innocent,Add Doubt to your Deck. Transform 2 cards.,
+,Reject,You are not allowed to Reject.,Followed by a choice between Accept and Double Down
+,Double Down,Abandon the run.,
+,,,
+Shared,,,
+,,,
+"The Sunken Statue
+Can only occur in Act 1",Grab the Sword,Obtain the Sword of Stone.,
+,Dive into the Water,Gain 101 - 121 Gold. Lose 7 HP.,
+,,,
+"Brain Leech
+Can only occur in Acts 1 and 2",Share Knowledge,Choose 1 of 5 random cards to add to your Deck.,Cards are generated using regular rare/uncommon chance without offset.
+,Rip the Leech Off,Lose 5 HP. Gain a Colorless card reward.,Uses regular rare/uncommon chance without offset.
+,,,
+"Crystal Sphere
+Can only occur in Act 2 and 3 if you have at least 100 gold",Uncover Future,Pay 50 Gold. Divine 3 times.,"Both options enter the Crystal Sphere minigame. Divining uncovers squares in the grid. Any fully uncovered items are gained as rewards.
+
+List of items in the Crystal Sphere (and their size, width x height):
+1 relic (4 x 4)
+2 common potions (1 x 3)
+1 rare potion (2 x 2)
+1 common card reward (2 x 2)
+1 uncommon card reward (2 x 2)
+1 rare card reward (2 x 2)
+1 Doubt (2 x 2)
+5 piles of 10 gold (1 x 1)
+2 piles of 30 gold (2 x 1)
+
+"
+,Payment Plan,Gain a Debt. Divine 6 times.,
+,,,
+"Doll Room
+Can only occur in Act 2
+",Pick at Random,Obtain a random Doll Relic.,"Doll relics:
+Bing Bong: Whenever you add a card to your Deck, add one additional copy.
+Daughter of the Wind: Whenever you play an Attack, gain 1 Block.
+Mr. Struggles: At the start of your turn, deal damage equal to the turn number to ALL enemies."
+,Take Some Time,Lose 5 HP. Choose 1 of 2 Doll Relics.,
+,Examine Each and Make the Best Choice,Lose 15 HP. Choose 1 of 3 Doll Relics.,
+,,,
+"The Merchant???
+Can only occur in Acts 2 or 3 if you have at least 100 gold or a Foul Potion",Anchor???,Start each combat with 4 Block.,6 random knockoff (???) relics will be offered for 42-57 gold each.
+,Blood Vial???,"At the start of each combat, heal 1 HP.","You can throw a Foul Potion to fight the Fake Merchant. If you win you get the following rewards:
+
+  - 300 gold
+  - All the knockoff relics he was selling
+  - Merchant's Rug???
+  - A regular combat roll for a potion
+  - A regular card reward."
+,Happy Flower???,"Every 5 turns, gain 1 energy.",
+,Lee's Waffle???,"Upon pickup, heal 10% of your HP.",
+,Mango???,"Upon pickup, raise your Max HP by 3.",
+,The Merchant's Rug???,Poor imitation. Does nothing.,
+,Orichalcum???,"If you end your turn without Block, gain 3 Block.",
+,Snecko Eye???,Start each combat Confused.,
+,Strike Dummy???,Cards containing “Strike” deal 1 additional damage.,
+,Venerable Tea Set???,"Whenever you enter a Rest Site, start the next combat with an additional energy.",
+,,,
+"Potion Courier
+Can only occur in Acts 2 or 3",Grab Potions,Procure 3 Foul Potions.,"Foul potions can be thrown at the Merchant to gain 100 gold, or at the Fake Merchant to trigger the Fake Merchant fight."
+,Ransack,Procure 1 random Uncommon Potion.,
+,,,
+"Ranwid the Elder
+Can only occur in Acts 2 or 3, and only if you have at least 100 gold, a tradable relic, and a potion",Give 100 Gold,Obtain a random Relic.,
+,Give Potion,Obtain a random Relic.,
+,Give Relic,Obtain 2 random Relics.,
+,,,
+"Relic Trader
+Can only occur in Acts 2 or 3, and only if you have at least 5 tradable relics.",Take the Bottom One,Trade one of your Relics for a random Relic.,"Each option names the random relic, so you know exactly what you are trading for. This includes both the relic you are trading away, and the relic you are receiving."
+,Take the Middle One,Trade one of your Relics for a random Relic.,
+,Take the Top One,Trade one of your Relics for a random Relic.,
+,,,
+"Room Full of Cheese
+Can only occur in Acts 1 or 2",Gorge,Choose 2 of 8 random Common cards to add to your Deck.,
+,Search,Lose 14 HP. Obtain the Chosen Cheese.,
+,,,
+Self-Help Book,Read the Entire Book,Choose a Power to Enchant with Swift 2.,"Swift: The first time you play this card, draw X cards."
+,Read a Random Passage,Choose a Skill to Enchant with Nimble 2.,Nimble: Increases Block gained from this card by X.
+,Read the Back,Choose an Attack to Enchant with Sharp 2.,Sharp: Increases damage from this card by X.
+,,,
+"Slippery Bridge
+Can only appear on floor 7 or later and only if you have a removable card.",Overcome,A random card is removed from your Deck.,"Initial card cannot be a Basic card if you have removable non-Basic cards.
+
+Cannot offer to remove the same card multiple times unless it has already offered to remove all other cards in your deck at least once. Cannot offer to remove the same type of card two times in a row (e.g. strike -> defend -> different strike is allowed but strike -> different strike isn't)."
+,Hold On,Lose 3+ HP. The card in the above option is randomized.,HP cost goes up by 1 every time Hold On is selected.
+,,,
+"Stone of All Time
+Can only occur in Act 2, and only if you have a potion.",Drink and Lift,Lose a random Potion. Gain 10 Max HP.,
+,Push,Lose 6 HP. Enchant an Attack with Vigorous 8.,"Vigorous: The first time this card is played, it deals X additional damage."
+,,,
+,,,
+"Symbiote
+Can only occur in Acts 2 or 3",Approach,Enchant an Attack with Corrupted.,"Corrupted: Deal 50% more damage, but lose 2 HP."
+,Kill with Fire,Choose a card to Transform.,
+,,,
+"Tea Master
+Can only occur in Acts 1 or 2, and only if you have at least 150 gold",Bone Tea,"Pay 50 Gold. In the next combat, upgrade your starting hand.",
+,Ember Tea,Pay 150 Gold. Gain 4 strength in the next 5 combats.,
+,Tea of Discourtesy,Add 2 Dazed to the draw pile in your next combat.,
+,,,
+"The Future of Potions?
+Can only occur if you have at least 2 potions.",Insert (rarity) Potion,Lose a (rarity) Potion. Obtain an Upgraded (rarity) attack/skill/power.,3 random potions are chosen from your belt. The rarity of the potion determines the rarity of the upgraded card reward.
+,,,
+"The Legends Were True
+Can only occur in Act 1, and only if you have more than 0 cards in your deck and at least 10 HP.",Nab the Map,Receive the Spoils Map.,
+,Slowly Find an Exit,Lose 8 HP. Procure 1 random Potion.,
+,,,
+,,,
+This or That?,This,Lose 6 HP. Gain 41 - 69 Gold.,
+,That,Add Clumsy to your Deck. Obtain a random Relic.,
+,,,
+"War Historian, Repy
+Always occurs in the first event if and only if you have the Lantern Key.",Unlock the Cage,Lose Lantern Key. Obtain History Course.,"If you have multiple Lantern Keys, you can choose both options."
+,Unlock the Chest,Lose Lantern Key. Procure 2 random Potions. Obtain 2 random Relics.,
+,,,
+"Welcome to Wongo's
+Can only occur in Act 2, and only if you have at least 100 gold.",Wongo's Bargain Bin,Pay 100 Gold. Obtain 1 random Common Relic.,
+,Wongo's Featured Item,Pay 200 Gold. Obtain a random Relic.,"Featured Item random relic is named in the option, so you can know what you are paying for in advance. It cannot be a relic that generates gold."
+,Wongo's Mystery Box,Pay 300 Gold. Obtain 3 random Relics after 5 combats.,
+,Leave,Downgrade a random card.,</script>
+<script type="text/plain" id="csv-mechanics">Ancients,,
+Ancient Chance,All ancients in an act's ancient pool are equally weighted*.,
+,"*Darv has a 50% chance to be added to the Act 2 ancient pool. If that fails, then he has another 50% chance to be added to the Act 3 ancient pool.",
+Darv Chances,Run sees Act 2 Darv: 1/8,
+,Run sees Act 3 Darv: 1/16,
+,Run sees Act 3 Darv given no Act 2 Darv: 1/14,
+,,
+Cards,,
+,,
+Rare Chance:,"Rare offset starts at -5%, and increases by 1% (0.5%) whenever a non-rare (common or uncommon) card is rolled in a card reward. Resets to -5% when a rare is rolled in a card reward.",
+,Offset is added to base rare chance for the floor type to get rare chance. Rare offset cannot exceed 40%. Rare offset only affects and is affected by card rewards from non-boss combats. Rare offset does not reset between acts.,
+,Regular Base Rare Chance: 3% (1.5%),
+,Elite Base Rare Chance: 10% (5%),
+,Boss Base Rare Chance: 100%,
+,Shop Base Rare Chance: 9% (4.5%),
+,,
+Uncommon Chance:,Uncommon chance is fixed depending on floor type.,
+,Regular Uncommon Chance: 37%,
+,Elite Uncommon Chance: 40%,
+,Boss Uncommon Chance: 0%,
+,Shop Uncommon Chance: 37%,
+,,
+Common Chance:,Common chance is the % remaining to add to 100%.,
+,"(Example: if rare offset is at -1% in an elite fight at A10, then rare chance is 4%. With uncommon chance at 40% for elites, this means common chance is 56%)",
+,,
+,,
+,,
+Upgrade Chance,Non-rare cards in card rewards have a chance of being upgraded. The chance is based on which act you are in.,
+,Act 1: 0%,
+,Act 2: 25% (12.5%),
+,Act 3: 50% (25%),
+,,
+Combat Encounters,"The first 3 regular combats of Act 1, and first 2 of Acts 2 and 3, are ""easy pool"" fights. All regular combats after that are ""hard pool"" fights"". Elite combats are their own pool (3 possible elites per act).",
+,"Encounters are randomly selected from their pool, all allowed options equally likely. After seeing an encounter, it is removed from the pool. The pool is reset once all encounters in it have been seen.","Note: This means that all 3 elites in an act will all be encountered (in a random order) before seeing any repeated elites. After all 3 have been seen, the pool is reset."
+,"No encounter can be seen that shares a ""tag"" with the previous encounter.",Tags are listed next to encounters in the encounter lists for each act.
+,"Exception: If there are no allowed encounters in the pool, then one is selected completely at random disregarding the above restrictions.",
+,,
+Potions,,
+,,
+Potion Chance:,"Starts at 40%. If a potion drops from combat, chance decreases by 10%. If a potion does not drop, chance increases by 10%. Potion chance does not reset between acts.",
+,Elites have a flat 12.5% bonus added to the current potion chance. ,
+,,
+Potion Rarity:,"65% Common, 25% Uncommon, 10% Rare",
+,,
+Gold,,
+Combat Gold:,Combats drop a random amount of gold generated in a range that depends on the type of encounter.,
+,Regular Combat: 10 - 20 (7 - 15),
+,"Elite Combat: 35 - 45 (26 - 33)
+",
+,Boss Combat: 100 (75),
+,,
+Chest Gold:,42 - 53 (31 - 39),
+,,
+Question Mark Rooms,"All probabilities start at their base chance, and go up by that much if you don't see that room type, resetting once you do. All chances reset to their base chance between acts.
+
+For example, if you don't see a treasure chest in your first question mark, the chance goes up to 4%, then 6%, etc., resetting to 2% after seeing a chest in a question mark.",
+,,
+Combat Chance:,Base chance: 10%,
+,,
+Treasure Chance:,Base chance: 2%,
+,,
+Shop Chance:,Base chance: 3%,Cannot roll shop if the previous node is a shop or every connected future node is a shop
+,,
+Relics,"Generally speaking, randomly generated relics will follow these chances for their rarity (for example, in treasure chests, in the shop, after elites, etc.)",
+,,
+Rarity chances:,Common chance: 50%,
+,Uncommon chance: 33%,
+,Rare chance: 17%,
+,,
+Shops,"Every shop has:
+2 attacks, 2 skills, 1 power from your character's card pool
+1 uncommon colorless and 1 rare colorless card
+2 regular relics (common, uncommon, or rare)
+1 shop relic
+3 potions
+1 card remove",
+,,
+Card Prices:,Common Class Card: 48 - 52,"A random card is on sale, cutting its price in half (rounds down)."
+,Uncommon Class Card: 71 - 79,Rarity is rolled using your current rare chance offset from card rewards (with the Shop Room base chance) but without changing the offset.
+,Rare Class Card: 143 - 157,
+,Uncommon Colorless Card: 82 - 90,
+,Rare Colorless Card: 163 - 181,
+,,
+Potion Prices:,Common Potion: 48 - 52,
+,Uncommon Potion: 71 - 79,
+,Rare Potion: 95 - 105,
+,,
+Relic Prices:,Common Relic: 149 - 201,
+,Uncommon Relic: 191 - 259,
+,Rare Relic: 234 - 316,
+,Shop Relic: 170 - 230,
+,,
+Remove Price,75 + 25*N (100 + 50*N on ascension 6+),(N = # of times card removal has been purchased previously)</script>
+<script type="text/plain" id="csv-act-overgrowth">Act 1: The Overgrowth,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Ancient:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,NOBBERS
+Neow,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Easy Pool Combats (first 3):,Monsters:,,,,,Tags:,,,,,,,,,,,,,,,,,,,,,,,,
+Fuzzy Wurm Crawler,,,,,,Crawler,,,,,,,,,,,,,,,,,,,,,,,,
+,Fuzzy Wurm Crawler ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Nibbits,,,,,,Nibbit,,,,,,,,,,,,,,,,,,,,,,,,
+,Nibbit,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Shrinker Beetle,,,,,,Shrinker,,,,,,,,,,,,,,,,,,,,,,,,
+,Shrinker Beetle,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Slimes,,,,,,Slimes,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Leaf Slime (Small),Medium Slime (random),Twig Slime (Small),,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,Leaf Slime (Medium),,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,or Twig Slime (Medium),,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Hard Pool Combats:,Monsters:,,,,,Tags:,,,,,,,,,,,,,,,,,,,,,,,,
+Cubex Construct,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Cubex Construct,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Flyconid,,,,,,"Mushroom, Slimes",,,,,,,,,,,,,,,,,,,,,,,,
+,Medium Slime (random),Flyconid,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Leaf Slime (Medium),,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,or Twig Slime (Medium),,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Fogmog,,,,,,Mushroom,,,,,,,,,,,,,,,,,,,,,,,,
+,Fogmog,(Summons Eye with Teeth),,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Inklets,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Inklet,Inklet,Inklet,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Mawler,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Mawler,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Nibbits,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Nibbit,Nibbit,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Overgrowth Crawlers,,,,,,"Crawler, Shrinker",,,,,,,,,,,,,,,,,,,,,,,,
+,Shrinker Beetle,Fuzzy Wurm Crawler,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"Ruby Raiders:
+
+3 Ruby Raiders (randomly chosen, only 1 allowed of each type)",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Assassin Ruby Raider,Axe Ruby Raider,Brute Ruby Raider,Crossbow Ruby Raider,Tracker Ruby Raider,,,,,,,,,,,,,,,,,,,,,,,,,
+Slimes,,,,,,Slimes,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Twig Slime (Medium),Leaf Slime (Medium),Leaf Slime (Small),Twig Slime (Small),,,,,,,,,,,,,,,,,,,,,,,,,,
+"Slithering Strangler:
+
+1 Slithering Strangler accompanied by either:
+1 Snapping Jaxfruit,
+1 random Medium Slime,
+or 2 random Small Slimes
+",,,,,,"Fruit, Strangler",,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Snapping Jaxfruit,Medium Slime (random),2 Small Slimes (random),Slithering Strangler,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,Leaf Slime (Medium),Leaf Slime (Small),,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,or Twig Slime (Medium),or Twig Slime (Small),,,,,,,,,,,,,,,,,,,,,,,,,,,
+Snapping Jaxfruit,,,,,,Mushroom,,,,,,,,,,,,,,,,,,,,,,,,
+,Snapping Jaxfruit,Flyconid,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Vine Shambler,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Vine Shambler,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Elites:,Monsters:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Bygone Effigy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Bygone Effigy,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Byrdonis,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Byrdonis,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Phrog Parasite,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Phrog Parasite,(Summons 4 Wrigglers after death),,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Boss:,Monsters:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Ceremonial Beast,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Ceremonial Beast,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+The Kin,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Kin Follower,Kin Follower,Kin Priest,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Vantom,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,Vantom,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Events:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Aroma of Chaos,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Byrdonis Nest,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Dense Vegetation,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Jungle Maze Adventure,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Luminous Choir,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Morphic Grove,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Sapphire Seed,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Sunken Statue,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Tablet of Truth,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Unrest Site,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Wellspring,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Whispering Hollow,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Wood Carvings,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,</script>
+<script type="text/plain" id="csv-act-underdocks">Act 1: The Underdocks,,,
+,,,
+Ancient:,,,
+Neow,,,
+,,,
+Easy Pool Combats (first 3):,Summary:,Monsters:,Tags:
+Corpse Slugs,,2 Corpse Slugs,Slugs
+Seapunk,,1 Seapunk,Seapunk
+Sludge Spinner,,1 Sludge Spinner,
+Toadpoles,,2 Toadpoles,
+,,,
+Hard Pool Combats:,Summary:,Monsters:,Tags:
+Corpse Slugs,,3 Corpse Slugs,Slugs
+Cultists,,1 Calcified Cultist,
+,,1 Damp Cultist,
+Living Fog,,1 Living Fog,
+Fossil Stalker,,1 Fossil Stalker,
+Gremlin Merc,,1 Gremlin Merc,
+,,(summons 1 Sneaky Gremlin and 1 Fat Gremlin after death),
+Haunted Ship,,1 Haunted Ship,
+Punch Construct,,1 Punch Construct,
+Sewer Clam,,1 Sewer Clam,
+Seapunk,,1 Calcified Cultist,
+,,1 Seapunk,
+Two-Tailed Rats,,3 Two-Tailed Rats,
+,,,
+Elites:,Summary:,Monsters:,
+Skulking Colony,,1 Skulking Colony,
+Phantasmal Gardeners,,4 Phantasmal Gardeners,
+Terror Eel,,1 Terror Eel,
+,,,
+Bosses:,Summary:,Monsters:,
+Lagavulin Matriarch,,1 Lagavulin Matriarch,
+Soul Fysh,,1 Soul Fysh,
+Waterfall Giant,,1 Waterfall Giant,
+,,,
+Events:,,,
+Abyssal Baths,,,
+Drowning Beacon,,,
+Endless Conveyor,,,
+Punch Off,,,
+Spiraling Whirlpool,,,
+Sunken Statue,,,
+Sunken Treasury,,,
+Doors of Light and Dark,,,
+Trash Heap,,,
+Waterlogged Scriptorium,,,</script>
+<script type="text/plain" id="csv-act-hive">Act 2: The Hive,,,
+,,,
+Ancients,,,
+Darv,,,
+Orobas,,,
+Pael,,,
+Tezcatara,,,
+,,,
+Easy Pool Combats (first 2):,Summary:,Monsters:,Tags:
+Bowlbugs,,1 Bowlbug (Rock),Workers
+,,"1 random Bowlbug, either:",
+,,Bowlbug (Egg),
+,,Bowlbug (Nectar),
+Exoskeletons,,3 Exoskeletons,Exoskeletons
+Thieving Hopper,,1 Thieving Hopper,Thieves
+Tunneler,,1 Tunneler,Burrower
+,,,
+Hard Pool Combats:,Summary:,Monsters:,Tags:
+Bowlbugs,,3 random Bowlbugs (at most 1 of each):,Workers
+,,Bowlbug (Egg),
+,,Bowlbug (Nectar),
+,,Bowlbug (Rock),
+,,Bowlbug (Silk),
+Chompers,,2 Chompers,Chomper
+Exoskeletons,,4 Exoskeletons,Exoskeletons
+Hunter Killer,,1 Hunter Killer,
+Louse Progenitor,,1 Louse Progenitor,
+Mytes,,2 Mytes,
+Ovicopter,,1 Ovicopter,
+Slumbering Beetle,,1 Slumbering Beetle,Workers
+,,1 Bowlbug (Rock),
+,,1 Bowlbug (Silk),
+Spiny Toad,,1 Spiny Toad,
+The Obscura,,1 The Obscura,
+,,, 
+,,,
+,,,
+Elites:,Summary:,Monsters:,
+Decimillipede,,3 Decimillipede segments,
+Entomancer,,1 Entomancer,
+Infested Prisms,,1 Infested Prism,
+,,,
+Bosses:,Summary:,Monsters:,
+Kaiser Crab,,1 Crusher,
+,,1 Rocket,
+Knowledge Demon,,1 Knowledge Demon,
+The Insatiable,,1 The Insatiable,
+,,,
+Events:,,,
+Amalgamator,,,
+Bugslayer,,,
+Colorful Philosophers,,,
+Colossal Flower,,,
+Field of Man Sized Holes,,,
+Infested Automaton,,,
+Lost Wisp,,,
+Spirit Grafter,,,
+The Lantern Key,,,
+Zen Weaver,,,</script>
+<script type="text/plain" id="csv-act-glory">Act 3: The Glory,,,
+,,,
+Ancients,,,
+Darv,,,
+Nonupeipe,,,
+Tanx,,,
+Vakuu,,,
+,,,
+Easy Pool Combats (first 2):,Summary:,Monsters:,Tags:
+Devoted Sculptor,,1 Devoted Sculptor,
+Scrolls of Biting,,3 Scrolls of Biting,Scrolls
+Turret Operator,,1 Living Shield,
+,,1 Turret Operator,
+,,,
+Hard Pool Combats:,Summary:,Monsters:,Tags:
+Axebot,,1 Axebot,
+Construct Menagerie,,1 Punch Construct,
+,,2 Cubex Constructs,
+Fabricator,,1 Fabricator,
+Frog Knight,,1 Frog Knight,
+Globe Head,,1 Globe Head,
+Owl Magistrate,,1 Owl Magistrate,
+Scrolls of Biting,,4 Scrolls of Biting,Scrolls
+Slimed Berserker,,1 Slimed Berserker,
+The Lost and Forgotten,,1 The Lost,
+,,1 The Forgotten,
+,,,
+Elites:,Summary:,Monsters:,Tags:
+Knights,,1 Flail Knight,Knights
+,,1 Spectral Knight,
+,,1 Magi Knight,
+Mecha Knight,,1 Mecha Knight,
+Soul Nexus,,1 Soul Nexus,
+,,,
+Bosses:,Summary:,Monsters:,
+Doormaker,,1 Aeonglass,
+,,,
+Queen,,1 Queen,
+,,1 Torch Amalgam,
+Test Subject,,1 Test Subject #C14 (Stage 1),
+,,"(Summons Stage 2 on death, which summons Stage 3 on death)",
+,,,
+Events:,,,
+Battleworn Dummy,,,
+Grave of the Forgotten,,,
+Hungry for Mushrooms,,,
+Reflections,,,
+Round Tea Party,,,
+Trial,,,
+Tinker Time,,,</script>
+
+<script>/* Slay the Spire 2 Reference - pure logic library (no DOM).
+   Used both by the Node test harness and inlined into the final HTML. */
+(function (global) {
+  "use strict";
+
+  /* ============================ CSV ============================ */
+  function parseCSV(text) {
+    text = String(text).replace(/\r\n?/g, "\n");
+    var rows = [], row = [], field = "", q = false, i = 0, c;
+    while (i < text.length) {
+      c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { field += '"'; i += 2; continue; } q = false; i++; continue; }
+        field += c; i++; continue;
+      }
+      if (c === '"') { q = true; i++; continue; }
+      if (c === ",") { row.push(field); field = ""; i++; continue; }
+      if (c === "\n") { row.push(field); field = ""; rows.push(row); row = []; i++; continue; }
+      field += c; i++;
+    }
+    if (field !== "" || row.length) { row.push(field); rows.push(row); }
+    return rows;
+  }
+  function cell(rows, r, k) { var c = rows[r]; return (c && c[k] != null) ? String(c[k]).trim() : ""; }
+  function splitFirstLine(s) {
+    var parts = String(s).split("\n");
+    var name = (parts.shift() || "").trim();
+    var rest = parts.join("\n").replace(/\n+/g, " ").trim();
+    return { name: name, rest: rest };
+  }
+
+  /* ====================== text formatting ===================== */
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  var KW = [
+    [/\bDamage\b/g, "attack"],
+    [/\bBlock\b/g, "block"],
+    [/\b(?:Summons?|Summoned|Hatch(?:es|ling)?)\b/g, "summon"],
+    [/\b(?:Strength|Ritual|Dexterity|Thorns?|Artifact|Plating|Soar|Burrowed|Metallicize|Intangible|Regen|Galvanic|Vigor|Sandpit|Steam Eruption|Rampart)\b/g, "buff"],
+    [/\b(?:Weak|Frail|Vulnerable|Constrict|Tender|Shrink|Tangled|Poison|Slow|Imbalanced|Chains of Binding)\b/g, "debuff"],
+    [/\b(?:Dazed|Slimed|Toxic|Wounds?|Infection|Void|Burns?|Flutter|Beckon|Withers?)\b/g, "status"]
+  ];
+  function kwHi(s) { KW.forEach(function (p) { s = s.replace(p[0], function (m) { return '<span class="kw kw-' + p[1] + '">' + m + "</span>"; }); }); return s; }
+  var ASC = /([0-9]+(?:\s*[-xX]\s*[0-9]+)*)\s*\(\s*([0-9]+(?:\s*[-xX]\s*[0-9]+)*)\s*\)/g;
+  function ascWrap(s) { return s.replace(ASC, function (_, a, b) { return '<span class="base">' + a + '</span> <span class="asc">(' + b + ')</span>'; }); }
+  function fmt(text) {
+    if (text == null) return "";
+    var s = esc(text);
+    s = kwHi(s);
+    s = ascWrap(s);
+    s = s.replace(/\n+/g, "<br>");
+    s = s.replace(/\s*-\s*&gt;\s*/g, ' <span class="arrow">&#8594;</span> ');
+    return s;
+  }
+  function fxClass(t) {
+    var s = String(t).trim().toLowerCase();
+    if (s.indexOf("damage") === 0) return "attack";
+    if (s.indexOf("block") === 0) return "block";
+    if (s.indexOf("summon") === 0) return "summon";
+    if (s.indexOf("add") === 0 || s.indexOf("shuffle") === 0) return "status";
+    if (s.indexOf("apply") === 0) return "debuff";
+    if (s.indexOf("gain") === 0 || s.indexOf("strength") === 0 || s.indexOf("ritual") === 0 || s.indexOf("dexterity") === 0 || s.indexOf("heal") === 0 || s.indexOf("block") >= 0 && s.indexOf("gain") >= 0) return "buff";
+    if (/weak|frail|vulnerable|constrict|tangled|shrink|tender/.test(s)) return "debuff";
+    if (/strength|ritual|thorns|dexterity|artifact|plating/.test(s) && /gain/.test(s)) return "buff";
+    return "";
+  }
+  function noteHtml(line) {
+    var idx = line.indexOf(":");
+    if (idx > 0 && idx <= 30 && /^[A-Z(]/.test(line)) {
+      return '<span class="kw-term">' + fmt(line.slice(0, idx)) + ':</span>' + fmt(line.slice(idx + 1));
+    }
+    return fmt(line);
+  }
+  function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+
+  /* ================ stat blocks (Monsters/Elites/Bosses) ============ */
+  // Cosmetic grouping for multi-part bosses/elites. The CSV does not encode
+  // where a group ends, so these members are listed explicitly. If you rename
+  // an entity in the CSV you may lose its "part of" badge (data still shows).
+  var BOSS_GROUPS = {
+    "Crusher": "Kaiser Crab", "Rocket": "Kaiser Crab",
+    "Stage 1": "Test Subject #C14", "Stage 2": "Test Subject #C14", "Stage 3": "Test Subject #C14",
+    "Kin Priest": "The Kin", "Kin Follower": "The Kin",
+    "Flail Knight": "Knights", "Spectral Knight": "Knights", "Magi Knight": "Knights",
+    "Torch Head Amalgam": "Queen"
+  };
+  function parseStatBlocks(rows, type) {
+    var list = [], cur = null, c, r;
+    for (r = 1; r < rows.length; r++) {
+      var cells = rows[r] || [];
+      var get = function (k) { return (cells[k] == null ? "" : String(cells[k])).trim(); };
+      var name = get(0), hp = get(1), notes = get(8), patt = get(9), mc = [];
+      for (c = 2; c <= 7; c++) mc[c] = get(c);
+      var hasMove = mc.some(function (x) { return x; });
+      var onlyName = name !== "" && hp === "" && notes === "" && patt === "" && !hasMove;
+      if (onlyName) continue;                       // group header (e.g. "Kaiser Crab") -> skip
+      var realHp = /^\d/.test(hp);                  // a true HP starts with a digit
+      if (name !== "" && realHp) {
+        cur = { type: type, name: name, sub: "", group: BOSS_GROUPS[name] || "", hp: hp, moves: {}, order: [], notes: [], patt: [] };
+        for (c = 2; c <= 7; c++) if (mc[c]) { cur.moves[c] = { name: mc[c], fx: [] }; cur.order.push(c); }
+        list.push(cur);
+      } else if (cur) {
+        if (name) cur.sub = cur.sub ? cur.sub + " " + name : name;
+        if (hp) cur.hp = cur.hp ? cur.hp + " " + hp : hp;   // stray HP-column note
+        for (c = 2; c <= 7; c++) if (mc[c]) {
+          if (!cur.moves[c]) { cur.moves[c] = { name: "", fx: [] }; cur.order.push(c); }
+          cur.moves[c].fx.push(mc[c]);
+        }
+      }
+      if (cur) { if (notes) cur.notes.push(notes); if (patt) cur.patt.push(patt); }
+    }
+    list.forEach(function (m) {
+      m.movesArr = m.order.map(function (k) { return m.moves[k]; });
+      var nn = m.hp.match(/\d+/); m.hpNum = nn ? parseInt(nn[0], 10) : 0;
+      var bits = [m.name, m.sub, m.group, m.hp];
+      m.movesArr.forEach(function (mv) { bits.push(mv.name); mv.fx.forEach(function (f) { bits.push(f); }); });
+      m.notes.forEach(function (x) { bits.push(x); }); m.patt.forEach(function (x) { bits.push(x); });
+      m.search = bits.join(" ").toLowerCase();
+      m.id = slug(m.type + "-" + (m.group ? m.group + "-" : "") + m.name);
+    });
+    return list;
+  }
+
+  /* ============== name resolution (act refs -> entities) ========= */
+  // Some act references use a different size word than the stat block name
+  // ("Twig Slime (Small)" vs "Twig Slime (S)"). Canonicalize to the long form.
+  function expandSize(s) { return s.replace(/\(s\)/g, "(small)").replace(/\(m\)/g, "(medium)").replace(/\(l\)/g, "(large)"); }
+  var EXTRA_ALIASES = { "torch head amalgam": ["torch amalgam"] };
+  function buildIndex(entities) {
+    var idx = {};
+    function add(key, e) {
+      key = String(key).toLowerCase().trim(); if (!key) return;
+      if (!idx[key]) idx[key] = e;
+      var ex = expandSize(key); if (ex !== key && !idx[ex]) idx[ex] = e;
+    }
+    entities.forEach(function (e) {
+      add(e.name, e);
+      var m = e.name.toLowerCase().match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+      if (m) { var base = m[1].trim(), q = m[2].trim(); add(q + " " + base, e); add(base + " " + q, e); }
+      if (e.group) { add(e.group + " " + e.name, e); add(e.group + " (" + e.name + ")", e); }
+      (EXTRA_ALIASES[e.name.toLowerCase()] || []).forEach(function (k) { add(k, e); });
+    });
+    return idx;
+  }
+  function refLabel(raw) { return String(raw).replace(/\n+/g, " ").trim(); }
+  function resolveRef(raw, idx) {
+    if (!raw) return null;
+    var s = String(raw).toLowerCase().replace(/\n+/g, " ");
+    s = s.replace(/^\s*\d+\s*/, "");                  // leading count
+    s = s.replace(/^\s*(?:or|either|and)\s+/, "");     // connectives
+    s = s.replace(/\brandom\b/g, " ").replace(/\bat most 1 of each\b/g, " ");
+    s = s.replace(/\s+/g, " ").trim();
+    var sCut = s.replace(/\s*[,:].*$/, "").trim();      // drop trailing ", either:" etc.
+    var tries = [s, sCut];
+    tries.push(sCut.replace(/s$/, ""));                 // trailing plural
+    tries.push(sCut.replace(/^(\S+?)s\b/, "$1"));       // first-word plural ("scrolls of biting")
+    var first = sCut.split(" ")[0];
+    if (first && first.length > 3) tries.push(first);   // last resort: leading word
+    for (var i = 0; i < tries.length; i++) {
+      var t = tries[i].trim(); if (!t) continue;
+      if (idx[t]) return idx[t];
+      var ex = expandSize(t); if (idx[ex]) return idx[ex];
+    }
+    return null;
+  }
+
+  /* ========================== Act files ======================= */
+  function classifyHeader(c0) {
+    var s = c0.toLowerCase();
+    if (/easy\s+pool/.test(s)) return "easy";
+    if (/hard\s+pool/.test(s)) return "hard";
+    if (/^elites?\b/.test(s)) return "elites";
+    if (/^boss(es)?\b/.test(s)) return "bosses";
+    if (/^events?\b/.test(s)) return "events";
+    if (/^ancients?\b/.test(s)) return "ancients";
+    return null;
+  }
+  function parseAct(rows) {
+    var act = { title: cell(rows, 0, 0) || "Act", ancients: [], events: [], sections: [] };
+    var mode = null, section = null, enc = null, monStart = 1, tagCol = -1;
+    function findCols(r) {
+      monStart = -1; tagCol = -1; var c = rows[r] || [];
+      for (var k = 0; k < c.length; k++) {
+        var v = (c[k] || "").trim().toLowerCase();
+        if (v === "monsters:" || v === "monsters") monStart = k;
+        else if (v === "tags:" || v === "tags") tagCol = k;
+      }
+      if (monStart < 0) monStart = 1;
+    }
+    function collect(r, enc) {
+      var c = rows[r] || [], end = (tagCol >= 0 ? tagCol : Math.max(c.length, monStart + 1));
+      for (var k = monStart; k < end; k++) {
+        var v = (c[k] == null ? "" : String(c[k])).trim();
+        if (!v) continue;
+        if (/^\(/.test(v) || /:$/.test(v)) enc.notes.push(v); else enc.monsters.push(v);
+      }
+      if (tagCol >= 0) { var t = (c[tagCol] == null ? "" : String(c[tagCol])).trim(); if (t) enc.tags.push(t); }
+    }
+    for (var i = 1; i < rows.length; i++) {
+      var c0 = cell(rows, i, 0);
+      var hk = c0 ? classifyHeader(c0) : null;
+      if (hk) {
+        mode = hk; enc = null;
+        if (hk === "ancients") { section = null; continue; }
+        section = { kind: hk, label: c0, encounters: [] }; act.sections.push(section);
+        if (hk !== "events") findCols(i);
+        continue;
+      }
+      if (mode === "ancients") { if (c0) act.ancients.push(c0); continue; }
+      if (mode === "events") { if (c0) { var sp = splitFirstLine(c0); act.events.push(sp.name); } continue; }
+      if (mode === "easy" || mode === "hard" || mode === "elites" || mode === "bosses") {
+        if (!section) continue;
+        if (c0) { var s2 = splitFirstLine(c0); enc = { name: s2.name, note: s2.rest, monsters: [], notes: [], tags: [] }; section.encounters.push(enc); collect(i, enc); }
+        else if (enc) collect(i, enc);
+      }
+    }
+    return act;
+  }
+
+  /* ============================ Events ======================== */
+  function parseEvents(rows) {
+    var list = [], curAct = "", cur = null;
+    for (var r = 1; r < rows.length; r++) {
+      var c0 = cell(rows, r, 0), c1 = cell(rows, r, 1), c2 = cell(rows, r, 2), c3 = cell(rows, r, 3);
+      if (!c0 && !c1 && !c2 && !c3) continue;
+      if (c0 && !c1 && !c2 && !c3 && /^(act\s|shared)/i.test(c0)) { curAct = c0; continue; }
+      if (c0) {
+        var sp = splitFirstLine(c0);
+        cur = { act: curAct, name: sp.name, cond: sp.rest, options: [] };
+        list.push(cur);
+        if (c1 || c2 || c3) cur.options.push({ name: c1, effect: c2, notes: c3 });
+      } else if (cur) {
+        if (c1 || c2 || c3) cur.options.push({ name: c1, effect: c2, notes: c3 });
+      }
+    }
+    return list;
+  }
+
+  /* =========================== Ancients ======================= */
+  function parseAncients(rows) {
+    var list = [], cur = null;
+    for (var r = 0; r < rows.length; r++) {
+      var c0 = cell(rows, r, 0), rv = rows[r] || [], restNonEmpty = false;
+      for (var k = 1; k < rv.length; k++) { if ((rv[k] || "").trim()) { restNonEmpty = true; break; } }
+      if (c0 && !restNonEmpty) { cur = { name: c0, groups: [] }; list.push(cur); continue; }
+      if (restNonEmpty && c0) {                 // options header row; next row = descriptions
+        var descRow = rows[r + 1] || [], items = [];
+        for (var k2 = 1; k2 < rv.length; k2++) {
+          var nm = (rv[k2] || "").trim(); if (!nm) continue;
+          var ds = (descRow[k2] != null ? String(descRow[k2]).trim() : "");
+          items.push({ name: nm, desc: ds });
+        }
+        if (cur && items.length) cur.groups.push({ label: c0, items: items });
+        r++;                                    // consume description row
+      }
+    }
+    return list;
+  }
+
+  /* ========================== Mechanics ======================= */
+  function parseMechanics(rows) {
+    var sections = [], cur = null, sub = null;
+    for (var r = 0; r < rows.length; r++) {
+      var c0 = cell(rows, r, 0), c1 = cell(rows, r, 1), c2 = cell(rows, r, 2);
+      if (!c0 && !c1 && !c2) continue;
+      if (c0 && !c1 && !c2) { cur = { title: c0, items: [] }; sections.push(cur); sub = null; continue; }
+      if (!cur) { cur = { title: "General", items: [] }; sections.push(cur); }
+      if (c0) { sub = { label: c0, lines: [] }; if (c1) sub.lines.push(c1); if (c2) sub.lines.push(c2); cur.items.push(sub); }
+      else { if (!sub) { sub = { label: "", lines: [] }; cur.items.push(sub); } if (c1) sub.lines.push(c1); if (c2) sub.lines.push(c2); }
+    }
+    return sections;
+  }
+
+  /* ===================== HTML string builders ================= */
+  function moveSummary(e) {
+    return e.movesArr.map(function (mv) { return mv.name; }).filter(Boolean).join("  ·  ");
+  }
+  function statBodyHtml(e) {
+    var h = "";
+    if (e.movesArr.length) {
+      h += '<div class="sec"><div class="sec-label">Moves</div>';
+      e.movesArr.forEach(function (mv) {
+        h += '<div class="move">';
+        if (mv.name) h += '<div class="mname">' + esc(mv.name) + "</div>";
+        if (mv.fx.length) {
+          h += '<div class="chips">';
+          mv.fx.forEach(function (f) { var c = fxClass(f); h += '<span class="chip' + (c ? " " + c : "") + '">' + fmt(f) + "</span>"; });
+          h += "</div>";
+        }
+        h += "</div>";
+      });
+      h += "</div>";
+    }
+    if (e.notes.length) {
+      h += '<div class="sec"><div class="sec-label">Notes &amp; keywords</div><ul class="notes">';
+      e.notes.forEach(function (n) { h += "<li>" + noteHtml(n) + "</li>"; });
+      h += "</ul></div>";
+    }
+    if (e.patt.length) {
+      h += '<div class="sec"><div class="sec-label">Attack pattern (turn order)</div><ul class="pattern">';
+      e.patt.forEach(function (p) { h += "<li>" + fmt(p) + "</li>"; });
+      h += "</ul></div>";
+    }
+    return h;
+  }
+  function statCardHtml(e, opts) {
+    opts = opts || {};
+    var h = '<div class="card stat" id="ent-' + esc(e.id) + '">';
+    h += '<div class="card-head"><h3 class="ename">' + esc(e.name) + (e.sub ? ' <span class="sub">' + esc(e.sub) + "</span>" : "") + "</h3>";
+    h += '<span class="typebadge t-' + esc(e.type) + '">' + esc(e.type) + "</span></div>";
+    if (e.group) h += '<div class="grouprow">part of <b>' + esc(e.group) + "</b></div>";
+    h += '<div class="hp">&#10084; ' + fmt(e.hp) + "</div>";
+    if (opts.appears && e.appearsIn && e.appearsIn.length) {
+      h += '<div class="appears"><span class="sec-label">Appears in</span> ' + e.appearsIn.map(function (a) {
+        return '<span class="apchip" data-jump-act="' + esc(a.actKey) + '">' + esc(a.label) + "</span>";
+      }).join("") + "</div>";
+    }
+    h += statBodyHtml(e);
+    return h + "</div>";
+  }
+  // collapsible stat block used inside encounters
+  function statDetailsHtml(e, label) {
+    var h = '<details class="estat">';
+    h += '<summary><span class="sum-name">' + esc(label || e.name) + '</span>';
+    h += '<span class="sum-hp">&#10084; ' + fmt(e.hp) + "</span>";
+    var ms = moveSummary(e); if (ms) h += '<span class="sum-moves">' + esc(ms) + "</span>";
+    h += "</summary>";
+    h += '<div class="estat-body">' + statBodyHtml(e) + "</div>";
+    return h + "</details>";
+  }
+  function encounterHtml(enc, idx) {
+    var h = '<div class="encounter">';
+    h += '<div class="enc-head"><span class="enc-name">' + esc(enc.name) + "</span>";
+    if (enc.tags && enc.tags.length) h += enc.tags.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
+    h += "</div>";
+    if (enc.note) h += '<div class="enc-note">' + fmt(enc.note) + "</div>";
+    var unresolved = [];
+    enc.monsters.forEach(function (raw) {
+      var e = resolveRef(raw, idx);
+      if (e) h += statDetailsHtml(e, refLabel(raw));
+      else unresolved.push(refLabel(raw));
+    });
+    enc.notes.forEach(function (nt) { unresolved.push(refLabel(nt)); });
+    if (unresolved.length) h += '<div class="enc-extra">' + unresolved.map(function (u) { return fmt(u); }).join('<br>') + "</div>";
+    return h + "</div>";
+  }
+  var SECTION_TITLES = { easy: "Easy-pool combats", hard: "Hard-pool combats", elites: "Elites", bosses: "Bosses", events: "Events" };
+  function actHtml(act, idx) {
+    var h = '<div class="act">';
+    h += '<div class="act-top"><h2>' + esc(act.title) + "</h2>";
+    h += '<button class="btn mini" data-action="expand-act">Expand all</button>';
+    h += '<button class="btn mini" data-action="collapse-act">Collapse all</button></div>';
+    if (act.ancients && act.ancients.length) {
+      h += '<div class="ancient-pool"><span class="sec-label">Ancient pool</span> ' +
+        act.ancients.map(function (a) { return '<span class="apchip" data-jump-ancient="' + esc(a) + '">' + esc(a) + "</span>"; }).join("") + "</div>";
+    }
+    act.sections.forEach(function (sec) {
+      if (sec.kind === "events") return; // events listed separately below
+      h += '<div class="act-sec"><h3 class="act-sec-title">' + esc(SECTION_TITLES[sec.kind] || sec.label) + "</h3>";
+      h += '<div class="enc-grid">';
+      sec.encounters.forEach(function (enc) { h += encounterHtml(enc, idx); });
+      h += "</div></div>";
+    });
+    if (act.events && act.events.length) {
+      h += '<div class="act-sec"><h3 class="act-sec-title">Events</h3><div class="event-links">';
+      h += act.events.map(function (ev) { return '<span class="apchip" data-jump-event="' + esc(ev) + '">' + esc(ev) + "</span>"; }).join("");
+      h += "</div></div>";
+    }
+    return h + "</div>";
+  }
+  function eventCardHtml(ev) {
+    var h = '<div class="card event" id="evt-' + esc(slug(ev.name)) + '">';
+    h += '<div class="card-head"><h3 class="ename">' + esc(ev.name) + "</h3>";
+    h += '<span class="typebadge t-event">' + esc(ev.act.replace(/:.*/, "")) + "</span></div>";
+    if (ev.cond) h += '<div class="cond">' + fmt(ev.cond) + "</div>";
+    h += '<table class="opts"><tbody>';
+    ev.options.forEach(function (o) {
+      if (o.name && !o.effect && !o.notes) { h += '<tr class="opt-head"><td colspan="2">' + fmt(o.name) + "</td></tr>"; return; }
+      h += "<tr><td class=\"opt-name\">" + fmt(o.name) + "</td><td class=\"opt-effect\">" + fmt(o.effect) +
+        (o.notes ? '<div class="opt-notes">' + fmt(o.notes) + "</div>" : "") + "</td></tr>";
+    });
+    h += "</tbody></table>";
+    return h + "</div>";
+  }
+  function ancientCardHtml(a) {
+    var h = '<div class="card ancient" id="anc-' + esc(slug(a.name)) + '"><div class="card-head"><h3 class="ename">' + esc(a.name) + "</h3>";
+    h += '<span class="typebadge t-ancient">Ancient</span></div>';
+    a.groups.forEach(function (g) {
+      h += '<div class="anc-group"><div class="sec-label">' + esc(g.label) + "</div>";
+      g.items.forEach(function (it) {
+        h += '<div class="anc-item"><div class="anc-name">' + esc(it.name) + "</div><div class=\"anc-desc\">" + fmt(it.desc) + "</div></div>";
+      });
+      h += "</div>";
+    });
+    return h + "</div>";
+  }
+  function mechanicsHtml(sections) {
+    var h = "";
+    sections.forEach(function (s) {
+      h += '<div class="card mech"><h3 class="ename">' + esc(s.title) + "</h3>";
+      s.items.forEach(function (it) {
+        h += '<div class="mech-item">';
+        if (it.label) h += '<div class="mech-label">' + fmt(it.label) + "</div>";
+        it.lines.forEach(function (ln) { h += '<div class="mech-line">' + fmt(ln) + "</div>"; });
+        h += "</div>";
+      });
+      h += "</div>";
+    });
+    return h;
+  }
+
+  var api = {
+    parseCSV: parseCSV, parseStatBlocks: parseStatBlocks, parseAct: parseAct, parseEvents: parseEvents,
+    parseAncients: parseAncients, parseMechanics: parseMechanics,
+    buildIndex: buildIndex, resolveRef: resolveRef, refLabel: refLabel,
+    fmt: fmt, esc: esc, slug: slug, moveSummary: moveSummary,
+    statCardHtml: statCardHtml, statDetailsHtml: statDetailsHtml, encounterHtml: encounterHtml,
+    actHtml: actHtml, eventCardHtml: eventCardHtml, ancientCardHtml: ancientCardHtml, mechanicsHtml: mechanicsHtml
+  };
+  if (typeof module !== "undefined" && module.exports) module.exports = api;
+  global.STS = api;
+})(typeof window !== "undefined" ? window : this);
+</script>
+<script>/* Slay the Spire 2 Reference - DOM bootstrap & views (browser only) */
+(function () {
+  "use strict";
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var LS = "sts2:";
+
+  var FILES = [
+    { key: "monsters", id: "csv-monsters", match: /monsters/i, label: "Monsters" },
+    { key: "elites", id: "csv-elites", match: /elites/i, label: "Elites" },
+    { key: "bosses", id: "csv-bosses", match: /bosses/i, label: "Bosses" },
+    { key: "ancients", id: "csv-ancients", match: /ancients/i, label: "Ancients" },
+    { key: "events", id: "csv-events", match: /events/i, label: "Events" },
+    { key: "mechanics", id: "csv-mechanics", match: /mechanics/i, label: "Mechanics" },
+    { key: "act-overgrowth", id: "csv-act-overgrowth", match: /overgrowth/i, label: "Act 1: Overgrowth" },
+    { key: "act-underdocks", id: "csv-act-underdocks", match: /underdocks/i, label: "Act 1: Underdocks" },
+    { key: "act-hive", id: "csv-act-hive", match: /hive/i, label: "Act 2: Hive" },
+    { key: "act-glory", id: "csv-act-glory", match: /glory/i, label: "Act 3: Glory" }
+  ];
+  var ACT_KEYS = [
+    { key: "act-overgrowth", short: "1 · Overgrowth" },
+    { key: "act-underdocks", short: "1 · Underdocks" },
+    { key: "act-hive", short: "2 · Hive" },
+    { key: "act-glory", short: "3 · Glory" }
+  ];
+
+  var SOURCE = {};              // key -> "loaded" | "builtin"
+  var D = {};                   // parsed datasets
+  var state = { view: "acts", act: "act-overgrowth", q: "", betype: "all" };
+
+  // CSV text for a dataset: a copy you loaded into this browser, else the built-in snapshot.
+  function getRaw(f) {
+    try { var v = localStorage.getItem(LS + f.key); if (v && v.trim()) { SOURCE[f.key] = "loaded"; return v; } } catch (e) {}
+    SOURCE[f.key] = "builtin";
+    var el = document.getElementById(f.id);
+    return el ? (el.textContent || "").trim() : "";
+  }
+  function updateSourceLabel() {
+    var el = $("#src");
+    if (FILES.some(function (f) { return SOURCE[f.key] === "loaded"; })) { el.textContent = "● using CSVs you loaded"; el.className = "src ok"; }
+    else { el.textContent = "● built-in data"; el.className = "src"; }
+    el.title = "Built-in data is baked into this file. Load CSVs (button or drag-drop) to view newer data; it is remembered in this browser until you Reset.";
+  }
+
+  function rebuild() {
+    var RAW = {};
+    FILES.forEach(function (f) { RAW[f.key] = getRaw(f); });
+    D.monsters = STS.parseStatBlocks(STS.parseCSV(RAW["monsters"] || ""), "monster");
+    D.elites = STS.parseStatBlocks(STS.parseCSV(RAW["elites"] || ""), "elite");
+    D.bosses = STS.parseStatBlocks(STS.parseCSV(RAW["bosses"] || ""), "boss");
+    D.all = D.monsters.concat(D.elites, D.bosses);
+    D.idx = STS.buildIndex(D.all);
+    D.acts = {};
+    ACT_KEYS.forEach(function (a) { D.acts[a.key] = STS.parseAct(STS.parseCSV(RAW[a.key] || "")); });
+    D.events = STS.parseEvents(STS.parseCSV(RAW["events"] || ""));
+    D.ancients = STS.parseAncients(STS.parseCSV(RAW["ancients"] || ""));
+    D.mechanics = STS.parseMechanics(STS.parseCSV(RAW["mechanics"] || ""));
+    D.events.forEach(function (e) {
+      e._s = (e.name + " " + e.cond + " " + e.options.map(function (o) { return o.name + " " + o.effect + " " + o.notes; }).join(" ")).toLowerCase();
+    });
+    D.ancients.forEach(function (a) {
+      a._s = (a.name + " " + a.groups.map(function (g) {
+        return g.items.map(function (i) { return i.name + " " + i.desc; }).join(" ");
+      }).join(" ")).toLowerCase();
+    });
+    D.all.forEach(function (e) { e.appearsIn = []; e._ap = {}; });
+    Object.keys(D.acts).forEach(function (ak) {
+      var act = D.acts[ak], shortName = (ACT_KEYS.filter(function (x) { return x.key === ak; })[0] || {}).short || act.title;
+      act.sections.forEach(function (sec) {
+        if (sec.kind === "events") return;
+        sec.encounters.forEach(function (enc) {
+          enc.monsters.forEach(function (raw) {
+            var e = STS.resolveRef(raw, D.idx); if (!e) return;
+            var k = ak + "|" + enc.name; if (e._ap[k]) return; e._ap[k] = 1;
+            e.appearsIn.push({ actKey: ak, label: shortName + " · " + enc.name });
+          });
+        });
+      });
+    });
+  }
+
+  /* ----------------------------- views ----------------------------- */
+  function matchQ(s) { return !state.q || s.indexOf(state.q) >= 0; }
+
+  function viewActs() {
+    var bar = '<div class="actbar">' + ACT_KEYS.map(function (a) {
+      return '<button class="actbtn' + (state.act === a.key ? " on" : "") + '" data-act="' + a.key + '">' + STS.esc(a.short) + "</button>";
+    }).join("") + "</div>";
+    var act = D.acts[state.act];
+    if (!act) return bar + '<div class="empty">No data.</div>';
+    if (state.q) act = filterAct(act, state.q);
+    return bar + STS.actHtml(act, D.idx);
+  }
+  function filterAct(act, q) {
+    var copy = { title: act.title, ancients: act.ancients, events: act.events.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0; }), sections: [] };
+    act.sections.forEach(function (sec) {
+      if (sec.kind === "events") return;
+      var encs = sec.encounters.filter(function (enc) {
+        var hay = (enc.name + " " + enc.tags.join(" ") + " " + enc.monsters.join(" ") + " " + enc.notes.join(" ")).toLowerCase();
+        if (hay.indexOf(q) >= 0) return true;
+        return enc.monsters.some(function (raw) { var e = STS.resolveRef(raw, D.idx); return e && e.search.indexOf(q) >= 0; });
+      });
+      if (encs.length) copy.sections.push({ kind: sec.kind, label: sec.label, encounters: encs });
+    });
+    return copy;
+  }
+
+  function viewBestiary() {
+    var types = [["all", "All"], ["monster", "Monsters"], ["elite", "Elites"], ["boss", "Bosses"]];
+    var bar = '<div class="typebar">' + types.map(function (t) {
+      var n = t[0] === "all" ? D.all.length : D.all.filter(function (e) { return e.type === t[0]; }).length;
+      return '<button class="actbtn' + (state.betype === t[0] ? " on" : "") + '" data-betype="' + t[0] + '">' + t[1] + " <b>" + n + "</b></button>";
+    }).join("") + "</div>";
+    var list = D.all.filter(function (e) { return (state.betype === "all" || e.type === state.betype) && matchQ(e.search); });
+    if (!list.length) return bar + '<div class="empty">No enemies match your search.</div>';
+    return bar + '<div class="grid">' + list.map(function (e) { return STS.statCardHtml(e, { appears: true }); }).join("") + "</div>";
+  }
+
+  function viewEvents() {
+    var acts = [], byAct = {};
+    D.events.forEach(function (e) { if (!byAct[e.act]) { byAct[e.act] = []; acts.push(e.act); } byAct[e.act].push(e); });
+    var h = "", any = false;
+    acts.forEach(function (a) {
+      var evs = byAct[a].filter(function (e) { return matchQ(e._s); });
+      if (!evs.length) return; any = true;
+      h += '<h2 class="group-h">' + STS.esc(a) + "</h2><div class=\"grid\">" + evs.map(STS.eventCardHtml).join("") + "</div>";
+    });
+    return any ? h : '<div class="empty">No events match your search.</div>';
+  }
+
+  function viewAncients() {
+    var list = D.ancients.filter(function (a) { return matchQ(a._s); });
+    if (!list.length) return '<div class="empty">No ancients match your search.</div>';
+    return '<div class="note-bar">Ancients are run modifiers chosen at the start of each act. Each offers a pool of relic/card options.</div>' +
+      '<div class="grid">' + list.map(STS.ancientCardHtml).join("") + "</div>";
+  }
+
+  function viewMechanics() {
+    var secs = D.mechanics;
+    if (state.q) {
+      secs = D.mechanics.map(function (s) {
+        var items = s.items.filter(function (it) { return (it.label + " " + it.lines.join(" ")).toLowerCase().indexOf(state.q) >= 0; });
+        return (s.title.toLowerCase().indexOf(state.q) >= 0) ? s : { title: s.title, items: items };
+      }).filter(function (s) { return s.items.length; });
+    }
+    if (!secs.length) return '<div class="empty">No mechanics match your search.</div>';
+    return '<div class="grid">' + STS.mechanicsHtml(secs) + "</div>";
+  }
+
+  function render() {
+    var c = $("#content"), html = "";
+    if (state.view === "acts") html = viewActs();
+    else if (state.view === "bestiary") html = viewBestiary();
+    else if (state.view === "events") html = viewEvents();
+    else if (state.view === "ancients") html = viewAncients();
+    else if (state.view === "mechanics") html = viewMechanics();
+    c.innerHTML = html;
+    window.scrollTo(0, 0);
+    document.querySelectorAll(".tab").forEach(function (t) { t.classList.toggle("on", t.getAttribute("data-view") === state.view); });
+  }
+  function refresh() { rebuild(); render(); updateSourceLabel(); }
+
+  /* --------------------------- interactions ------------------------ */
+  function setView(v) { state.view = v; render(); }
+  function flash(msg) { var el = $("#status"); el.textContent = msg; el.classList.add("show"); setTimeout(function () { el.classList.remove("show"); }, 4000); }
+
+  function loadFiles(fileList) {
+    var arr = Array.prototype.slice.call(fileList || []).filter(function (file) { return /\.csv$/i.test(file.name); });
+    if (!arr.length) { flash("No .csv files found there"); return; }
+    var done = 0, matched = [], skipped = [];
+    arr.forEach(function (file) {
+      var f = FILES.filter(function (x) { return x.match.test(file.name); })[0];
+      var rd = new FileReader();
+      rd.onload = function () {
+        if (f) { try { localStorage.setItem(LS + f.key, rd.result); } catch (e) {} matched.push(f.label); }
+        else skipped.push(file.name);
+        if (++done === arr.length) { refresh(); flash(matched.length ? ("Loaded: " + matched.join(", ")) : "No recognised CSV filenames"); }
+      };
+      rd.readAsText(file);
+    });
+  }
+
+  function jumpTo(id, view) {
+    setView(view);
+    var el = document.getElementById(id);
+    if (el) { el.scrollIntoView({ behavior: "smooth", block: "start" }); el.classList.add("flash"); setTimeout(function () { el.classList.remove("flash"); }, 1600); if (el.tagName === "DETAILS") el.open = true; }
+  }
+
+  function wire() {
+    document.querySelectorAll(".tab").forEach(function (t) { t.addEventListener("click", function () { setView(t.getAttribute("data-view")); }); });
+    var search = $("#search");
+    search.addEventListener("input", function () { state.q = this.value.trim().toLowerCase(); render(); });
+    $("#asc").addEventListener("change", function () { document.body.classList.toggle("asc-on", this.checked); });
+    $("#loadBtn").addEventListener("click", function () { $("#file").click(); });
+    $("#file").addEventListener("change", function () { loadFiles(this.files); this.value = ""; });
+    $("#folderBtn").addEventListener("click", function () { $("#folder").click(); });
+    $("#folder").addEventListener("change", function () { loadFiles(this.files); this.value = ""; });
+    $("#resetBtn").addEventListener("click", function () {
+      if (!confirm("Forget the CSVs you loaded into this browser and go back to the built-in data?")) return;
+      FILES.forEach(function (f) { try { localStorage.removeItem(LS + f.key); } catch (e) {} });
+      refresh(); flash("Reset to built-in data");
+    });
+
+    $("#content").addEventListener("click", function (ev) {
+      var a = ev.target.closest("[data-act]"); if (a) { state.act = a.getAttribute("data-act"); state.q = ""; search.value = ""; render(); return; }
+      var bt = ev.target.closest("[data-betype]"); if (bt) { state.betype = bt.getAttribute("data-betype"); render(); return; }
+      var ja = ev.target.closest("[data-jump-act]"); if (ja) { state.act = ja.getAttribute("data-jump-act"); state.q = ""; search.value = ""; setView("acts"); return; }
+      var je = ev.target.closest("[data-jump-event]"); if (je) { jumpTo("evt-" + STS.slug(je.getAttribute("data-jump-event")), "events"); return; }
+      var jn = ev.target.closest("[data-jump-ancient]"); if (jn) { jumpTo("anc-" + STS.slug(jn.getAttribute("data-jump-ancient")), "ancients"); return; }
+      var ex = ev.target.closest('[data-action="expand-act"]'); if (ex) { ev.target.closest(".act").querySelectorAll("details").forEach(function (d) { d.open = true; }); return; }
+      var co = ev.target.closest('[data-action="collapse-act"]'); if (co) { ev.target.closest(".act").querySelectorAll("details").forEach(function (d) { d.open = false; }); return; }
+    });
+
+    var drop = $("#drop"), dc = 0;
+    window.addEventListener("dragenter", function (e) { e.preventDefault(); dc++; drop.classList.add("show"); });
+    window.addEventListener("dragover", function (e) { e.preventDefault(); });
+    window.addEventListener("dragleave", function (e) { e.preventDefault(); dc--; if (dc <= 0) drop.classList.remove("show"); });
+    window.addEventListener("drop", function (e) { e.preventDefault(); dc = 0; drop.classList.remove("show"); loadFiles(e.dataTransfer.files); });
+  }
+
+  wire();
+  refresh();
+})();
+</script>
+</body>
+</html>
