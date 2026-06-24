@@ -274,9 +274,6 @@
   }
 
   /* ===================== HTML string builders ================= */
-  function moveSummary(e) {
-    return e.movesArr.map(function (mv) { return mv.name; }).filter(Boolean).join("  ·  ");
-  }
   function statBodyHtml(e) {
     var h = "";
     if (e.movesArr.length) {
@@ -320,31 +317,136 @@
     h += statBodyHtml(e);
     return h + "</div>";
   }
-  // collapsible stat block used inside encounters
-  function statDetailsHtml(e, label) {
-    var h = '<details class="estat">';
-    h += '<summary><span class="sum-name">' + esc(label || e.name) + '</span>';
-    h += '<span class="sum-hp">&#10084; ' + fmt(e.hp) + "</span>";
-    var ms = moveSummary(e); if (ms) h += '<span class="sum-moves">' + esc(ms) + "</span>";
-    h += "</summary>";
-    h += '<div class="estat-body">' + statBodyHtml(e) + "</div>";
-    return h + "</details>";
+  /* ---- turn-order parsing: derive an ordered rotation from Attack Pattern text.
+     Conservative on purpose: only fires on clear cycle/alternate/always/start-then
+     phrasing, and the full pattern text is always shown too, so nothing is lost. ---- */
+  function normName(s) { return String(s == null ? "" : s).toLowerCase().replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").trim(); }
+  function moveIndexByName(movesArr, token) {
+    var t = normName(token); if (!t) return -1;
+    var names = movesArr.map(function (m) { return normName(m.name); }), i, k, w, pre;
+    for (i = 0; i < names.length; i++) if (names[i] && names[i] === t) return i;         // exact
+    w = t.split(" ");
+    for (k = w.length; k >= 1; k--) { pre = w.slice(0, k).join(" "); for (i = 0; i < names.length; i++) if (names[i] && names[i] === pre) return i; } // "Thrash until..." -> Thrash
+    for (i = 0; i < names.length; i++) if (names[i] && names[i].length >= 4 && t.indexOf(names[i]) >= 0) return i;   // move name inside token
+    for (i = 0; i < names.length; i++) if (t.length >= 4 && names[i] && names[i].indexOf(t) === 0) return i;         // "Expel" -> "Expel Blast"
+    return -1;
   }
-  function encounterHtml(enc, idx) {
-    var h = '<div class="encounter">';
-    h += '<div class="enc-head"><span class="enc-name">' + esc(enc.name) + "</span>";
-    if (enc.tags && enc.tags.length) h += enc.tags.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
+  function cleanToken(s) {
+    return String(s).replace(/\s*-\s*>\s*/g, " ")
+      .replace(/\b(?:until|then|after|before|if|when|once|while|chosen|chooses|picks|randomly|equally|allowed)\b.*$/i, "")
+      .replace(/\(.*$/, "").replace(/[\s,.;:]+$/, "").replace(/^[\s,.;:]+/, "").replace(/\s+/g, " ").trim();
+  }
+  function chainSteps(str, movesArr) {
+    var parts = /->/.test(String(str)) ? String(str).split(/\s*-\s*>\s*/) : String(str).split(/\s+and\s+|\s*\/\s*/);
+    var steps = [];
+    parts.forEach(function (p) {
+      var raw = p.trim(); if (!raw) return;
+      var mi = moveIndexByName(movesArr, raw);
+      var label = mi >= 0 ? movesArr[mi].name : cleanToken(raw);
+      if (label) steps.push({ label: label, mi: mi });
+    });
+    return steps;
+  }
+  function parseRotation(line, movesArr) {
+    if (!line) return null;
+    var raw = String(line).replace(/\s+/g, " ").trim(), m, seg = [];
+    if (m = raw.match(/^starts?\s+with\s+(.+?)\.\s*then\b,?\s*(?:continue[s]?\s+)?(?:cycl\w*|alternat\w*)\s*(?:through|between)?\s*(.+?)\.?$/i)) {
+      seg.push({ kind: "start", steps: chainSteps(m[1], movesArr) });
+      seg.push({ kind: "loop", steps: chainSteps(m[2], movesArr) });
+    } else if (m = raw.match(/^starts?\s+with\s+(.+?)\.\s*then\b\s*(?:it\s+)?(?:uses\s+)?(.+?)\s+every turn/i)) {
+      seg.push({ kind: "start", steps: chainSteps(m[1], movesArr) });
+      seg.push({ kind: "loop", steps: chainSteps(m[2], movesArr) });
+    } else if (m = raw.match(/(?:cycl\w*|alternat\w*)\s+(?:through|between\s+)?([A-Za-z0-9].*?)(?:\.|$)/i)) {
+      seg.push({ kind: "loop", steps: chainSteps(m[1], movesArr) });
+    } else if ((m = raw.match(/^always uses\s+([^.]+)/i)) || (m = raw.match(/\buses\s+([^.]+?)\s+every turn/i))) {
+      seg.push({ kind: "loop", steps: chainSteps(m[1], movesArr) });
+    } else if (/->/.test(raw) && (m = raw.match(/^starts?\s+with\s+(.+?)(?:\.|$)/i))) {
+      seg.push({ kind: "seq", steps: chainSteps(m[1], movesArr) });
+    } else if (m = raw.match(/([A-Za-z0-9][^.]*?(?:\s*-\s*>\s*[^.]+)+)/)) {
+      seg.push({ kind: "loop", steps: chainSteps(m[1], movesArr) });
+    }
+    seg = seg.filter(function (s) { return s.steps && s.steps.length; });
+    var total = seg.reduce(function (n, s) { return n + s.steps.length; }, 0);
+    if (!seg.length) return null;
+    if (total === 1 && seg[0].kind !== "loop") return null;   // a lone non-looping move isn't a rotation
+    return { segments: seg };
+  }
+  function rotSteps(steps) {
+    return steps.map(function (st, i) {
+      var cls = "turn" + (st.mi >= 0 ? " m" + (st.mi + 1) : "");
+      var num = st.mi >= 0 ? '<i class="tn">' + (st.mi + 1) + "</i>" : "";
+      return (i ? '<span class="rar">&#8594;</span>' : "") + '<span class="' + cls + '">' + num + esc(st.label) + "</span>";
+    }).join("");
+  }
+  function rotationHtml(e) {
+    var parsed = null, i;
+    for (i = 0; i < e.patt.length; i++) { parsed = parseRotation(e.patt[i], e.movesArr); if (parsed) break; }
+    if (!parsed && !e.patt.length) return "";
+    var h = '<div class="rotation"><span class="rot-label">Turn order</span>';
+    if (parsed) {
+      h += '<div class="rot-line">' + parsed.segments.map(function (s) {
+        if (s.kind === "loop") return '<span class="seg loop">' + rotSteps(s.steps) + '<span class="repeat" title="repeats">&#8635;</span></span>';
+        if (s.kind === "start") return '<span class="seg start"><span class="seg-tag">start</span>' + rotSteps(s.steps) + "</span>";
+        return '<span class="seg">' + rotSteps(s.steps) + "</span>";
+      }).join('<span class="seg-then">then</span>') + "</div>";
+    }
+    if (e.patt.length) h += '<div class="rot-text">' + e.patt.map(function (p) { return fmt(p); }).join("<br>") + "</div>";
+    return h + "</div>";
+  }
+  // one monster = one full-width row: identity | passives + moves (Move 1..N) + turn order
+  function combatMonRowHtml(e, label, count) {
+    var h = '<div class="mon-row">';
+    h += '<div class="mon-id"><div class="mon-name">' + esc(label || e.name) + (count > 1 ? ' <span class="mon-x">&#215;' + count + "</span>" : "") + "</div>";
+    h += '<div class="mon-meta"><span class="typebadge t-' + esc(e.type) + '">' + esc(e.type) + "</span>";
+    if (e.group) h += '<span class="mon-group">part of <b>' + esc(e.group) + "</b></span>";
     h += "</div>";
-    if (enc.note) h += '<div class="enc-note">' + fmt(enc.note) + "</div>";
-    var unresolved = [];
+    h += '<div class="hp">&#10084; ' + fmt(e.hp) + "</div>";
+    if (e.sub) h += '<div class="mon-sub">' + esc(e.sub) + "</div>";
+    h += "</div>";                                  // mon-id
+    h += '<div class="mon-main">';
+    if (e.notes.length) {
+      h += '<div class="passives">';
+      e.notes.forEach(function (n) { h += '<span class="passive">' + noteHtml(n) + "</span>"; });
+      h += "</div>";
+    }
+    if (e.movesArr.length) {
+      h += '<div class="move-strip">';
+      e.movesArr.forEach(function (mv, i) {
+        var n = i + 1;
+        h += '<div class="mv m' + n + '"><div class="mv-h"><span class="mv-n">' + n + '</span><span class="mv-name">' + esc(mv.name || ("Move " + n)) + "</span></div>";
+        if (mv.fx.length) {
+          h += '<div class="chips">';
+          mv.fx.forEach(function (f) { var c = fxClass(f); h += '<span class="chip' + (c ? " " + c : "") + '">' + fmt(f) + "</span>"; });
+          h += "</div>";
+        }
+        h += "</div>";
+      });
+      h += "</div>";
+    }
+    h += rotationHtml(e);
+    return h + "</div></div>";                      // mon-main, mon-row
+  }
+  // a combat = a full-width collapsible panel; open it and every monster shows at once
+  function encounterHtml(enc, idx) {
+    var seen = {}, order = [], extra = [];
     enc.monsters.forEach(function (raw) {
       var e = resolveRef(raw, idx);
-      if (e) h += statDetailsHtml(e, refLabel(raw));
-      else unresolved.push(refLabel(raw));
+      if (!e) { extra.push(refLabel(raw)); return; }
+      if (!seen[e.id]) { seen[e.id] = { e: e, label: refLabel(raw), count: 0 }; order.push(e.id); }
+      seen[e.id].count++;                            // collapse duplicates (Inklet, Inklet, Inklet -> x3)
     });
-    enc.notes.forEach(function (nt) { unresolved.push(refLabel(nt)); });
-    if (unresolved.length) h += '<div class="enc-extra">' + unresolved.map(function (u) { return fmt(u); }).join('<br>') + "</div>";
-    return h + "</div>";
+    enc.notes.forEach(function (nt) { extra.push(refLabel(nt)); });
+    var rows = order.map(function (id) { return seen[id]; });
+    var h = '<details class="combat"><summary class="combat-sum"><span class="cs-chev"></span><span class="cs-name">' + esc(enc.name) + "</span>";
+    if (enc.tags && enc.tags.length) h += enc.tags.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
+    h += '<span class="cs-mons">' + rows.map(function (r) {
+      return '<span class="cs-mon t-' + esc(r.e.type) + '">' + esc(r.label) + (r.count > 1 ? " &#215;" + r.count : "") + "</span>";
+    }).join("") + "</span></summary>";
+    h += '<div class="combat-body">';
+    if (enc.note) h += '<div class="enc-note">' + fmt(enc.note) + "</div>";
+    rows.forEach(function (r) { h += combatMonRowHtml(r.e, r.label, r.count); });
+    if (extra.length) h += '<div class="enc-extra"><span class="sec-label">Also / variable</span><br>' + extra.map(function (u) { return fmt(u); }).join("<br>") + "</div>";
+    return h + "</div></details>";
   }
   var SECTION_TITLES = { easy: "Easy-pool combats", hard: "Hard-pool combats", elites: "Elites", bosses: "Bosses", events: "Events" };
   function actHtml(act, idx) {
@@ -359,7 +461,7 @@
     act.sections.forEach(function (sec) {
       if (sec.kind === "events") return; // events listed separately below
       h += '<div class="act-sec"><h3 class="act-sec-title">' + esc(SECTION_TITLES[sec.kind] || sec.label) + "</h3>";
-      h += '<div class="enc-grid">';
+      h += '<div class="combat-list">';
       sec.encounters.forEach(function (enc) { h += encounterHtml(enc, idx); });
       h += "</div></div>";
     });
@@ -415,8 +517,8 @@
     parseCSV: parseCSV, parseStatBlocks: parseStatBlocks, parseAct: parseAct, parseEvents: parseEvents,
     parseAncients: parseAncients, parseMechanics: parseMechanics,
     buildIndex: buildIndex, resolveRef: resolveRef, refLabel: refLabel,
-    fmt: fmt, esc: esc, slug: slug, moveSummary: moveSummary,
-    statCardHtml: statCardHtml, statDetailsHtml: statDetailsHtml, encounterHtml: encounterHtml,
+    fmt: fmt, esc: esc, slug: slug,
+    statCardHtml: statCardHtml, encounterHtml: encounterHtml,
     actHtml: actHtml, eventCardHtml: eventCardHtml, ancientCardHtml: ancientCardHtml, mechanicsHtml: mechanicsHtml
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
