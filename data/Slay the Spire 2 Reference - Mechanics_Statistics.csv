@@ -8,13 +8,19 @@ Darv Chances,Run sees Act 2 Darv: 1/8,
 Cards,,
 ,,
 Rare Chance:,"Rare offset starts at -5%, and increases by 1% (0.5%) whenever a non-rare (common or uncommon) card is rolled in a card reward. Resets to -5% when a rare is rolled in a card reward.",
-,Offset is added to base rare chance for the floor type to get rare chance. Rare offset cannot exceed 40%. Rare offset only affects and is affected by card rewards from non-boss combats. Rare offset does not reset between acts.,
+,"Offset is added to base rare chance for the floor type to get rare chance. Rare offset cannot exceed 40%. Rare offset only affects and is affected by card rewards from combats. Since bosses always drop a rare card, rare offset is effectively reset between acts.
+
+Shop cards are affected by rare offset but do not modify rare offset afterwards.",
 ,Regular Base Rare Chance: 3% (1.5%),
 ,Elite Base Rare Chance: 10% (5%),
 ,Boss Base Rare Chance: 100%,
 ,Shop Base Rare Chance: 9% (4.5%),
 ,,
-Uncommon Chance:,Uncommon chance is fixed depending on floor type.,
+Uncommon Chance:,"Uncommon chance is fixed depending on floor type.
+
+If rare chance is negative after adding the offset, uncommon chance will be reduced by that amount.
+
+The game is currently bugged where card rewards that are unaffected by rare offset (such as those from events/ancients) will subtract the rare chance from the uncommon chance (e.g. the regular uncommon chance would actually be 37 - 3  = 34 on Ascension 0).",
 ,Regular Uncommon Chance: 37%,
 ,Elite Uncommon Chance: 40%,
 ,Boss Uncommon Chance: 0%,

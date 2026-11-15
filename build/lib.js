@@ -45,17 +45,33 @@
   function kwHi(s) { KW.forEach(function (p) { s = s.replace(p[0], function (m) { return '<span class="kw kw-' + p[1] + '">' + m + "</span>"; }); }); return s; }
   var ASC = /([0-9]+(?:\s*[-xX]\s*[0-9]+)*)\s*\(\s*([0-9]+(?:\s*[-xX]\s*[0-9]+)*)\s*\)/g;
   function ascWrap(s) { return s.replace(ASC, function (_, a, b) { return '<span class="base">' + a + '</span> <span class="asc">(' + b + ')</span>'; }); }
-  function fmt(text) {
+  // Dread mode (enemy data only -- Events use [..] for placeholders such as [Dish]).
+  // A "[n]" right after a number, or after its "(ascension)" value, is that number's Dread
+  // value: "252 (262) [292]", "Gains 2 [3] Strength". Any other "[..]" is a Dread-only change.
+  var NUM = "[0-9]+(?:\\s*[-xX]\\s*[0-9]+)*";
+  var DREAD = new RegExp(
+    "(-?" + NUM + ")(?:\\s*\\(\\s*(" + NUM + ")\\s*\\))?\\s*(\\[\\s*[-+xX]?[0-9][^\\[\\]]*\\])" +   // base (asc)? [dread]
+    "|(" + NUM + ")\\s*\\(\\s*(" + NUM + ")\\s*\\)" +                                                // base (asc)
+    "|(\\[[^\\[\\]]*\\])", "g");                                                                     // [dread-only text]
+  function dreadWrap(s) {
+    return s.replace(DREAD, function (_, b, a, d, b2, a2, d2) {
+      if (d) return '<span class="dgrp"><span class="base">' + b + "</span>" + (a ? ' <span class="asc">(' + a + ")</span>" : "") + ' <span class="dread">' + d + "</span></span>";
+      if (b2) return '<span class="base">' + b2 + '</span> <span class="asc">(' + a2 + ")</span>";
+      return '<span class="dread">' + d2 + "</span>";
+    });
+  }
+  // dread=true for enemy text (stat blocks, encounters): also marks up [Dread] values.
+  function fmt(text, dread) {
     if (text == null) return "";
     var s = esc(text);
     s = kwHi(s);
-    s = ascWrap(s);
+    s = dread ? dreadWrap(s) : ascWrap(s);
     s = s.replace(/\n+/g, "<br>");
     s = s.replace(/\s*-\s*&gt;\s*/g, ' <span class="arrow">&#8594;</span> ');
     return s;
   }
   function fxClass(t) {
-    var s = String(t).trim().toLowerCase();
+    var s = String(t).trim().toLowerCase().replace(/^\[\s*/, "");   // "[Add 1 Beckon to hand]" is still an "add"
     if (s.indexOf("damage") === 0) return "attack";
     if (s.indexOf("block") === 0) return "block";
     if (s.indexOf("summon") === 0) return "summon";
@@ -66,12 +82,12 @@
     if (/strength|ritual|thorns|dexterity|artifact|plating/.test(s) && /gain/.test(s)) return "buff";
     return "";
   }
-  function noteHtml(line) {
+  function noteHtml(line, dread) {
     var idx = line.indexOf(":");
     if (idx > 0 && idx <= 30 && /^[A-Z(]/.test(line)) {
-      return '<span class="kw-term">' + fmt(line.slice(0, idx)) + ':</span>' + fmt(line.slice(idx + 1));
+      return '<span class="kw-term">' + fmt(line.slice(0, idx), dread) + ':</span>' + fmt(line.slice(idx + 1), dread);
     }
-    return fmt(line);
+    return fmt(line, dread);
   }
   function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
 
@@ -86,23 +102,52 @@
     "Flail Knight": "Knights", "Spectral Knight": "Knights", "Magi Knight": "Knights",
     "Torch Head Amalgam": "Queen"
   };
+  // Dread mode: each boss has a "Dominion: ..." line in the name column -- on the boss's own
+  // rows, or alone under the group title for multi-part bosses (Kaiser Crab, The Kin, ...).
+  var DOMINION = /^dominion\s*:\s*/i;
+  // "Kin Follower x2 [x3]" = two of them in the fight, three in Dread. Keep the name clean
+  // so act references and BOSS_GROUPS still match it.
+  var QTY = /^(.*\S)\s+x(\d+)(?:\s*\[\s*x(\d+)\s*\])?$/i;
+  // Dread details the sheet does not list (yet), from the Slay the Spire 2 wiki's Dread page.
+  // Keyed like the stat blocks ("Group / Name") and shown as extra notes tagged "wiki", so they
+  // are never mistaken for sheet data. `key` is what to look for in the sheet's own text: once
+  // the sheet has the detail, verify.js flags the entry so it gets deleted instead of shown twice.
+  var WIKI_DREAD_NOTES = {
+    "Kaiser Crab / Crusher": [{ text: "[Starts with 15 Plating]", key: "15 plating" }],
+    "Kaiser Crab / Rocket": [{ text: "[Starts with 15 Plating]", key: "15 plating" }]
+  };
+  var WIKI_TAG = ' <span class="src-tag" title="From the Slay the Spire 2 wiki\'s Dread page; not in the reference sheet">wiki</span>';
   function parseStatBlocks(rows, type) {
-    var list = [], cur = null, c, r;
+    var list = [], cur = null, c, r, hdr = null, groupDom = {};
+    function setDominion(text) {
+      var d = text.replace(DOMINION, "");
+      if (hdr !== null) groupDom[hdr.toLowerCase()] = d;        // under a group title: the whole group's
+      else if (cur) { cur.dominion = d; if (cur.group) groupDom[cur.group.toLowerCase()] = d; }
+    }
     for (r = 1; r < rows.length; r++) {
       var cells = rows[r] || [];
       var get = function (k) { return (cells[k] == null ? "" : String(cells[k])).trim(); };
       var name = get(0), hp = get(1), notes = get(8), patt = get(9), mc = [];
       for (c = 2; c <= 7; c++) mc[c] = get(c);
       var hasMove = mc.some(function (x) { return x; });
+      var isDom = DOMINION.test(name);
       var onlyName = name !== "" && hp === "" && notes === "" && patt === "" && !hasMove;
-      if (onlyName) continue;                       // group header (e.g. "Kaiser Crab") -> skip
+      if (onlyName) {                               // group title (e.g. "Kaiser Crab"), or a lone Dominion line
+        if (isDom) setDominion(name); else hdr = name;
+        continue;
+      }
       var realHp = /^\d/.test(hp);                  // a true HP starts with a digit
-      if (name !== "" && realHp) {
-        cur = { type: type, name: name, sub: "", group: BOSS_GROUPS[name] || "", hp: hp, moves: {}, order: [], notes: [], patt: [] };
+      if (name !== "" && realHp && !isDom) {
+        var q = name.match(QTY), nm = q ? q[1] : name;
+        cur = { type: type, name: nm, qty: q ? +q[2] : 0, qtyDread: q && q[3] ? +q[3] : 0, sub: "",
+          dominion: (hdr !== null && groupDom[hdr.toLowerCase()]) || "",   // first member right under the title
+          group: BOSS_GROUPS[nm] || "", hp: hp, moves: {}, order: [], notes: [], patt: [] };
+        hdr = null;
         for (c = 2; c <= 7; c++) if (mc[c]) { cur.moves[c] = { name: mc[c], fx: [] }; cur.order.push(c); }
         list.push(cur);
       } else if (cur) {
-        if (name) cur.sub = cur.sub ? cur.sub + " " + name : name;
+        if (isDom) setDominion(name);
+        else if (name) cur.sub = cur.sub ? cur.sub + " " + name : name;
         if (hp) cur.hp = cur.hp ? cur.hp + " " + hp : hp;   // stray HP-column note
         for (c = 2; c <= 7; c++) if (mc[c]) {
           if (!cur.moves[c]) { cur.moves[c] = { name: "", fx: [] }; cur.order.push(c); }
@@ -111,10 +156,21 @@
       }
       if (cur) { if (notes) cur.notes.push(notes); if (patt) cur.patt.push(patt); }
     }
+    // every part of a multi-part boss shares the fight's Dominion (Crusher + Rocket, Queen + Amalgam)
+    var ownDom = {};
+    list.forEach(function (m) { if (m.dominion) ownDom[m.name.toLowerCase()] = m.dominion; });
+    list.forEach(function (m) {
+      var g = m.group.toLowerCase();
+      if (!m.dominion && g) m.dominion = groupDom[g] || ownDom[g] || "";
+    });
     list.forEach(function (m) {
       m.movesArr = m.order.map(function (k) { return m.moves[k]; });
       var nn = m.hp.match(/\d+/); m.hpNum = nn ? parseInt(nn[0], 10) : 0;
       var bits = [m.name, m.sub, m.group, m.hp];
+      if (m.qty) bits.push("x" + m.qty + (m.qtyDread ? " [x" + m.qtyDread + "]" : ""));
+      if (m.dominion) bits.push("dominion: " + m.dominion);
+      m.wikiNotes = WIKI_DREAD_NOTES[(m.group ? m.group + " / " : "") + m.name] || [];
+      m.wikiNotes.forEach(function (w) { bits.push(w.text); });
       m.movesArr.forEach(function (mv) { bits.push(mv.name); mv.fx.forEach(function (f) { bits.push(f); }); });
       m.notes.forEach(function (x) { bits.push(x); }); m.patt.forEach(function (x) { bits.push(x); });
       m.search = bits.join(" ").toLowerCase();
@@ -238,6 +294,35 @@
     return list;
   }
 
+  /* ================= act pages <-> Events tab ================= */
+  // The act tabs' event lists lag behind the Events tab (new events are missing) and spell
+  // some names differently ("Lost Wisp" vs "The Lost Wisp", "Reflections" vs "Reflections
+  // snoitcelfeR"). Point each listed name at its Events-tab entry, then add the events
+  // filed under that act which the act tab does not list.
+  function nameKey(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\bthe\b/g, " ").replace(/\s+/g, " ").trim(); }
+  function findEvent(name, events) {
+    var k = nameKey(name), i, hit = null, n = 0;
+    if (!k) return null;
+    for (i = 0; i < events.length; i++) if (nameKey(events[i].name) === k) return events[i];
+    for (i = 0; i < events.length; i++) if (nameKey(events[i].name).indexOf(k + " ") === 0) { hit = events[i]; n++; }
+    return n === 1 ? hit : null;                       // a shortened name, if it is unambiguous
+  }
+  function linkActEvents(act, events) {
+    var links = [], used = {}, ak = nameKey(act.title);
+    (act.events || []).forEach(function (label) {
+      var ev = findEvent(label, events);
+      if (ev) used[ev.name] = 1;
+      links.push({ label: label, name: ev ? ev.name : label, found: !!ev });
+    });
+    events.forEach(function (ev) {
+      if (nameKey(ev.act) !== ak || used[ev.name]) return;
+      used[ev.name] = 1;
+      links.push({ label: ev.name, name: ev.name, found: true, added: true });
+    });
+    act.eventLinks = links;
+    return links;
+  }
+
   /* =========================== Ancients ======================= */
   function parseAncients(rows) {
     var list = [], cur = null;
@@ -274,6 +359,16 @@
   }
 
   /* ===================== HTML string builders ================= */
+  // Dread mode. The sheet lists each boss's Dominion but not how the mode works; the rules used
+  // here (and in actDominionHtml) are from the Slay the Spire 2 wiki's Dread page: Dread runs
+  // with all 10 Ascension modifiers, and the act's boss puts its Dominion on that act's normal
+  // and elite combats -- not on the boss fight itself.
+  function dominionHtml(text) {
+    return '<div class="dominion" title="Dread: while this is the act\'s boss, every normal and elite combat in that act gets this effect. It does not apply in the boss fight itself.">' +
+      '<span class="dom-label">Dominion</span><span class="dom-scope">act\'s normal &amp; elite combats, not this fight</span>' +
+      '<div class="dom-text">' + fmt(text, true) + "</div></div>";
+  }
+  function dreadQtyHtml(e) { return e.qtyDread ? ' <span class="dread">[&#215;' + e.qtyDread + "]</span>" : ""; }
   function statBodyHtml(e) {
     var h = "";
     if (e.movesArr.length) {
@@ -283,21 +378,23 @@
         if (mv.name) h += '<div class="mname">' + esc(mv.name) + "</div>";
         if (mv.fx.length) {
           h += '<div class="chips">';
-          mv.fx.forEach(function (f) { var c = fxClass(f); h += '<span class="chip' + (c ? " " + c : "") + '">' + fmt(f) + "</span>"; });
+          mv.fx.forEach(function (f) { var c = fxClass(f); h += '<span class="chip' + (c ? " " + c : "") + '">' + fmt(f, true) + "</span>"; });
           h += "</div>";
         }
         h += "</div>";
       });
       h += "</div>";
     }
-    if (e.notes.length) {
+    var wiki = e.wikiNotes || [];
+    if (e.notes.length || wiki.length) {
       h += '<div class="sec"><div class="sec-label">Notes &amp; keywords</div><ul class="notes">';
-      e.notes.forEach(function (n) { h += "<li>" + noteHtml(n) + "</li>"; });
+      e.notes.forEach(function (n) { h += "<li>" + noteHtml(n, true) + "</li>"; });
+      wiki.forEach(function (w) { h += "<li>" + fmt(w.text, true) + WIKI_TAG + "</li>"; });
       h += "</ul></div>";
     }
     if (e.patt.length) {
       h += '<div class="sec"><div class="sec-label">Attack pattern (turn order)</div><ul class="pattern">';
-      e.patt.forEach(function (p) { h += "<li>" + fmt(p) + "</li>"; });
+      e.patt.forEach(function (p) { h += "<li>" + fmt(p, true) + "</li>"; });
       h += "</ul></div>";
     }
     return h;
@@ -305,10 +402,13 @@
   function statCardHtml(e, opts) {
     opts = opts || {};
     var h = '<div class="card stat" id="ent-' + esc(e.id) + '">';
-    h += '<div class="card-head"><h3 class="ename">' + esc(e.name) + (e.sub ? ' <span class="sub">' + esc(e.sub) + "</span>" : "") + "</h3>";
+    h += '<div class="card-head"><h3 class="ename">' + esc(e.name) +
+      (e.qty ? ' <span class="qty">&#215;' + e.qty + dreadQtyHtml(e) + "</span>" : "") +
+      (e.sub ? ' <span class="sub">' + esc(e.sub) + "</span>" : "") + "</h3>";
     h += '<span class="typebadge t-' + esc(e.type) + '">' + esc(e.type) + "</span></div>";
     if (e.group) h += '<div class="grouprow">part of <b>' + esc(e.group) + "</b></div>";
-    h += '<div class="hp">&#10084; ' + fmt(e.hp) + "</div>";
+    h += '<div class="hp">&#10084; ' + fmt(e.hp, true) + "</div>";
+    if (e.dominion) h += dominionHtml(e.dominion);
     if (opts.appears && e.appearsIn && e.appearsIn.length) {
       h += '<div class="appears"><span class="sec-label">Appears in</span> ' + e.appearsIn.map(function (a) {
         return '<span class="apchip" data-jump-act="' + esc(a.actKey) + '">' + esc(a.label) + "</span>";
@@ -390,23 +490,25 @@
         return '<span class="seg">' + rotSteps(s.steps) + "</span>";
       }).join('<span class="seg-then">then</span>') + "</div>";
     }
-    if (e.patt.length) h += '<div class="rot-text">' + e.patt.map(function (p) { return fmt(p); }).join("<br>") + "</div>";
+    if (e.patt.length) h += '<div class="rot-text">' + e.patt.map(function (p) { return fmt(p, true); }).join("<br>") + "</div>";
     return h + "</div>";
   }
   // one monster = one full-width row: identity | passives + moves (Move 1..N) + turn order
   function combatMonRowHtml(e, label, count) {
     var h = '<div class="mon-row">';
-    h += '<div class="mon-id"><div class="mon-name">' + esc(label || e.name) + (count > 1 ? ' <span class="mon-x">&#215;' + count + "</span>" : "") + "</div>";
+    h += '<div class="mon-id"><div class="mon-name">' + esc(label || e.name) + (count > 1 ? ' <span class="mon-x">&#215;' + count + "</span>" : "") + dreadQtyHtml(e) + "</div>";
     h += '<div class="mon-meta"><span class="typebadge t-' + esc(e.type) + '">' + esc(e.type) + "</span>";
     if (e.group) h += '<span class="mon-group">part of <b>' + esc(e.group) + "</b></span>";
     h += "</div>";
-    h += '<div class="hp">&#10084; ' + fmt(e.hp) + "</div>";
+    h += '<div class="hp">&#10084; ' + fmt(e.hp, true) + "</div>";
     if (e.sub) h += '<div class="mon-sub">' + esc(e.sub) + "</div>";
     h += "</div>";                                  // mon-id
     h += '<div class="mon-main">';
-    if (e.notes.length) {
+    var wiki = e.wikiNotes || [];
+    if (e.notes.length || wiki.length) {
       h += '<div class="passives">';
-      e.notes.forEach(function (n) { h += '<span class="passive">' + noteHtml(n) + "</span>"; });
+      e.notes.forEach(function (n) { h += '<span class="passive">' + noteHtml(n, true) + "</span>"; });
+      wiki.forEach(function (w) { h += '<span class="passive">' + fmt(w.text, true) + WIKI_TAG + "</span>"; });
       h += "</div>";
     }
     if (e.movesArr.length) {
@@ -416,7 +518,7 @@
         h += '<div class="mv m' + n + '"><div class="mv-h"><span class="mv-n">' + n + '</span><span class="mv-name">' + esc(mv.name || ("Move " + n)) + "</span></div>";
         if (mv.fx.length) {
           h += '<div class="chips">';
-          mv.fx.forEach(function (f) { var c = fxClass(f); h += '<span class="chip' + (c ? " " + c : "") + '">' + fmt(f) + "</span>"; });
+          mv.fx.forEach(function (f) { var c = fxClass(f); h += '<span class="chip' + (c ? " " + c : "") + '">' + fmt(f, true) + "</span>"; });
           h += "</div>";
         }
         h += "</div>";
@@ -440,13 +542,38 @@
     var h = '<details class="combat"><summary class="combat-sum"><span class="cs-chev"></span><span class="cs-name">' + esc(enc.name) + "</span>";
     if (enc.tags && enc.tags.length) h += enc.tags.map(function (t) { return '<span class="tag">' + esc(t) + "</span>"; }).join("");
     h += '<span class="cs-mons">' + rows.map(function (r) {
-      return '<span class="cs-mon t-' + esc(r.e.type) + '">' + esc(r.label) + (r.count > 1 ? " &#215;" + r.count : "") + "</span>";
+      return '<span class="cs-mon t-' + esc(r.e.type) + '">' + esc(r.label) + (r.count > 1 ? " &#215;" + r.count : "") + dreadQtyHtml(r.e) + "</span>";
     }).join("") + "</span></summary>";
     h += '<div class="combat-body">';
-    if (enc.note) h += '<div class="enc-note">' + fmt(enc.note) + "</div>";
-    rows.forEach(function (r) { h += combatMonRowHtml(r.e, r.label, r.count); });
-    if (extra.length) h += '<div class="enc-extra"><span class="sec-label">Also / variable</span><br>' + extra.map(function (u) { return fmt(u); }).join("<br>") + "</div>";
+    if (enc.note) h += '<div class="enc-note">' + fmt(enc.note, true) + "</div>";
+    rows.forEach(function (r) { h += combatMonRowHtml(r.e, r.label, r.count); });   // no Dominion here: it never applies to the boss fight
+    if (extra.length) h += '<div class="enc-extra"><span class="sec-label">Also / variable</span><br>' + extra.map(function (u) { return fmt(u, true); }).join("<br>") + "</div>";
     return h + "</div></details>";
+  }
+  function encounterDominions(enc, idx) {
+    var out = [];
+    enc.monsters.forEach(function (raw) {
+      var e = resolveRef(raw, idx);
+      if (e && e.dominion && out.indexOf(e.dominion) < 0) out.push(e.dominion);
+    });
+    return out;
+  }
+  // Dread: the Dominion each possible boss puts on this act's combats, plus how the mode works.
+  function actDominionHtml(act, idx) {
+    var items = [];
+    act.sections.forEach(function (sec) {
+      if (sec.kind !== "bosses") return;
+      sec.encounters.forEach(function (enc) {
+        encounterDominions(enc, idx).forEach(function (d) { items.push("<li><b>" + esc(enc.name) + "</b> " + fmt(d, true) + "</li>"); });
+      });
+    });
+    if (!items.length) return "";
+    var note = 'Dread runs with all 10 Ascension modifiers, stronger bosses (the <span class="dread">[n]</span> values) and an ' +
+      "Ascender's Bane added to your deck at the start of each act. The act's boss also puts its Dominion on every " +
+      "normal and elite combat in the act, but not on the boss fight itself.";
+    if (/^act\s*3\b/i.test(act.title)) note += " In Act 3 only the second boss contributes its Dominion.";
+    return '<div class="act-dominion"><span class="sec-label">Dread &middot; Dominion by boss</span>' +
+      '<p class="dread-note">' + note + "</p><ul>" + items.join("") + "</ul></div>";
   }
   var SECTION_TITLES = { easy: "Easy-pool combats", hard: "Hard-pool combats", elites: "Elites", bosses: "Bosses", events: "Events" };
   function actHtml(act, idx) {
@@ -458,6 +585,7 @@
       h += '<div class="ancient-pool"><span class="sec-label">Ancient pool</span> ' +
         act.ancients.map(function (a) { return '<span class="apchip" data-jump-ancient="' + esc(a) + '">' + esc(a) + "</span>"; }).join("") + "</div>";
     }
+    h += actDominionHtml(act, idx);
     act.sections.forEach(function (sec) {
       if (sec.kind === "events") return; // events listed separately below
       h += '<div class="act-sec"><h3 class="act-sec-title">' + esc(SECTION_TITLES[sec.kind] || sec.label) + "</h3>";
@@ -465,9 +593,11 @@
       sec.encounters.forEach(function (enc) { h += encounterHtml(enc, idx); });
       h += "</div></div>";
     });
-    if (act.events && act.events.length) {
+    // linkActEvents() fills eventLinks (names resolved against the Events tab, missing events added)
+    var links = act.eventLinks || (act.events || []).map(function (n) { return { label: n, name: n }; });
+    if (links.length) {
       h += '<div class="act-sec"><h3 class="act-sec-title">Events</h3><div class="event-links">';
-      h += act.events.map(function (ev) { return '<span class="apchip" data-jump-event="' + esc(ev) + '">' + esc(ev) + "</span>"; }).join("");
+      h += links.map(function (l) { return '<span class="apchip" data-jump-event="' + esc(l.name) + '">' + esc(l.label) + "</span>"; }).join("");
       h += "</div></div>";
     }
     return h + "</div>";
@@ -515,7 +645,8 @@
 
   var api = {
     parseCSV: parseCSV, parseStatBlocks: parseStatBlocks, parseAct: parseAct, parseEvents: parseEvents,
-    parseAncients: parseAncients, parseMechanics: parseMechanics,
+    parseAncients: parseAncients, parseMechanics: parseMechanics, linkActEvents: linkActEvents,
+    wikiDreadNotes: WIKI_DREAD_NOTES,
     buildIndex: buildIndex, resolveRef: resolveRef, refLabel: refLabel,
     fmt: fmt, esc: esc, slug: slug,
     statCardHtml: statCardHtml, encounterHtml: encounterHtml,

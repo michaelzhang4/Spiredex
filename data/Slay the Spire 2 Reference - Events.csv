@@ -9,7 +9,11 @@ Aroma of Chaos,Let Go,"Transform a card in your Deck.
 Can only occur if you do not have an event pet
 ",Eat the Egg,Gain 7 Max HP.,
 ,Take the Egg,"Add Byrdonis Egg to your Deck.
-","While Byrdonis Egg is in your deck you can select Hatch as a Rest Site action, which removes Byrdonis Egg and adds a Byrd Swoop to your deck. "
+","While Byrdonis Egg is in your deck you can select Hatch as a Rest Site action, which removes Byrdonis Egg and adds a Byrd Swoop to your deck. Once you play Byrd Swoop 6 times, you can select Evolve as a Rest Site action, which transforms Byrd Swoop into God Byrd (this transformation preserves upgrades).
+
+Byrd Swoop: 0 cost Attack. Deal 14 (18) damage.
+
+God Byrd: 0 cost Skill. At the start of your next turn, deal 30 (40) damage to ALL enemies."
 ,,,
 Dense Vegetation,Trudge On,Lose 8 HP. Gain 61 - 99 Gold.,
 ,Rest,Heal 30% Max HP. Fight 4 Wrigglers.,Receive regular combat rewards after the fight.
@@ -99,7 +103,17 @@ Can only occur if you have 6 HP or more",Dive In,Lose 8 HP. Obtain a random forg
 "Waterlogged Scriptorium
 Can only occur if you have 65 gold or more",Bloody Ink,Gain 6 Max HP.,
 ,Tentacle Quill,Pay 55 Gold. Enchant a card with Steady.,Steady: This card gains Retain.
-,Prickly Sponge,Pay 99 Gold. Enchant 2 cards with Steady.,
+,Prickly Sponge,Pay 120 Gold. Enchant 2 cards with Steady.,
+,,,
+Waterfall of Obvious Secrets,Be Nice,Obtain Dingy Dagger.,"Dingy Dagger: 0 cost Attack. Deal 7 damage. Can be upgraded any number of times.
+
+Upgrades increase damage by 4+N, where N is the number of upgrades already on the dagger. So, the first upgrade brings it up to 11 damage, the next brings it up to 16, then 22, then 29, and so on."
+,Beat Up,Obtain a random relic. Add 2 Guilty to your deck.,
+,Negotiate,Pay 70 Gold. Obtain a random Rare card.,
+,,,
+Wuppy in Trouble,Help Immediately,Add an Injury to your Deck. Obtain Wuppy with 60 HP.,"Wuppy: Absorbs all enemy attack damage in combat (Wuppy takes damage before your block does). At Rest Sites, you can restore Wuppy to full HP (even if it's dead)."
+,Be Cautious,Lose 2 HP. Obtain Wuppy with 30 HP.,
+,Ignore,Procure a random potion.,
 ,,,
 Act 2: Hive,,,
 ,,,
@@ -127,6 +141,9 @@ Can only occur if you have an enchantable card (cards can only have 1 enchantmen
 Infested Automaton,Study,Obtain a random Power.,Generated using regular rare and uncommon chance with no offset (so will almost always be uncommon).
 ,Touch the Core,Obtain a random 0 cost card.,Generated using regular rare and uncommon chance with no offset (so will almost always be common or uncommon).
 ,,,
+Museum of Torture,Take It,"Obtain Thumbscrew / Obsidian Vice / Tormentous Collar (randomly selected, you are told which one). Add a random Curse to your Deck.",Thumbscrew: Attacks that hit multiple times hit an additional time.
+,Break Out,Lose 10 Max HP.,"Obsidian Vice: At the end of your turn, deal 1 damage to a random enemy for each card in your hand (all damage is dealt to the same enemy)."
+,,,"Tormentous Collar: At the start of Elite combats, apply 2 Weak to ALL enemies."
 The Lost Wisp,Capture the Wisp,Add Decay to your Deck. Obtain the Lost Wisp.,
 ,Search the Nearby Area,Gain 45 - 75 Gold.,
 ,,,
@@ -138,7 +155,7 @@ The Lantern Key,Return the Key,Gain 100 Gold.,
 If you have the Lantern Key in your deck, the first ? room you enter in Act 3 will be the War Historian, Repy event."
 ,,,
 "Zen Weaver
-Can only occur if you have 125 gold or more",Breathing Techniques,Pay 50 Gold. Add 2 Enlightenment to your Deck.,
+Can only occur if you have 125 gold or more",Breathing Techniques,Pay 25 Gold. Add an Enlightenment to your Deck.,
 ,Emotional Awareness,Pay 125 Gold. Remove 1 card from your Deck.,
 ,Arachnid Acupuncture,Pay 250 Gold. Remove 2 cards from your Deck.,
 ,,,
@@ -160,6 +177,10 @@ Hungry for Mushrooms,Big Mushroom,Obtain Big Mushroom.,"Big Mushroom (relic): Up
 Reflections snoitcelfeR,Touch a Mirror,Downgrade 2 random cards. Upgrade 4 random cards.,Can upgrade a card that was just downgraded.
 ,Shatter,Duplicate your Deck. Receive Bad Luck.,
 ,,,
+"Shrine of the Warlord
+Can only occur if your Act 3 Ancient isn't Tanx.",Take the Weapon,Add Mighty Weapon to your Deck.,Mighty Weapon: 1 cost Attack. Deal 25 (30) damage to ALL enemies. Add 2 Dazed to your draw pile.
+,Take the Shield,Add Mighty Shield to your Deck.,Mighty Shield: 1 cost Skill. Gain 20 (25) block. Add 3 Dazed to your draw pile.
+,Take the Wings,Add a Clumsy to your Deck. Obtain Mighty Wings.,"Mighty Wings: Whenever you deal 30 or more attack damage in a single hit, gain 2 Strength."
 "The Round Tea Party
 Can only occur if you have at least 12 HP.",Enjoy Your Tea,Obtain Royal Poison. Heal to full HP.,
 ,Pick a Fight,Lose 11 HP. Obtain a random Relic.,
@@ -190,7 +211,10 @@ The Trial,Accept,Serve as today's Decider.,"Followed by a choice between DECIDE:
 ,DECIDE: Innocent,Add Doubt to your Deck. Transform 2 cards.,
 ,Reject,You are not allowed to Reject.,Followed by a choice between Accept and Double Down
 ,Double Down,Abandon the run.,
-,,,
+"Thermae Nonupeipe
+Can only occur if your Act 3 Ancient isn't Nonupeipe, and all players have more than 175 Gold, and at most 75% HP.",Thermal Baths,"Pay 88 Gold. At the start of each combat, heal 8 HP.",
+,Private Oasis,"Lose ALL your Gold. At the start of the next Boss combat, heal all of your HP.",
+,Drink Bath Water,Lose 31 HP. Add 3 Guilty to your Deck. Obtain a random Nonupeipe relic.,You are told which relic it is. The relic cannot be Looming Fruit.
 Shared,,,
 ,,,
 "The Sunken Statue

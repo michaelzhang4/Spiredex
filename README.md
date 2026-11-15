@@ -18,6 +18,9 @@ have to dig through separate spreadsheet tabs mid‑run.
 - **Bestiary** — all enemies (monsters, elites, bosses) in one searchable list, each
   showing which act encounters it appears in.
 - **Events**, **Ancients**, and **Mechanics** reference sections.
+- **Dread mode** details: the Dominion each boss puts on its act's normal and elite
+  combats (listed per act and on the boss), `[bracketed]` Dread values, and a **Dread**
+  toggle that highlights them together with the ascension values Dread includes.
 - **Search** across everything, an **Ascension** toggle that highlights the upgraded
   values, and colour‑coded keywords (attack / block / buff / debuff / summon / status).
 - **No install, works offline** — a single HTML file with no dependencies. Just open it.
@@ -73,6 +76,10 @@ node build/verify.js   # re-extracts the embedded data from the built HTML and c
 
 The reference data lives in the `Slay the Spire 2 Reference - *.csv` files, exported from
 [this Google Sheet](https://docs.google.com/spreadsheets/d/1wlhrYjH8JwfPrPd0VaekzJrdKuOXCT23UwxHcQBayVc/edit?usp=sharing).
+
+The short Dread-mode rules summary on the act pages, and any note tagged `wiki` in the app,
+come from the Slay the Spire 2 wiki instead, because the sheet does not have them. Those
+notes live in `WIKI_DREAD_NOTES` in `build/lib.js`, not in the CSVs.
 
 ## License
 

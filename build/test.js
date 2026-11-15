@@ -46,6 +46,23 @@ console.log("\n=== events ===");
 console.log("count:", events.length, "| acts:", Array.from(new Set(events.map(function (e) { return e.act; }))).join(" | "));
 console.log("sample:", JSON.stringify(events[0]));
 
+console.log("\n=== act event lists (act tab + Events tab) ===");
+actFiles.forEach(function (af) {
+  var links = STS.linkActEvents(STS.parseAct(STS.parseCSV(read(P + af + ".csv"))), events);
+  console.log(af + ": " + links.length + " events | added from Events tab: [" +
+    links.filter(function (l) { return l.added; }).map(function (l) { return l.label; }).join(", ") + "] | not in Events tab: [" +
+    links.filter(function (l) { return !l.found; }).map(function (l) { return l.label; }).join(", ") + "]");
+});
+
+console.log("\n=== dread ===");
+var withDom = all.filter(function (e) { return e.dominion; });
+console.log("enemies carrying a Dominion:", withDom.length, "| distinct Dominions:", new Set(withDom.map(function (e) { return e.dominion; })).size);
+withDom.forEach(function (e) { console.log("  " + e.name + (e.group ? " <" + e.group + ">" : "") + ": " + e.dominion); });
+console.log("Dread counts:", all.filter(function (e) { return e.qtyDread; }).map(function (e) { return e.name + " x" + e.qty + " [x" + e.qtyDread + "]"; }).join(", ") || "(none)");
+console.log("wiki-sourced notes (not in the sheet):", all.filter(function (e) { return e.wikiNotes.length; }).map(function (e) {
+  return e.name + " " + e.wikiNotes.map(function (w) { return w.text; }).join(" ");
+}).join(", ") || "(none)");
+
 var ancients = STS.parseAncients(STS.parseCSV(read(P + "Ancients.csv")));
 console.log("\n=== ancients ===");
 console.log("count:", ancients.length, "names:", ancients.map(function (a) { return a.name + "(" + a.groups.length + "g," + a.groups.reduce(function (n, g) { return n + g.items.length; }, 0) + "i)"; }).join(", "));

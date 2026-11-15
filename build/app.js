@@ -52,6 +52,7 @@
     D.acts = {};
     ACT_KEYS.forEach(function (a) { D.acts[a.key] = STS.parseAct(STS.parseCSV(RAW[a.key] || "")); });
     D.events = STS.parseEvents(STS.parseCSV(RAW["events"] || ""));
+    Object.keys(D.acts).forEach(function (ak) { STS.linkActEvents(D.acts[ak], D.events); });
     D.ancients = STS.parseAncients(STS.parseCSV(RAW["ancients"] || ""));
     D.mechanics = STS.parseMechanics(STS.parseCSV(RAW["mechanics"] || ""));
     D.events.forEach(function (e) {
@@ -92,6 +93,7 @@
   }
   function filterAct(act, q) {
     var copy = { title: act.title, ancients: act.ancients, events: act.events.filter(function (n) { return n.toLowerCase().indexOf(q) >= 0; }), sections: [] };
+    if (act.eventLinks) copy.eventLinks = act.eventLinks.filter(function (l) { return (l.label + " " + l.name).toLowerCase().indexOf(q) >= 0; });
     act.sections.forEach(function (sec) {
       if (sec.kind === "events") return;
       var encs = sec.encounters.filter(function (enc) {
@@ -189,7 +191,19 @@
     document.querySelectorAll(".tab").forEach(function (t) { t.addEventListener("click", function () { setView(t.getAttribute("data-view")); }); });
     var search = $("#search");
     search.addEventListener("input", function () { state.q = this.value.trim().toLowerCase(); render(); });
-    $("#asc").addEventListener("change", function () { document.body.classList.toggle("asc-on", this.checked); });
+    // Dread runs with every Ascension modifier, so it switches the ascension values on too
+    // (and locks that toggle); turning Dread off restores whatever Ascension was set to.
+    var asc = $("#asc"), dread = $("#dread"), ascOwn = false;
+    function applyModes() {
+      asc.checked = ascOwn || dread.checked;
+      asc.disabled = dread.checked;
+      asc.parentNode.classList.toggle("locked", dread.checked);
+      asc.parentNode.title = dread.checked ? "Dread includes every Ascension modifier" : "";
+      document.body.classList.toggle("asc-on", asc.checked);
+      document.body.classList.toggle("dread-on", dread.checked);
+    }
+    asc.addEventListener("change", function () { ascOwn = this.checked; applyModes(); });
+    dread.addEventListener("change", applyModes);
     $("#loadBtn").addEventListener("click", function () { $("#file").click(); });
     $("#file").addEventListener("change", function () { loadFiles(this.files); this.value = ""; });
     $("#folderBtn").addEventListener("click", function () { $("#folder").click(); });

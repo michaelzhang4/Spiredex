@@ -1,63 +1,66 @@
 Boss Name,HP,Move 1,Move 2,Move 3,Move 4,Move 5,Move 6,Notes,Attack Pattern
 Aeonglass,512 (535),Ebb,Eye Lasers,Increasing Intensity,,,,Starts with 3 Artifact and Withering Presence,Cycles through Ebb -> Eye Lasers -> Increasing Intensity.
-,,Damage 26 (32),Damage 11x2 (12x2),Gain 3+N (4+N) Strength,,,,,
+"Dominion: At the start of every turn, add a Wither to the top of the draw pile.",,Damage 22 (26),Damage 11x2 (12x2),Gain 3+N (4+N) Strength,,,,,
 ,,Block 33,,Upgrade all Withers in the deck and all future Withers,,,,"Withering Presence: Every 6 non-Status cards you play, add a Wither to your hand.",
 ,,,,,,,,,
-,,,,Shuffle 1 (2) Withers into discard,,,,"Wither: Unplayable Status. At the end of your turn, if this is in your hand, take 3 (+3 for every upgrade) damage.",
+,,,,Shuffle 1 (2) [3] Withers into discard [draw pile],,,,"Wither: Unplayable Status. At the end of your turn, if this is in your hand, take 3 (+3 for every upgrade) damage.",
 ,,,,N = # of times this move was used,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-Ceremonial Beast,252 (262),Stamp,Plow,Beast Cry,Stomp,Crush,,"Plow X: The first time Ceremonial Beast's HP reaches X or below, it becomes stunned and loses all strength.",Starts with Stamp. Then uses Plow every turn until it is stunned.
-,,Gains Plow 150 (160),Damage 18 (20),Apply Ringing,Damage 15 (17),Damage 17 (19),,,
-,,,Gains 2 Strength,,,Gains 3 (4) Strength,,Ringing: You can only play 1 card this turn.,"After being stunned, cycles through Beast Cry -> Stomp -> Crush."
-,,,,,,,,,
+Ceremonial Beast,252 (262) [292],Stamp,Plow,Beast Cry,Stomp,Crush,,"Plow X: The first time Ceremonial Beast's HP reaches X or below, it becomes stunned and loses all strength [and gains 2 Ritual].",Starts with Stamp. Then uses Plow every turn until it is stunned.
+Dominion: Enemies gain 1 Ritual.,,Gains Plow 150 (160),Damage 18 (20),Apply Ringing,Damage 15 (17),Damage 17 (19),,,
+,,,Gains 2 [3] Strength,,,Gains 3 (4) Strength,,Ringing: You can only play 1 card this turn.,"After being stunned, cycles through Beast Cry -> Stomp -> Crush."
+,,,,,,,,"Ritual X: At the end of its turn, gain X Strength.",
 ,,,,,,,,,
 Kaiser Crab,,,,,,,,,
+Dominion: Enemies gain 7 Plating.,,,,,,,,,
 Crusher,209 (219),Thrash,Enlarging Strike,Bug Sting,Adapt,Guarded Strike,,Starts with Back Attack and Crab Rage.,Cycles through Thrash -> Enlarging Strike -> Bug Sting -> Adapt -> Guarded Strike.
 ,,Damage 12 (14),Damage 4,Damage 6x2 (7x2),Gain 2 (3) Strength,Damage 12 (14),,Back Attack: Deals 50% more damage if attacking you from behind.,
 ,,,,Apply 2 Weak,,Block 18,,"Crab Rage: When an ally dies, gains 6 strength and 99 block.",
 ,,,,Apply 2 Frail,,,,,
 ,,,,,,,,,
-Rocket,199 (209),Targeting Reticle,Precision Beam,Charge Up,Laser,Recharge,,Starts with Back Attack and Crab Rage.,Cycles through Targeting Reticle -> Precision Beam -> Charge Up -> Laser -> Recharge.
-,,Damage 3 (4),Damage 18 (20),Gain 2 (3) Strength,Damage 31 (35),Pass turn,,,
+Rocket,199 (209),Targeting Reticle,Precision Beam,Charge Up,Rocket Claw,Recharge,,Starts with Back Attack and Crab Rage.,Cycles through Targeting Reticle -> Precision Beam -> Charge Up -> Rocket Claw -> Recharge.
+,,Damage 3 (4),Damage 18 (20),Gain 2 (3) Strength,Damage 31 (35) [40],Pass turn,,,
 ,,,,,,,,,
 Knowledge Demon,379 (399),Curse of Knowledge,Slap,Knowledge Overwhelming,Ponder,,,Disintegration X: Take X damage at the end of your turn.,Cycles through Curse of Knowledge -> Slap -> Knowledge Overwhelming -> Ponder until Curse of Knowledge has been used 3 times. Then cycles through Slap -> Knowledge Overwhelming -> Ponder.
-,,Player must choose one of two debuffs:,Damage 17 (18),Damage 8x3 (9x3),Damage 11 (13),,,(Stacks additively if selected multiple times),
-,,1st choice: Disentegration 6 or Mind Rot,,,Heal 30*,,,,
-,,2nd choice: Disentegration 7 or Sloth,,,Gain 2 (3) Strength,,,Mind Rot: Draw 1 fewer card at the start of your turn,
-,,3rd Choice: Disentegration 8 or Waste Away,,,,,,Sloth: You cannot play more than 3 cards per turn,
+"Dominion: At the start of every combat, you must choose between only being able to play 3 cards each turn, or drawing 2 fewer cards and losing 1 energy on your first turn.",,Player must choose one of two debuffs:,Damage 17 (18),Damage 8x3 (9x3),Damage 11 (13),,,(Stacks additively if selected multiple times),
+,,1st choice: Disentegration 6 [8] or Mind Rot,,,Heal 30*,,,,
+,,2nd choice: Disentegration 7 [9] or Sloth,,,Gain 2 (3) Strength,,,Mind Rot: Draw 1 fewer card at the start of your turn,
+,,3rd Choice: Disentegration 8 [10] or Waste Away,,,,,,Sloth: You cannot play more than 3 cards per turn,
 ,,,,,,,,Waste Away: Gain 1 less energy at the start of your turn,
 ,,,,,,,,,
 ,,,,,,,,* Heal is multiplied by player count,
 ,,,,,,,,,
-Lagavulin Matriarch,222 (233),Slash,Disembowel,Slash 2,Soul Siphon,,,"Starts with 12 Plating, and sleeps for 3 turns or until losing HP.",Cycles through Slash -> Disembowel -> Slash 2 -> Soul Siphon.
-,,Damage 19 (21),Damage 9x2 (10x2),Damage 12 (14),Apply -2 Strength,,,"On wakeup, all Plating is removed.",
-,,,,Block 12 (14),Apply -2 Dexterity,,,,
+Lagavulin Matriarch,222 (233) [255],Slash,Disembowel,Slash 2,Soul Siphon,,,"Starts with 12 Plating, and sleeps for 3 turns or until losing HP.",Cycles through Slash -> Disembowel -> Slash 2 -> Soul Siphon.
+"Dominion: At the end of your first turn, lose 1 Strength and 1 Dexterity.",,Damage 19 (21),Damage 9x2 (10x2),Damage 12 (14) [16],Apply -2 [-3] Strength,,,"On wakeup, all Plating is removed.",
+,,,,Block 12 (14) [16],Apply -2 [-3] Dexterity,,,,
 ,,,,,Gain 2 Strength,,,,
 ,,,,,,,,,
 Queen,400 (419),Puppet Strings,You Are Mine!,Burn Bright For Me,Off With Your Head,Execution,Enrage,Starts with a Torch Head Amalgam in play.,"Begins with Puppet Strings -> You Are Mine!
+[Instead does both Puppet Strings and You are Mine! in the same turn.]
 
 Afterwards, while Amalgam is alive, always does Burn Bright For Me. If Amalgam dies and intent is Burn Bright For Me, intent is immediately replaced with Enrage.
 
 After Amalgam dies, cycles Off With Your Head -> Execution -> Enrage."
-,,Apply Chains of Binding 3,Apply 99 Frail,Give allies 1 Strength,Damage 3x5 (4x5),Damage 15 (18),Gain 2 Strength,"If Amalgam dies, and intent is Burn Bright For Me, Enrage instead.",
+"Dominion: On turn 2 you get 3 Weak, 3 Vulnerable, and 3 Frail.",,Apply Chains of Binding 3,Apply 99 Frail,Give allies 1 [2] Strength,Damage 3x5 (4x5),Damage 15 (18),Gain 2 Strength,"If Amalgam dies, and intent is Burn Bright For Me, Enrage instead.",
 ,,,Apply 99 Weak,Block 20,,,,,
 ,,,Apply 99 Vulnerable,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-Torch Head Amalgam,199 (211),Tackle,Soul Beam,Weak Tackle,,,,,"Begins with Tackle -> Tackle.
+Torch Head Amalgam,199 (211),Strong Tackle,Tackle,Soul Beam,Weak Tackle,,,,"Begins with Strong Tackle -> Tackle.
 
 Afterwards, cycles Soul Beam -> Weak Tackle -> Weak Tackle."
-,,Damage 18 (19),Damage 8x3,Damage 14 (15),,,,,
+,,Damage 26 (32) [37],Damage 18 (22),Damage 8x3,Damage 14 (16),,,,
 ,,,,,,,,,
 ,,,,,,,,,
 Soul Fysh,211 (221),Beckon,De-Gas,Gaze,Fade,Scream,,"Beckon: 1 cost status, lose 6 HP if it is in hand at the end of turn.",Cycles through Beckon -> De-Gas -> Gaze -> Fade -> Scream.
-,,Shuffle 1 Beckon into draw,Damage 16 (17) ,Damage 7 (8),Gain 2* Intangible,Damage 13 (15),,,
+Dominion: Shuffle 1 Beckon into draw at the start of every combat.,,Shuffle 1 Beckon into draw,Damage 16 (18) ,Damage 7 (8),Gain 2* Intangible,Damage 13 (15),,,
 ,,Shuffle 1 Beckon into discard,,Shuffle 1 Beckon into discard,,Apply 3 Vulnerable,,* One of the 2 Intangible from Fade ticks down immediately.,
-,,,,,,,,,
+,,[Add 1 Beckon to hand],,,,,,,
 Test Subject #C14,,,,,,,,,
-Stage 1,100 (111),Bite,Skull Bash,,,,,Starts with Enrage 3.,"Cycles through Bite -> Skull Bash.
+Dominion: All enemies gain 3 Strength.,,,,,,,,,
+Stage 1,100 (111),Bite,Skull Bash,,,,,Starts with Enrage 2 (3) [4].,"Cycles through Bite -> Skull Bash.
 
 When killed, revive next turn in stage 2."
 ,,Damage 20 (22),Damage 14 (16),,,,,"Enrage X: Whenever you play a skill, gain X Strength.",
@@ -65,34 +68,35 @@ When killed, revive next turn in stage 2."
 ,,,,,,,,,
 Stage 2,200 (212),Multi-Claw,,,,,,Starts with Painful Stabs 1.,Uses Multi-Claw every turn.
 ,,Damage 10xN (11xN),,,,,,Painful Stabs X: Shuffle X Wounds into discard when inflicting unblocked damage.,
-,,(N = 3 + # times Multi-Claw has been used),,,,,,,
+,,(N = 3 [4] + # of times Multi-Claw has been used before),,,,,,,
 ,,,,,,,,,
 Stage 3,300 (313),Lacerate,Big Pounce,Burning Growl,,,,"Starts with Nemesis, which will immediately give 1 Intangible.",Cycles through Lacerate -> Big Pounce -> Burning Growl.
 ,,Damage 10x3 (11x3),Damage 45,Shuffle 3 (5) Burns into discard,,,,"Nemesis: At the end of every other turn, gain 1 Intangible.",
-,,,,Gain 2 (3) Strength,,,,,
+,,,,Gain 2 (3) [6] Strength,,,,,
 ,,,,,,,,,
-The Insatiable,321 (341),Liquify Ground,Thrash,Lunging Bite,Salivate,,,"Sandpit X: In X turns, instantly die.","Starts with Liquify Ground.
+The Insatiable,321 (341) [361],Liquify Ground,Thrash,Lunging Bite,Salivate,,,"Sandpit X: In X turns, instantly die.","Starts with Liquify Ground.
 
 Afterwards, cycles through Thrash -> Lunging Bite -> Salivate -> Thrash (note: this means that Thrash is used twice in a row)."
-,,Gain Sandpit 4,Damage 8x2 (9x2),Damage 28 (31),Gain 2 (3) Strength,,,,
+"Dominion: At the end of your turn, take N+2 damage, where N is the turn number (so 3 damage on turn 1, 4 on turn 2, etc.)",,Gain Sandpit 4 [3],Damage 8x2 (9x2),Damage 28 (31),Gain 2 (3) Strength,,,,
 ,,Shuffle 3 Frantic Escapes into draw,,,,,,"Frantic Escape: 1 cost status, increase card cost and Sandpit by 1.",
 ,,Shuffle 3 Frantic Escapes into discard,,,,,,,
 ,,,,,,,,,
 The Kin,,,,,,,,,
+"Dominion: At the start of every combat, you gain 2 Weak and 2 Frail.",,,,,,,,,
 Kin Priest,190 (199),Orb of Frailty,Orb of Weakness,Beam,Ritual,,,,Cycles through Orb of Frailty -> Orb of Weakness -> Beam -> Ritual.
 ,,Damage 8 (9),Damage 8 (9),Damage 3x3,Gain 2 (3) Strength,,,,
 ,,Apply 1 Frail,Apply 1 Weak,,,,,,
 ,,,,,,,,,
-Kin Follower,58 - 59 (62 - 63),Quick Slash,Boomerang,Power Dance,,,,Kin Follower is a minion.,Cycles through Quick Slash -> Boomerang -> Power Dance.
+Kin Follower x2 [x3],58 - 59 (62 - 63),Quick Slash,Boomerang,Power Dance,,,,Kin Follower is a minion.,Cycles through Quick Slash -> Boomerang -> Power Dance.
 (Minion),,Damage 5,Damage 2x2,Gain 2 (3) Strength,,,,,
-,,,,,,,,,
-Vantom,173 (183),Ink Blot,Inky Lance,Dismember,Prepare,,,Starts with Slippery 8 (9),Cycles through Ink Blot -> Inky Lance -> Dismember -> Prepare.
-,,Damage 7 (8),Damage 6x2 (7x2),Damage 26 (30),Gain 2 Strength,,,,
+,,,,,,,,,The first minion starts with Power Dance. The second starts with Quick Slash. [The third starts with Boomerang.]
+Vantom,173 (183),Ink Blot,Inky Lance,Dismember,Prepare,,,Starts with Slippery 8 (9) [11],Cycles through Ink Blot -> Inky Lance -> Dismember -> Prepare.
+Dominion: Normal enemies gain 1 Slippery and elites gain 2 Slippery.,,Damage 7 (8),Damage 6x2 (7x2),Damage 26 (30),Gain 2 [3] Strength,,,,
 ,,,,Add 3 Wounds into discard,,,,"Slippery X: The next X times this loses HP, only lose 1. ",
 ,,,,,,,,,
 Waterfall Giant,240 (250),Pressurize,Stomp,Ram,Siphon,Pressure Gun,Pressure Up,"Steam Eruption X: After dying, wait 1 turn, then attack for X damage.","Begins with Pressurize.
 
 Afterwards, cycles through Stomp -> Ram -> Siphon -> Pressure Gun -> Pressure Up."
-,,Gain 15 (20) Steam Eruption,Damage 15 (16),Damage 10 (11),Heal 10 (15)*,Damage 20 (23) + 5*N,Damage 13 (14),,
-,,,Apply 1 Weak,Gain 3 Steam Eruption,Gain 3 Steam Eruption,N = # of times this move was used,Gain 3 Steam Eruption,,
-,,,Gain 3 Steam Eruption,,,Gain 3 Steam Eruption,,* Heal is multiplied by player count,
+"Dominion: Enemies immediately explode upon dying. In a multi-enemy fight, they explode for 3 damage. Otherwise, they explode for 4 damage in an easy pool combat, 5 damage in a regular combat, and 7 damage in an elite.",,Gain 15 (20) Steam Eruption,Damage 15 (16),Damage 10 (11),Heal 10 (15)*,Damage 20 (23) + 5*N,Damage 13 (14),,
+,,,Apply 1 Weak,Gain 3 [4] Steam Eruption,Gain 3 [4] Steam Eruption,N = # of times this move was used,Gain 3 [4] Steam Eruption,,
+,,,Gain 3 [4] Steam Eruption,,,Gain 3 [4] Steam Eruption,,* Heal is multiplied by player count,

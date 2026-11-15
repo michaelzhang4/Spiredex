@@ -14,13 +14,9 @@ Curse of the Bell: Curse. Unplayable. Eternal.",Remove 2 cards.,Transform all St
 
 Confused: Card costs are randomized on draw between 0-3. This doesn't affect star costs.","Gain 1 energy every turn. You can no longer gain gold.
 
-This option can only show up in act 2, shows up 50% less than other options, and cannot show up alongsize Sozu.","Gain 1 energy every turn. You can no longer get potions.
+This option can only show up in act 2.","Gain 1 energy every turn. You can no longer get potions.
 
-This option can only show up in act 2, shows up 50% less than other options, and cannot show up alongside Ectoplasm.","Gain 1 energy every turn. All enemies start combat with 1 extra Strength.
-
-This option can only show up in act 3, shows up 50% less than other options, and cannot show up alongside Velvet Choker.","Gain 1 energy every turn. You can play at most 6 cards per turn.
-
-This option can only show up in act 3, shows up 50% less than other options, and cannot show up alongside Philosopher's Stone."
+This option can only show up in act 2.",Gain 1 energy every turn. All enemies start combat with 1 extra Strength.,Gain 1 energy every turn. You can play at most 6 cards per turn.
 Neow,,,,,,,,,,,,
 Options 1 & 2,Arcane Scroll,Booming Conch,Pomander,Neow's Talisman,Golden Pearl,Lead Paperweight,New Leaf,Neow's Torment,Precise Scissors,Lost Coffer,,
 ,"Obtain a random rare card.
@@ -58,7 +54,7 @@ Each card reward will have 3 cards, each from a different character.","Every 3 n
 The packs will have 2 commons and 1 uncommon each, and every card will be unique.
 
 If you are the Defect, there is a 1% chance of a pack having 3 Claws instead.",,
-Option 3,Cursed Pearl,Hefty Tablet,Large Capsule,Leafy Poultice,Precarious Shears,Silken Tress,Silver Crucible,Neow's Bones,,,,
+Option 3,Cursed Pearl,Hefty Tablet,Large Capsule,Leafy Poultice,Precarious Shears,Silken Tress,Silver Crucible,Neow's Bones,Dowsing Rod,Neow's Sacrifice,,
 ,"Add Greed to the deck. Get 333 gold.
 
 Greed: Curse. Unplayable. Eternal.",Choose 1 of 3 rare cards to add to the deck. Add an Injury to the deck.,Get 2 random relics. Add a strike and a defend to the deck.,Lose 12 max HP. Transform a strike and a defend.,Take 16 damage. Remove 2 cards.,"Lose all gold. Enchant all cards in the first card reward with Glam.
@@ -67,33 +63,39 @@ Glam: The first time this card is played, replay it.","The first 3 card rewards 
 
 Can only show up in singleplayer.","Gain 2 random Neow relics. Add a random curse to the deck.
 
-The relics cannot be skipped.",,,,
+The relics cannot be skipped.","Add 1 Dowsing to the deck.
+
+Dowsing: Unplayable quest card. After entering 4 ? rooms, transforms into Abundance. The ? room that transforms this will not be a combat.
+
+Abundance: 1 (0) cost skill. Choose 1 of 3 upgraded powers to add to your hand. It's free to play this turn. Exhaust.","Procure an Ambergris potion and add a Guilty to the deck.
+
+Ambergris: Heal 50% of your max HP. If used in combat, take an extra turn after your current one.",,
 Nonupeipe,,,,,,,,,,,,
 Options,Beautiful Bracelet,Blessed Antler,Brilliant Scarf,Delicate Frond,Diamond Diadem,Fur Coat,Glitter,Jewelry Box,Looming Fruit,Signet Ring,,
-,"Enchant 3 cards with Swift 3.
+,"Enchant 4 random cards with Swift 2.
 
 Can only show up if there are at least 4 enchantable cards.
 
-Swift X: The first time this card is played, draw X cards.",Gain 1 energy every turn. Shuffle 3 Dazed into draw pile at the start of combat.,"The 5th card you play each turn is free to play. Does not count autoplayed cards.
+Swift X: The first time this card is played, draw X cards.",Gain 1 energy every turn. Shuffle 3 Dazed into draw pile at the start of combat.,"The 6th card you play each turn is free to play. Does not count autoplayed cards.
 
-This affects star cost as well.","At the start of combat, fill all empty potion slots with random potions.","If you play at most 2 cards in a turn, enemies attack for half damage.",Randomly marks 7 combats on the map (can be elites). Enemies in those rooms have their HP set to 1.,"Card rewards are enchanted with Glam.
+This affects star cost as well.","At the start of combat, fill all empty potion slots with random potions.","At the start of combat, gain 20 block. You don't lose block at the start of your second turn.",Randomly marks 8 combats on the map (can be elites). Enemies in those rooms have their HP set to 1.,"Card rewards are enchanted with Glam.
 
 Glam: The first time this card is played, replay it.","Add an Apotheosis to the deck.
 
-Apotheosis: 2 (1) cost skill. Innate. Upgrade all your cards. Exhaust.",Gain 31 max HP.,Gain 999 gold.,,
+Apotheosis: 2 (1) cost skill. Innate. Upgrade all your cards. Exhaust.",Gain 31 max HP.,Gain 888 gold.,,
 Orobas,,,,,,,,,,,,
-Option 1,Electric Shrimp,Glass Eye,Prismatic Gem,Sand Castle,Sea Glass,,,,,,,
+Option 1,Electric Shrimp,Glass Eye,Prismatic Gem,Sea Glass,,,,,,,,
 ,"Enchant a skill with Imbued.
 
 Imbued: Is automatically played at the start of combat. Starts at the bottom of the draw pile.","Get 2 common card rewards, 2 uncommon card rewards, and a rare card reward. The rewards are skippable.","Gain 1 energy every turn. Card rewards can have cards from other characters.
 
-This option shows up 1/3 as much as other options.",Upgrade 6 random cards.,"See 5 common cards, 5 uncommon cards, and 5 rare cards from another character (you are told which character it is before choosing). Choose any of them to add to the deck.
+This option shows up 1/3 as much as other options.","See 5 common cards, 5 uncommon cards, and 5 rare cards from another character (you are told which character it is before choosing). Choose any of them to add to the deck.
 
-This option shows up 2/3 as much as other options.",,,,,,,
-Option 2,Alchemical Coffer,Driftwood,Radiant Pearl,,,,,,,,,
+This option shows up 2/3 as much as other options.",,,,,,,,
+Option 2,Alchemical Coffer,Driftwood,Radiant Pearl,Sand Castle,,,,,,,,
 ,"Get 4 potion slots, and fill them with random potions.",Card rewards can be rerolled once.,"At the start of combat, add a Luminesce to your hand.
 
-Luminesce: 0 cost skill. Retain. Gain 2 energy. Exhaust.",,,,,,,,,
+Luminesce: 0 cost skill. Retain. Gain 2 energy. Exhaust.",Upgrade 6 random cards.,,,,,,,,
 Option 3,Archaic Tooth,Touch of Orobas,,,,,,,,,,
 ,"Replace a starter card with an Ancient version. Any upgrades/enchantments on the original card will be preserved. Can only appear if the starter card is still in the deck.
 
@@ -112,7 +114,7 @@ Pael,,,,,,,,,,,,
 Option 1,Pael's Flesh,Pael's Horn,Pael's Tears,,,,,,,,,
 ,Gain 1 energy every turn starting from the 3rd.,"Add 2 Relax to the deck.
 
-Relax: 3 cost skill. Gain 15 (17) block. Next turn, draw 2 (3) cards and get 2 (3) energy. Exhaust.","If you end your turn with unspent energy, gain 2 energy next turn.",,,,,,,,,
+Relax: 3 cost skill. Gain 16 (18) block. Next turn, draw 2 (3) cards and get 2 (3) energy. Exhaust.","If you end your turn with unspent energy, gain 2 energy next turn.",,,,,,,,,
 Option 2,Pael's Claw,Pael's Growth,Pael's Tooth,Pael's Wing,,,,,,,,
 ,"Enchant all Defends with Goopy.
 
@@ -131,13 +133,13 @@ Tanx,,,,,,,,,,,,
 Options,Claws,Crossbow,Iron Club,Meat Cleaver,Sai,Spiked Gauntlets,Tanx's Whistle,Throwing Axe,Tri-Boomerang,War Hammer,,
 ,"Transform up to 6 cards into Maul. Any upgrades/enchantments on the original card will be preserved (if possible).
 
-Maul: 1 cost attack. Deal 5 (6) damage twice. Increase the damage of all Mauls by 1 (2) this combat.","At the start of your turn, add a random Attack to your hand. It's free to play this turn.
+Maul: 1 cost attack. Deal 5 (6) damage twice. Increase the damage of all Mauls by 2 (3) this combat.","At the start of your turn, add a random Attack to your hand. It's free to play this turn.
 
 The attack will be from your character, and cannot be Ancient.","Every 4 cards you play, draw 1.","You can Cook at rest sites.
 
-Cook: Remove 2 cards and get 9 max HP.",Gain 7 block every turn.,Gain 1 energy every turn. Powers cost 1 energy more.,"Add a Whistle to the deck.
+Cook: Remove 2 cards and gain 5 max HP.",Gain 7 block every turn.,Gain 1 energy every turn. Powers cost 1 energy more.,"Add a Whistle to the deck.
 
-Whistle: 3 cost attack. Deal 33 (44) damage. Stun the enemy. Exhaust.
+Whistle: 2 cost attack. Deal 33 (44) damage. Stun the enemy. Exhaust.
 
 Stun: The enemy skips their turn.",The first card you play each combat is played another time.,"Enchant 3 attacks with Instinct.
 
@@ -158,15 +160,13 @@ The Soot is added before any cards are drawn.
 
 Soot: Status. Unplayable.","Add a Brightest Flame to the deck.
 
-Brightest Flame: 0 cost skill. Gain 2 (3) energy. Draw 2 (3) cards. Lose 1 max HP.","At the start of your turn, exhaust the top card of your draw pile and gain 1 Strength.
-
-This happens before drawing any cards, and on turn 1, it won't exhaust innate cards if there are non-innate cards in the draw pile. If the draw pile is empty, the draw pile will be reshuffled before exhausting. The strength will be gained even if no card was exhausted.",,,,,,,,,
+Brightest Flame: 0 cost skill. Gain 2 (3) energy. Draw 2 (3) cards. Lose 2 max HP.","At the start of your turn, exhaust 1 card from your hand and gain 1 Strength.",,,,,,,,,
 Option 3,Golden Compass,Pumpkin Candle,Toy Box,Seal of Gold,,,,,,,,
 ,"Replace the map with: fight -> ? -> fight -> fire -> fight -> fire -> ? -> chest -> ? -> chest -> ? -> shop -> elite -> fire -> elite -> fire -> boss.
 
-The ? rooms will always be events as opposed to combats/shops/chests.","Gain 1 energy every turn. This relic is disabled after 5 combats, but the counter can be increased by 5 at rest sites.","Obtain 4 relics as wax relics. Every 3 combats, the left-most wax relic is removed.
+The ? rooms will always be events as opposed to combats/shops/chests.","Gain 1 energy every turn. This relic is disabled after 5 combats, but the counter can be increased by 5 at rest sites.","Obtain 5 relics as wax relics. Every 3 combats, the left-most wax relic is removed.
 
-You can control the order that you pick up the wax relics.","Lose 5 gold and gain 1 energy every turn. If there isn't enough gold, then gold isn't lost and energy isn't gained.",,,,,,,,
+You can control the order that you pick up the wax relics.","Lose 3 gold and gain 1 energy every turn. If there isn't enough gold, then gold isn't lost and energy isn't gained.",,,,,,,,
 Vakuu,,,,,,,,,,,,
 Option 1,Blood-Soaked Rose,Fiddle,Whispering Earring,,,,,,,,,
 ,"Gain 1 energy every turn. Add an Enthralled to the deck.
@@ -175,15 +175,17 @@ Enthralled: 2 cost curse. If this card is in hand, it must be played first. Eter
 
 Vakuu will play your first turn: for up to 13 cards, Vakuu will play the leftmost playable card. If the card targets an enemy, it will be targeted on the leftmost targetable enemy. If the card needs to select other cards, it will select as many cards as possible, starting from the leftmost selectable card.",,,,,,,,,
 Option 2,Distinguished Cape,Preserved Fog,Sere Talon,,,,,,,,,
-,"Lose 9 max HP. Add 3 Apparitions to the deck.
+,"Add 2 random curses and 3 Apparitions to the deck.
 
 Apparition: 1 cost skill. Ethereal (upgrades to non-ethereal). Gain 1 Intangible. Exhaust.","Remove 3 cards. Add Folly to the deck.
 
-Folly: Curse. Unplayable. Innate. Ethereal. Eternal.","Add 2 random curses and 3 Wishes to the deck.
+Folly: Curse. Unplayable. Innate. Ethereal. Eternal.","Lose 9 max HP. Add 3 Wishes to the deck.
 
 Wish: 0 cost skill. Choose a card from the draw pile to add to your hand. Exhaust. (Retain.)",,,,,,,,,
 Option 3,Choices Paradox,Jeweled Mask,Lord's Parasol,Music Box,,,,,,,,
-,"At the start of combat, pick 1 of 5 random cards to add to hand. Retain is added to the card.","At the start of combat, put a random power from the draw pile into your hand. It's free to play this turn.","When entering a shop, purchase everything for free.
+,"At the start of combat, pick 1 of 5 random cards to add to hand. Retain is added to the card.","At the start of combat, put a random power from the draw pile into your hand. It's free to play this turn.
+
+This will prioritize non-innate powers.","When entering a shop, purchase everything for free.
 
 All 7 cards are added to the deck with the colorless cards added last, then the 3 relics, then the 3 potions (or until all potion slots are filled).
 

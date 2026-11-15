@@ -1,6 +1,6 @@
 Monster Name,HP,Move 1,Move 2,Move 3,Move 4,Move 5,Move 6,Notes,Attack Pattern
-Axebot,70 - 78 (76 - 86),Boot Up,Hammer Uppercut,One-Two,,,,Starts with Stock 2.,Alternates between Hammer Uppercut and One-Two.
-,,Block 15,Damage 12 (14),Damage 9x2 (10x2),,,,"Stock X: When killed, a new Axebot is summoned in its place (with Stock X - 1).",
+Axebot,70 (80),Boot Up,Hammer Uppercut,One-Two,,,,Starts with Stock 2.,Alternates between Hammer Uppercut and One-Two.
+,Gains 10 max HP per restock,Block 15,Damage 14 (18),Damage 10x2 (11x2),,,,"Stock X: When killed, a new Axebot is summoned in its place (with Stock X - 1).",
 ,,Gain 3*N (4*N) Strength,Apply 2 Weak,,,,,,"Summoned Axebots (from Stock) immediately start with Boot Up, then resume alternating between Hammer Uppercut and One-Two."
 ,,N = # of times this restocked,Apply 2 Frail,,,,,,
 ,,,,,,,,,
@@ -40,7 +40,7 @@ Damp Cultist,51 - 53 (52 - 54),Incantation,Dark Strike,,,,,,Starts with Incantat
 Devoted Sculptor,162 (172),Forbidden Incantation,Savage,,,,,,"Starts with Forbidden Incantation, then uses Savage every turn."
 ,,Gain 9 Ritual.,Damage 12 (15),,,,,,
 ,,,,,,,,,
-Exoskeleton,24 - 28 (25 - 29),Skitter,Mandible,Enrage,,,,Starts with Hard to Kill 9,"First Exoskeleton starts with Skitter, second starts with Mandible, third starts with Enrage (and fourth starts randomly with Skitter or Mandible, if present). "
+Exoskeleton,24 - 28 (26 - 30),Skitter,Mandible,Enrage,,,,Starts with Hard to Kill 9,"First Exoskeleton starts with Skitter, second starts with Mandible, third starts with Enrage (and fourth starts randomly with Skitter or Mandible, if present). "
 ,,Damage 1x3 (1x4),Damage 8 (9),Gain 2 Strength,,,,Hard to Kill X: Reduce all damage taken and HP loss to X.,
 ,,,,,,,,,
 ,,,,,,,,,After Skitter always uses Mandible. After Mandible always uses Enrage. After Enrage chooses randomly between Skitter and Mandible.
@@ -111,7 +111,7 @@ Frog Knight,191 (199),Tongue Lash,Strike Down Evil,For the Queen,Beetle Charge,,
 Fuzzy Wurm Crawler,55 - 57 (58 - 59),Acid Goop,Inhale,,,,,,Starts with Acid Goop. Then cycles through Inhale -> Acid Goop -> Acid Goop.
 ,,Damage 4 (6),Gain 7 Strength,,,,,,
 ,,,,,,,,,
-Globe Head,148 (158),Shocking Slap,Thunder Strike,Galvanic Burst,,,,Starts with Galvanic 6.,Cycles through Shocking Slap -> Thunder Strike -> Galvanic Burst.
+Globe Head,148 (158),Shocking Slap,Thunder Strike,Galvanic Burst,,,,Starts with Galvanic 6 (8).,Cycles through Shocking Slap -> Thunder Strike -> Galvanic Burst.
 ,,Damage 13 (14),Damage 6x3 (7x3),Damage 16 (17),,,,Galvanic X: You take X damage when a Power is played.,
 ,,Apply 2 Frail,,Gain 2 Strength,,,,,
 ,,,,,,,,,
@@ -163,7 +163,7 @@ Living Shield,55 (65),Shield Slam,Smash,,,,,Starts with Rampart 25,Uses Shield S
 ,,,,,,,,,
 Louse Progenitor,134 - 136 (138 - 141),Web Cannon,Curl and Grow,Pounce,,,,Starts with Curl Up,Cycles through Web Cannon -> Curl and Grow -> Pounce.
 ,,Damage 9 (10),Block 14 (18),Damage 14 (16),,,,Curl Up: Gain 14 (18) block upon first being hit.,
-,,Apply 2 Frail,Gain 5 Strength,,,,,,
+,,Apply 2 Frail,Gain 5 (7) Strength,,,,,,
 ,,,,,,,,,
 Mawler,72 (76),Claw,Roar,Rip & Tear,,,,,"Starts with Claw. Then chooses randomly between Rip & Tear, Roar, and Claw (all allowed options equally likely). Roar can only be used once. Claw and Rip & Tear cannot be used twice in a row."
 ,,Damage 4x2 (5x2),Apply 3 Vulnerable,Damage 14 (16),,,,,
@@ -298,8 +298,8 @@ Toadpole,21 - 25 (22 - 26),Spike Spit,Whirl,Spiken,,,,,Front Toadpole starts wit
 ,,Lose 2 Thorns,Damage 7 (8),Gain 2 Thorns,,,,,
 ,,Damage 3x3 (4x3),,,,,,,
 ,,,,,,,,,
-Tunneler,87 (92),Bite,Burrow,Below,,,,Burrowed: Block is not removed at the start of Tunneler's turn. Becomes stunned if all block is removed.,Starts with Bite -> Burrow.
-,,Damage 13 (15),Gain Burrowed,Damage 23 (26),,,,,"While Burrowed, always uses Below."
+Tunneler,87 (92),Bite,Burrow,From Below,,,,Burrowed: Block is not removed at the start of Tunneler's turn. Becomes stunned if all block is removed.,Starts with Bite -> Burrow.
+,,Damage 13 (15),Gain Burrowed,Damage 24 (28),,,,,"While Burrowed, always uses From Below."
 ,,,Block 32 (37),,,,,,"After being stunned, loses Burrowed and uses Bite -> Burrow."
 ,,,,,,,,,
 ,,,,,,,,,

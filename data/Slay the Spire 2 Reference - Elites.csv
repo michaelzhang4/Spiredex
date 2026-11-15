@@ -16,17 +16,17 @@ Decimillipede,40 - 46 (46 - 52),Writhe,Bulk,Constrict,,,,Starts with Reattach.,"
 ,,,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-Entomancer,145 (155),Pheromone Spit,Bees,Spear,,,,Starts with Personal Hive 1,"Cycles through Bees -> Spear -> Pheromone Spit. After reaching 3 stacks of Personal Hive, switches to gaining 2 strength when using Pheromone Spit."
+Entomancer,145 (165),Pheromone Spit,Bees,Spear,,,,Starts with Personal Hive 1,"Cycles through Bees -> Spear -> Pheromone Spit. After reaching 3 stacks of Personal Hive, switches to gaining 2 strength when using Pheromone Spit."
 ,,"If less than 3 Personal Hive: Gain 1 Personal Hive and 1 Strength
 ",Damage 3x7 (3x8),Damage 18 (20),,,,Personal Hive X: Add X Dazed to the draw pile whenever hit by an attack.,
 ,,,,,,,,,
 ,,If at 3 Personal Hive: Gain 2 Strength,,,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
-Infested Prism,161 (171),Jab,Radiate,Whirlwind,Pulsate,,,Starts with Vital Spark 2 (3),Cycles through Jab -> Radiate -> Whirlwind -> Pulsate
-,,Damage 15 (17),Damage 11 (13),Damage 5x3 (6x3),Damage 8 (10),,,Vital Spark X: All skills gain Tainted X.,
-,,,Block 11 (13),,Block 20 (22),,,"Tainted X: When played, take X more damage from attacks this turn.",
-,,,,,Gain 2 (3) Vital Spark,,,,
+Infested Prism,161 (171),Jab,Whirlwind,Pulsate,,,,Starts with Vital Spark 2 (3),Cycles through Jab -> Jab -> Whirlwind -> Pulsate
+,,Damage 15 (17),Damage 5x3 (6x3),Damage 8 (10),,,,Vital Spark X: All skills gain Tainted X.,
+,,,,Apply 1 Vulnerable,,,,"Tainted X: When played, take X more damage from attacks this turn.",
+,,,,Gain 2 (3) Vital Spark,,,,,
 ,,,,,,,,,
 Knights,,,,,,,,,
 Flail Knight,101 (108),War Chant,Flail,Ram,,,,,"Starts with Ram. Then chooses randomly between War Chant, Flail, and Ram (allowed options equally likely). Flail and Ram cannot be used more than twice in a row. War Chant cannot be used twice in a row."
@@ -44,8 +44,8 @@ Magi Knight,82 (89),Power Shield,Dampen,Spear,Prep,Magic Bomb,,"Dampen: While Ma
 ,,Block 5 (9),,,,,,,
 ,,,,,,,,,
 Mecha Knight,300 (320),Charge,Flamethrower,Windup,Heavy Cleave,,,Starts with Artifact 3,Starts with Charge. Then cycles through Flamethrower -> Windup -> Heavy Cleave.
-,,Damage 25 (30),Add 4 Burns to Hand,Block 15,Damage 35 (40),,,,
-,,,,Strength 5,,,,,
+,,Damage 25 (30),Damage 8 (12),Block 15,Damage 35 (40),,,,
+,,,Add 4 Burns to Hand,Strength 5,,,,,
 ,,,,,,,,,
 ,,,,,,,,,
 Phantasmal Gardener,26 - 31 (27 - 32),Bite,Lash,Flail,Enlarge,,,Starts with Skittish 6 (7),"1st one starts with Flail, 2nd with Bite, 3rd with Lash, and 4th with Enlarge. Then cycle through Bite -> Lash -> Flail -> Enlarge. "
